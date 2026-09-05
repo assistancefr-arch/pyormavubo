@@ -59,7 +59,7 @@
     
     .setting-group { margin-bottom: 14px; }
     .setting-label { display: block; font-size: 12px; color: #cbd5e1; font-weight: 600; margin-bottom: 6px; }
-    .setting-input, .setting-select { width: 100%; background: #070a10; border: 1px solid #1e293b; color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px; outline: none; }
+    .setting-input { width: 100%; background: #070a10; border: 1px solid #1e293b; color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px; outline: none; }
     .btn-save { width: 100%; background: #00f2fe; color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 8px; }
   </style>
 </head>
@@ -83,8 +83,8 @@
     </div>
     
     <div class="sidebar-footer">
-      <span>Режим: Pro AI</span>
-      <span style="color: #f59e0b;">⚡</span>
+      <span>Режим: Cosmic Pro AI</span>
+      <span style="color: #00f2fe;">⚡</span>
     </div>
   </div>
 
@@ -94,7 +94,7 @@
     </div>
 
     <div class="hero" id="heroSection">
-      <h2 id="dynamicGreeting">О чем поговорим сегодня?</h2>
+      <h2 id="dynamicGreeting">С чего начнем сегодня?</h2>
 
       <div class="cards-grid">
         <div class="card" onclick="quickSend('Создать веб-код')">
@@ -120,7 +120,7 @@
 
     <div class="input-container">
       <span class="input-plus">+</span>
-      <input type="text" class="chat-input" id="userInput" placeholder="Задайте вопрос pyormavubo">
+      <input type="text" class="chat-input" id="userInput" placeholder="Спросите о чем угодно...">
       <button class="input-submit" id="sendBtn">→</button>
     </div>
   </div>
@@ -128,31 +128,13 @@
   <div class="modal-overlay" id="settingsModal">
     <div class="modal">
       <div class="modal-header">
-        <h3>Настройки интерфейса</h3>
+        <h3>Персонализация</h3>
         <button class="modal-close" id="closeSettingsBtn">✕</button>
       </div>
 
       <div class="setting-group">
-        <label class="setting-label">👤 Ваше имя (для обращения)</label>
-        <input type="text" class="setting-input" id="userNameInput" placeholder="Введите ваше имя...">
-      </div>
-
-      <div class="setting-group">
-        <label class="setting-label">🎭 Стиль общения ИИ</label>
-        <select class="setting-select" id="botStyle">
-          <option value="friendly">Дружелюбный</option>
-          <option value="expert">Экспертный</option>
-          <option value="official">Деловой</option>
-        </select>
-      </div>
-
-      <div class="setting-group">
-        <label class="setting-label">🌐 Язык интерфейса</label>
-        <select class="setting-select" id="appLanguage">
-          <option value="ru">Русский</option>
-          <option value="en">English</option>
-          <option value="fr">Français</option>
-        </select>
+        <label class="setting-label">👤 Ваше имя (для онбординга)</label>
+        <input type="text" class="setting-input" id="userNameInput" placeholder="Укажите ваше имя...">
       </div>
 
       <button class="btn-save" id="saveSettingsBtn">Сохранить</button>
@@ -170,60 +152,58 @@
     openBtn.onclick = function() { modal.classList.add('active'); };
     closeBtn.onclick = function() { modal.classList.remove('active'); };
 
-    const dynamicGreetingsData = {
-      ru: [
-        "Что сегодня в повестке дня?",
-        "О чем поговорим сегодня?",
-        "Чем я могу помочь вам сегодня?",
-        "Вам слово!",
-        "Какую задачу решим прямо сейчас?",
-        "Как настроение?",
-        "Чем займемся?"
-      ],
-      en: [
-        "What's on the agenda today?",
-        "What shall we talk about today?",
-        "How can I help you today?",
-        "The floor is yours!",
-        "What are we working on today?"
-      ],
-      fr: [
-        "Qu'y a-t-il à l'ordre du jour aujourd'hui ?",
-        "De quoi allons-nous parler aujourd'hui ?",
-        "Comment puis-je vous aider aujourd'hui ?",
-        "C'est à vous !"
-      ]
-    };
+    // --- 1. РОТАЦИЯ ПРИВЕТСТВИЙ С ПЕРСОНАЛИЗАЦИЕЙ ---
+    const greetingsList = [
+      "С чего начнем сегодня?",
+      "Какую задачу разберем?",
+      "Готов к работе. Что создадим?",
+      "Вам слово!",
+      "О чем поговорим сегодня?",
+      "Чем я могу помочь прямо сейчас?",
+      "Включаем креатив?"
+    ];
 
-    function getGreeting() {
-      const lang = localStorage.getItem('pyorma_lang') || 'ru';
-      const name = localStorage.getItem('pyorma_username') || '';
-      const list = dynamicGreetingsData[lang] || dynamicGreetingsData['ru'];
-      
-      let text = list[Math.floor(Math.random() * list.length)];
-      
-      if (name) {
-        return `${name}, ${text.toLowerCase()}`;
+    function applyGreetingRotation() {
+      const savedName = localStorage.getItem('pyorma_username') || '';
+      const randomIndex = Math.floor(Math.random() * greetingsList.length);
+      let selectedText = greetingsList[randomIndex];
+
+      if (savedName) {
+        // Персонализированный онбординг
+        document.getElementById('dynamicGreeting').innerText = `${savedName}, ${selectedText.toLowerCase()}`;
+      } else {
+        document.getElementById('dynamicGreeting').innerText = selectedText;
       }
-      
-      return text;
     }
 
-    function updateGreeting() {
-      document.getElementById('dynamicGreeting').innerText = getGreeting();
+    // --- 2. ДИНАМИЧЕСКИЙ ПЛЕЙСХОЛДЕР (СМЕНА ПОДСКАЗОК) ---
+    const placeholderSuggestions = [
+      "Спросите: 'Напиши скрипт для сайта...'",
+      "Введите: 'Придумай концепт для видео...'",
+      "Спросите: 'Как работает этот алгоритм?'",
+      "Задайте любой вопрос или дайте задачу...",
+      "Напишите: 'Создай стильный блок интерфейса...'"
+    ];
+    let placeholderIdx = 0;
+
+    function startDynamicPlaceholder() {
+      setInterval(() => {
+        if (document.activeElement !== userInput && userInput.value === '') {
+          userInput.placeholder = placeholderSuggestions[placeholderIdx];
+          placeholderIdx = (placeholderIdx + 1) % placeholderSuggestions.length;
+        }
+      }, 3500);
     }
 
+    // --- 3. СОХРАНЕНИЕ НАСТРОЕК ---
     saveBtn.onclick = function() {
       const userName = document.getElementById('userNameInput').value.trim();
-      const selectedLang = document.getElementById('appLanguage').value;
-      
       localStorage.setItem('pyorma_username', userName);
-      localStorage.setItem('pyorma_lang', selectedLang);
-      
-      updateGreeting();
+      applyGreetingRotation();
       modal.classList.remove('active');
     };
 
+    // --- ЛОГИКА ЧАТА ---
     function sendMessage() {
       const text = userInput.value.trim();
       if (!text) return;
@@ -251,10 +231,10 @@
       setTimeout(() => {
         const aiMsg = document.createElement('div');
         aiMsg.className = 'msg msg-ai';
-        aiMsg.innerText = `🤖 Готово! Выполняю запрос: "${text}".`;
+        aiMsg.innerText = `🤖 Принято! Обрабатываю запрос: "${text}".`;
         chatBox.appendChild(aiMsg);
         chatBox.scrollTop = chatBox.scrollHeight;
-      }, 500);
+      }, 400);
 
       chatBox.scrollTop = chatBox.scrollHeight;
     }
@@ -274,17 +254,15 @@
       const chatBox = document.getElementById('chatBox');
       chatBox.innerHTML = '';
       chatBox.style.display = 'none';
-      updateGreeting();
+      applyGreetingRotation();
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       const savedName = localStorage.getItem('pyorma_username') || '';
-      const savedLang = localStorage.getItem('pyorma_lang') || 'ru';
-      
       document.getElementById('userNameInput').value = savedName;
-      document.getElementById('appLanguage').value = savedLang;
       
-      updateGreeting();
+      applyGreetingRotation();
+      startDynamicPlaceholder();
     });
   </script>
 
