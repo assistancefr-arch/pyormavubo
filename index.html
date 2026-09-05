@@ -1,41 +1,292 @@
-// Чистый список приветствий в стиле OpenAI / Google Gemini
-const dynamicGreetingsData = {
-  ru: [
-    "Что сегодня в повестке дня?",
-    "О чем поговорим сегодня?",
-    "Чем я могу помочь вам сегодня?",
-    "Вам слово!",
-    "Какую задачу решим прямо сейчас?",
-    "Как настроение?",
-    "Чем займемся?"
-  ],
-  en: [
-    "What's on the agenda today?",
-    "What shall we talk about today?",
-    "How can I help you today?",
-    "The floor is yours!",
-    "What are we working on today?"
-  ],
-  fr: [
-    "Qu'y a-t-il à l'ordre du jour aujourd'hui ?",
-    "De quoi allons-nous parler aujourd'hui ?",
-    "Comment puis-je vous aider aujourd'hui ?",
-    "C'est à vous !"
-  ]
-};
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pyormavubo-cosmicblaze</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: #0b0f19; color: #ffffff; display: flex; height: 100vh; overflow: hidden; }
+    
+    .sidebar { width: 260px; background-color: #070a10; border-right: 1px solid #151d2a; display: flex; flex-direction: column; justify-content: space-between; padding: 15px; }
+    .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .brand h1 { font-size: 16px; font-weight: 700; color: #00f2fe; }
+    
+    .btn-new-chat { width: 100%; background: transparent; color: #00f2fe; border: 1px solid #1e293b; padding: 9px; border-radius: 8px; font-weight: 500; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: flex-start; gap: 8px; margin-bottom: 8px; transition: 0.2s; }
+    .btn-new-chat:hover { border-color: #00f2fe; background: rgba(0, 242, 254, 0.05); }
 
-function getGreeting() {
-  const lang = localStorage.getItem('pyorma_lang') || 'ru';
-  const name = localStorage.getItem('pyorma_username') || '';
-  const list = dynamicGreetingsData[lang] || dynamicGreetingsData['ru'];
-  
-  // Выбираем случайную фразу
-  let text = list[Math.floor(Math.random() * list.length)];
-  
-  // Если имя заполнено, красивой вставкой добавляем его в начало (как в Gemini)
-  if (name) {
-    return `${name}, ${text.toLowerCase()}`;
-  }
-  
-  return text;
-}
+    .btn-settings { width: 100%; background: #0f172a; color: #cbd5e1; border: 1px solid #1e293b; padding: 8px 12px; border-radius: 8px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 15px; transition: 0.2s; }
+    .btn-settings:hover { border-color: #38bdf8; color: #fff; }
+    
+    .history-label { font-size: 11px; text-transform: uppercase; color: #475569; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 10px; }
+    .history-list { display: flex; flex-direction: column; gap: 6px; overflow-y: auto; max-height: 45vh; }
+    .history-item { padding: 7px 10px; border-radius: 6px; color: #94a3b8; font-size: 13px; cursor: pointer; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .history-item:hover { background-color: #0f172a; color: #fff; }
+    
+    .sidebar-footer { border-top: 1px solid #151d2a; padding-top: 12px; font-size: 12px; color: #64748b; display: flex; justify-content: space-between; align-items: center; }
+    
+    .main { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 15px 30px 20px 30px; position: relative; background: #0b0f19; }
+    
+    .top-bar { display: flex; justify-content: flex-end; }
+    .top-btn { background: #0f172a; border: 1px solid #1e293b; color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; text-decoration: none; }
+    
+    .hero { text-align: center; margin-top: auto; margin-bottom: auto; }
+    .hero h2 { font-size: 32px; font-weight: 700; color: #ffffff; margin-bottom: 24px; letter-spacing: -0.5px; line-height: 1.3; }
+    
+    .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 680px; margin: 0 auto; width: 100%; }
+    .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 12px 14px; text-align: left; cursor: pointer; transition: 0.2s; }
+    .card:hover { border-color: #00f2fe; }
+    .card-title { font-weight: 600; font-size: 13px; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
+    .card-desc { font-size: 11px; color: #475569; }
+    
+    .chat-messages { flex: 1; max-width: 680px; width: 100%; margin: 0 auto; overflow-y: auto; display: none; flex-direction: column; gap: 12px; padding-bottom: 15px; }
+    .msg { padding: 10px 14px; border-radius: 10px; font-size: 13px; max-width: 80%; line-height: 1.4; word-break: break-word; }
+    .msg-user { background: #0f172a; border: 1px solid #1e293b; align-self: flex-end; color: #fff; }
+    .msg-ai { background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.2); align-self: flex-start; color: #e2e8f0; }
+
+    .input-container { max-width: 680px; margin: 0 auto; width: 100%; position: relative; }
+    .chat-input { width: 100%; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 45px 12px 40px; color: #fff; font-size: 13px; outline: none; transition: 0.3s; }
+    .chat-input:focus { border-color: #00f2fe; }
+    .input-plus { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #475569; font-size: 16px; cursor: pointer; }
+    .input-submit { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; background: #00f2fe; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 1000; }
+    .modal-overlay.active { display: flex !important; }
+    .modal { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; width: 420px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-header h3 { font-size: 16px; color: #00f2fe; font-weight: 700; }
+    .modal-close { background: none; border: none; color: #64748b; font-size: 18px; cursor: pointer; }
+    
+    .setting-group { margin-bottom: 14px; }
+    .setting-label { display: block; font-size: 12px; color: #cbd5e1; font-weight: 600; margin-bottom: 6px; }
+    .setting-input, .setting-select { width: 100%; background: #070a10; border: 1px solid #1e293b; color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px; outline: none; }
+    .btn-save { width: 100%; background: #00f2fe; color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div>
+      <div class="brand">
+        <h1>pyormavubo</h1>
+      </div>
+      
+      <button class="btn-new-chat" onclick="resetChat()">+ Новый чат</button>
+      <button class="btn-settings" id="openSettingsBtn">⚙️ Настройки</button>
+      
+      <div class="history-label">История запросов</div>
+      <div class="history-list" id="historyList">
+        <div class="history-item" onclick="quickSend('Создание интерфейса ИИ')">Создание интерфейса ИИ</div>
+        <div class="history-item" onclick="quickSend('Генерация кода HTML/CSS')">Генерация кода HTML/CSS</div>
+        <div class="history-item" onclick="quickSend('Настройка Telegram бота')">Настройка Telegram бота</div>
+      </div>
+    </div>
+    
+    <div class="sidebar-footer">
+      <span>Режим: Pro AI</span>
+      <span style="color: #f59e0b;">⚡</span>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="top-bar">
+      <a href="https://t.me" target="_blank" class="top-btn">Telegram-бот ↗</a>
+    </div>
+
+    <div class="hero" id="heroSection">
+      <h2 id="dynamicGreeting">О чем поговорим сегодня?</h2>
+
+      <div class="cards-grid">
+        <div class="card" onclick="quickSend('Создать веб-код')">
+          <div class="card-title" style="color: #38bdf8;">📘 Создать веб-код</div>
+          <div class="card-desc">Разработка интерфейсов и блоков</div>
+        </div>
+        <div class="card" onclick="quickSend('Решить задачу')">
+          <div class="card-title" style="color: #ec4899;">🧠 Решить задачу</div>
+          <div class="card-desc">Алгоритмы, логика и головоломки</div>
+        </div>
+        <div class="card" onclick="quickSend('Сценарий и контент')">
+          <div class="card-title" style="color: #a855f7;">📓 Сценарий и контент</div>
+          <div class="card-desc">Идеи для роликов и проектов</div>
+        </div>
+        <div class="card" onclick="quickSend('Объяснить тему')">
+          <div class="card-title" style="color: #eab308;">⚡ Объяснить тему</div>
+          <div class="card-desc">Разбор технологий и терминов</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chatBox"></div>
+
+    <div class="input-container">
+      <span class="input-plus">+</span>
+      <input type="text" class="chat-input" id="userInput" placeholder="Задайте вопрос pyormavubo">
+      <button class="input-submit" id="sendBtn">→</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Настройки интерфейса</h3>
+        <button class="modal-close" id="closeSettingsBtn">✕</button>
+      </div>
+
+      <div class="setting-group">
+        <label class="setting-label">👤 Ваше имя (для обращения)</label>
+        <input type="text" class="setting-input" id="userNameInput" placeholder="Введите ваше имя...">
+      </div>
+
+      <div class="setting-group">
+        <label class="setting-label">🎭 Стиль общения ИИ</label>
+        <select class="setting-select" id="botStyle">
+          <option value="friendly">Дружелюбный</option>
+          <option value="expert">Экспертный</option>
+          <option value="official">Деловой</option>
+        </select>
+      </div>
+
+      <div class="setting-group">
+        <label class="setting-label">🌐 Язык интерфейса</label>
+        <select class="setting-select" id="appLanguage">
+          <option value="ru">Русский</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
+
+      <button class="btn-save" id="saveSettingsBtn">Сохранить</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('settingsModal');
+    const openBtn = document.getElementById('openSettingsBtn');
+    const closeBtn = document.getElementById('closeSettingsBtn');
+    const saveBtn = document.getElementById('saveSettingsBtn');
+    const sendBtn = document.getElementById('sendBtn');
+    const userInput = document.getElementById('userInput');
+
+    openBtn.onclick = function() { modal.classList.add('active'); };
+    closeBtn.onclick = function() { modal.classList.remove('active'); };
+
+    const dynamicGreetingsData = {
+      ru: [
+        "Что сегодня в повестке дня?",
+        "О чем поговорим сегодня?",
+        "Чем я могу помочь вам сегодня?",
+        "Вам слово!",
+        "Какую задачу решим прямо сейчас?",
+        "Как настроение?",
+        "Чем займемся?"
+      ],
+      en: [
+        "What's on the agenda today?",
+        "What shall we talk about today?",
+        "How can I help you today?",
+        "The floor is yours!",
+        "What are we working on today?"
+      ],
+      fr: [
+        "Qu'y a-t-il à l'ordre du jour aujourd'hui ?",
+        "De quoi allons-nous parler aujourd'hui ?",
+        "Comment puis-je vous aider aujourd'hui ?",
+        "C'est à vous !"
+      ]
+    };
+
+    function getGreeting() {
+      const lang = localStorage.getItem('pyorma_lang') || 'ru';
+      const name = localStorage.getItem('pyorma_username') || '';
+      const list = dynamicGreetingsData[lang] || dynamicGreetingsData['ru'];
+      
+      let text = list[Math.floor(Math.random() * list.length)];
+      
+      if (name) {
+        return `${name}, ${text.toLowerCase()}`;
+      }
+      
+      return text;
+    }
+
+    function updateGreeting() {
+      document.getElementById('dynamicGreeting').innerText = getGreeting();
+    }
+
+    saveBtn.onclick = function() {
+      const userName = document.getElementById('userNameInput').value.trim();
+      const selectedLang = document.getElementById('appLanguage').value;
+      
+      localStorage.setItem('pyorma_username', userName);
+      localStorage.setItem('pyorma_lang', selectedLang);
+      
+      updateGreeting();
+      modal.classList.remove('active');
+    };
+
+    function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      const hero = document.getElementById('heroSection');
+      const chatBox = document.getElementById('chatBox');
+
+      hero.style.display = 'none';
+      chatBox.style.display = 'flex';
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'msg msg-user';
+      userMsg.innerText = text;
+      chatBox.appendChild(userMsg);
+
+      userInput.value = '';
+
+      const historyList = document.getElementById('historyList');
+      const histItem = document.createElement('div');
+      histItem.className = 'history-item';
+      histItem.innerText = text;
+      histItem.onclick = function() { quickSend(text); };
+      historyList.prepend(histItem);
+
+      setTimeout(() => {
+        const aiMsg = document.createElement('div');
+        aiMsg.className = 'msg msg-ai';
+        aiMsg.innerText = `🤖 Готово! Выполняю запрос: "${text}".`;
+        chatBox.appendChild(aiMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 500);
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    sendBtn.onclick = sendMessage;
+    userInput.onkeydown = function(e) {
+      if (e.key === 'Enter') sendMessage();
+    };
+
+    function quickSend(text) {
+      userInput.value = text;
+      sendMessage();
+    }
+
+    function resetChat() {
+      document.getElementById('heroSection').style.display = 'block';
+      const chatBox = document.getElementById('chatBox');
+      chatBox.innerHTML = '';
+      chatBox.style.display = 'none';
+      updateGreeting();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedName = localStorage.getItem('pyorma_username') || '';
+      const savedLang = localStorage.getItem('pyorma_lang') || 'ru';
+      
+      document.getElementById('userNameInput').value = savedName;
+      document.getElementById('appLanguage').value = savedLang;
+      
+      updateGreeting();
+    });
+  </script>
+
+</body>
+</html>
