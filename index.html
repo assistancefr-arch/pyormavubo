@@ -1,136 +1,214 @@
-<script>
-  const modal = document.getElementById('settingsModal');
-  const openBtn = document.getElementById('openSettingsBtn');
-  const closeBtn = document.getElementById('closeSettingsBtn');
-  const saveBtn = document.getElementById('saveSettingsBtn');
-  const sendBtn = document.getElementById('sendBtn');
-  const userInput = document.getElementById('userInput');
-
-  openBtn.onclick = function() { modal.classList.add('active'); };
-  closeBtn.onclick = function() { modal.classList.remove('active'); };
-
-  const pyormaGreetings = [
-    "Система должна подняться. Чего будем обсуждать?",
-    "Система готова. Какой проект запустим?",
-    "На связи. С какой задачи начнем?",
-    "Канал связи открыт. Что делаем?"
-  ];
-
-  function applyGreeting() {
-    const savedName = localStorage.getItem('pyorma_username');
-    const randomIndex = Math.floor(Math.random() * pyormaGreetings.length);
-    const baseText = pyormaGreetings[randomIndex];
-
-    if (savedName && savedName.trim() !== '') {
-      document.getElementById('dynamicGreeting').innerText = `${savedName}! ${baseText}`;
-    } else {
-      document.getElementById('dynamicGreeting').innerText = baseText;
-    }
-  }
-
-  const hints = [
-    "Запросить код HTML/CSS...",
-    "Описать логику для бота...",
-    "Задать технический вопрос...",
-    "Сгенерировать идею проекта..."
-  ];
-  let hintIndex = 0;
-
-  function rotateHints() {
-    setInterval(() => {
-      if (document.activeElement !== userInput && userInput.value === '') {
-        userInput.placeholder = hints[hintIndex];
-        hintIndex = (hintIndex + 1) % hints.length;
-      }
-    }, 3500);
-  }
-
-  saveBtn.onclick = function() {
-    const userName = document.getElementById('userNameInput').value.trim();
-    localStorage.setItem('pyorma_username', userName);
-    applyGreeting();
-    modal.classList.remove('active');
-  };
-
-  // База умных ответов системы pyormavubo
-  function generatePyormaResponse(query) {
-    const text = query.toLowerCase();
-
-    if (text.includes('привет') || text.includes('ку') || text.includes('хай')) {
-      return "Привет! Система pyormavubo готова к работе. Что пишем или тестируем сегодня?";
-    }
-    if (text.includes('код') || text.includes('html') || text.includes('css')) {
-      return "Для работы с кодом создай файл index.html, добавь структуру HTML5, тег <style> для оформления и <script> для логики. Вся верстка готова!";
-    }
-    if (text.includes('бот') || text.includes('telegram')) {
-      return "Чтобы привязать Telegram-бота, тебе понадобится BotFather для получения токена и сервер на Node.js или Python (python-telegram-bot).";
-    }
-    if (text.includes('задач') || text.includes('иде')) {
-      return "Отличная цель! Давай разобьем задачу на 3 шага: 1) Проработка структуры, 2) Написание базового кода, 3) Тестирование функций.";
-    }
-
-    return `Запрос "${query}" получен и обработан ядром pyormavubo! Логика работает исправно.`;
-  }
-
-  function sendMessage() {
-    const text = userInput.value.trim();
-    if (!text) return;
-
-    const hero = document.getElementById('heroSection');
-    const chatBox = document.getElementById('chatBox');
-
-    hero.style.display = 'none';
-    chatBox.style.display = 'flex';
-
-    const userMsg = document.createElement('div');
-    userMsg.className = 'msg msg-user';
-    userMsg.innerText = text;
-    chatBox.appendChild(userMsg);
-
-    userInput.value = '';
-
-    const historyList = document.getElementById('historyList');
-    const histItem = document.createElement('div');
-    histItem.className = 'history-item';
-    histItem.innerText = text;
-    histItem.onclick = function() { quickSend(text); };
-    historyList.prepend(histItem);
-
-    // Добавляем ответ бота
-    setTimeout(() => {
-      const aiMsg = document.createElement('div');
-      aiMsg.className = 'msg msg-ai';
-      aiMsg.innerText = generatePyormaResponse(text);
-      chatBox.appendChild(aiMsg);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }, 300);
-
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  sendBtn.onclick = sendMessage;
-  userInput.onkeydown = function(e) {
-    if (e.key === 'Enter') sendMessage();
-  };
-
-  function quickSend(text) {
-    userInput.value = text;
-    sendMessage();
-  }
-
-  function resetChat() {
-    document.getElementById('heroSection').style.display = 'block';
-    const chatBox = document.getElementById('chatBox');
-    chatBox.innerHTML = '';
-    chatBox.style.display = 'none';
-    applyGreeting();
-  }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const savedName = localStorage.getItem('pyorma_username') || '';
-    document.getElementById('userNameInput').value = savedName;
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pyormavubo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { display: flex; height: 100vh; background-color: #0b0f19; color: #ffffff; }
     
-    applyGreeting();
-    rotateHints();
-  });
-</script>
+    /* Sidebar */
+    .sidebar { width: 260px; background-color: #070a10; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid #1e293b; }
+    .brand { font-size: 20px; font-weight: bold; color: #00f2fe; margin-bottom: 20px; }
+    .btn-new-chat { width: 100%; padding: 10px; background: rgba(0, 242, 254, 0.1); border: 1px solid #00f2fe; color: #00f2fe; border-radius: 8px; cursor: pointer; margin-bottom: 10px; }
+    .btn-settings { width: 100%; padding: 10px; background: #1e293b; border: none; color: #fff; border-radius: 8px; cursor: pointer; }
+    .history-title { font-size: 12px; color: #64748b; margin: 20px 0 10px; text-transform: uppercase; }
+    .history-list { flex-grow: 1; overflow-y: auto; }
+    .history-item { padding: 8px 12px; margin-bottom: 6px; background: #131c2e; border-radius: 6px; font-size: 14px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Main Content */
+    .main { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 30px; position: relative; }
+    .hero { text-align: center; margin-top: auto; margin-bottom: auto; }
+    .hero h1 { font-size: 32px; margin-bottom: 30px; color: #ffffff; }
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; max-width: 700px; margin: 0 auto; }
+    .card { background: #131c2e; padding: 15px; border-radius: 12px; text-align: left; border: 1px solid #1e293b; cursor: pointer; }
+    .card h3 { font-size: 16px; color: #38bdf8; margin-bottom: 5px; }
+    .card p { font-size: 12px; color: #94a3b8; }
+
+    /* Chat Box */
+    .chat-box { flex-grow: 1; overflow-y: auto; display: none; flex-direction: column; gap: 15px; padding-bottom: 20px; }
+    .msg { padding: 12px 16px; border-radius: 10px; max-width: 80%; line-height: 1.5; font-size: 15px; }
+    .msg-user { background: #0284c7; align-self: flex-end; }
+    .msg-ai { background: #1e293b; align-self: flex-start; border: 1px solid #334155; }
+
+    /* Input Area */
+    .input-container { display: flex; background: #131c2e; border: 1px solid #1e293b; border-radius: 12px; padding: 8px 15px; max-width: 800px; width: 100%; margin: 0 auto; }
+    .input-container input { flex-grow: 1; background: transparent; border: none; color: #fff; outline: none; font-size: 15px; }
+    .input-container button { background: #00f2fe; border: none; width: 36px; height: 36px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+    /* Modal */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
+    .modal.active { display: flex; }
+    .modal-content { background: #131c2e; padding: 25px; border-radius: 12px; width: 300px; }
+    .modal-content input { width: 100%; padding: 8px; margin: 15px 0; background: #0b0f19; border: 1px solid #1e293b; color: #fff; border-radius: 6px; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+    .modal-actions button { padding: 8px 15px; border-radius: 6px; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div>
+      <div class="brand">pyormavubo</div>
+      <button class="btn-new-chat" onclick="resetChat()">+ Новый чат</button>
+      <button class="btn-settings" id="openSettingsBtn">⚙ Настройки</button>
+      <div class="history-title">История запросов</div>
+      <div class="history-list" id="historyList"></div>
+    </div>
+    <div style="font-size: 12px; color: #64748b;">Режим: Pro AI ⚡</div>
+  </div>
+
+  <div class="main">
+    <div class="hero" id="heroSection">
+      <h1 id="dynamicGreeting">Система должна подняться. Чего будем обсуждать?</h1>
+      <div class="cards">
+        <div class="card" onclick="quickSend('Создать веб-код')">
+          <h3>📘 Создать веб-код</h3>
+          <p>Разработка интерфейсов и блоков</p>
+        </div>
+        <div class="card" onclick="quickSend('Решить задачу')">
+          <h3>🧠 Решить задачу</h3>
+          <p>Алгоритмы, логика и головоломки</p>
+        </div>
+        <div class="card" onclick="quickSend('Сценарий и контент')">
+          <h3>📓 Сценарий и контент</h3>
+          <p>Идеи для роликов и проектов</p>
+        </div>
+        <div class="card" onclick="quickSend('Объяснить тему')">
+          <h3>⚡ Объяснить тему</h3>
+          <p>Разбор технологий и терминов</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-box" id="chatBox"></div>
+
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="Запросить код HTML/CSS...">
+      <button id="sendBtn">→</button>
+    </div>
+  </div>
+
+  <div class="modal" id="settingsModal">
+    <div class="modal-content">
+      <h3>Настройки</h3>
+      <label style="font-size: 12px; color: #94a3b8;">Ваше имя:</label>
+      <input type="text" id="userNameInput" placeholder="Введите имя...">
+      <div class="modal-actions">
+        <button id="closeSettingsBtn" style="background: #334155; color: #fff;">Отмена</button>
+        <button id="saveSettingsBtn" style="background: #00f2fe; color: #000;">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('settingsModal');
+    const openBtn = document.getElementById('openSettingsBtn');
+    const closeBtn = document.getElementById('closeSettingsBtn');
+    const saveBtn = document.getElementById('saveSettingsBtn');
+    const sendBtn = document.getElementById('sendBtn');
+    const userInput = document.getElementById('userInput');
+
+    openBtn.onclick = function() { modal.classList.add('active'); };
+    closeBtn.onclick = function() { modal.classList.remove('active'); };
+
+    const pyormaGreetings = [
+      "Система должна подняться. Чего будем обсуждать?",
+      "Система готова. Какой проект запустим?",
+      "На связи. С какой задачи начнем?",
+      "Канал связи открыт. Что делаем?"
+    ];
+
+    function applyGreeting() {
+      const savedName = localStorage.getItem('pyorma_username');
+      const randomIndex = Math.floor(Math.random() * pyormaGreetings.length);
+      const baseText = pyormaGreetings[randomIndex];
+
+      if (savedName && savedName.trim() !== '') {
+        document.getElementById('dynamicGreeting').innerText = `${savedName}! ${baseText}`;
+      } else {
+        document.getElementById('dynamicGreeting').innerText = baseText;
+      }
+    }
+
+    saveBtn.onclick = function() {
+      const userName = document.getElementById('userNameInput').value.trim();
+      localStorage.setItem('pyorma_username', userName);
+      applyGreeting();
+      modal.classList.remove('active');
+    };
+
+    function generatePyormaResponse(query) {
+      const text = query.toLowerCase();
+      if (text.includes('привет') || text.includes('ку') || text.includes('хай')) {
+        return "Привет! Система pyormavubo готова к работе. Что пишем или тестируем сегодня?";
+      }
+      if (text.includes('код') || text.includes('html') || text.includes('css')) {
+        return "Для верстки блока используй теги <div>, <button> и стили CSS через flexbox. Структура готова к сборке!";
+      }
+      return `Запрос "${query}" принят и обработан ядром pyormavubo! Всё работает отлично.`;
+    }
+
+    function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      const hero = document.getElementById('heroSection');
+      const chatBox = document.getElementById('chatBox');
+
+      hero.style.display = 'none';
+      chatBox.style.display = 'flex';
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'msg msg-user';
+      userMsg.innerText = text;
+      chatBox.appendChild(userMsg);
+
+      userInput.value = '';
+
+      const historyList = document.getElementById('historyList');
+      const histItem = document.createElement('div');
+      histItem.className = 'history-item';
+      histItem.innerText = text;
+      histItem.onclick = function() { quickSend(text); };
+      historyList.prepend(histItem);
+
+      setTimeout(() => {
+        const aiMsg = document.createElement('div');
+        aiMsg.className = 'msg msg-ai';
+        aiMsg.innerText = generatePyormaResponse(text);
+        chatBox.appendChild(aiMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 300);
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    sendBtn.onclick = sendMessage;
+    userInput.onkeydown = function(e) {
+      if (e.key === 'Enter') sendMessage();
+    };
+
+    function quickSend(text) {
+      userInput.value = text;
+      sendMessage();
+    }
+
+    function resetChat() {
+      document.getElementById('heroSection').style.display = 'block';
+      const chatBox = document.getElementById('chatBox');
+      chatBox.innerHTML = '';
+      chatBox.style.display = 'none';
+      applyGreeting();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedName = localStorage.getItem('pyorma_username') || '';
+      document.getElementById('userNameInput').value = savedName;
+      applyGreeting();
+    });
+  </script>
+
+</body>
+</html>
