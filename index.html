@@ -10,7 +10,7 @@
     
     .sidebar { width: 260px; background-color: #070a10; padding: 20px 14px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid #1e293b; user-select: none; }
     .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-left: 6px; }
-    .brand img { width: 28px; height: 28px; border-radius: 6px; object-fit: cover; }
+    .brand-icon { width: 28px; height: 28px; background: linear-gradient(135deg, #a855f7, #00f2fe); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; color: #fff; box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
     .brand h1 { font-size: 18px; font-weight: 700; color: #00f2fe; text-shadow: 0 0 12px rgba(0,242,254,0.3); }
     
     .btn-new-chat { width: 100%; padding: 10px; background: transparent; border: 1px solid #00f2fe; color: #00f2fe; border-radius: 8px; cursor: pointer; margin-bottom: 8px; font-weight: 600; text-align: left; transition: 0.2s; }
@@ -27,7 +27,6 @@
     .history-item:hover .history-dots { opacity: 1; }
     .history-dots:hover { background: #334155; color: #fff; }
 
-    /* Всплывающее меню */
     .context-menu { display: none; position: fixed; background: #182232; border: 1px solid #2e3e52; border-radius: 10px; width: 170px; padding: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 2000; }
     .context-menu.active { display: block; }
     .context-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; font-size: 12px; color: #cbd5e1; border-radius: 6px; cursor: pointer; transition: 0.15s; }
@@ -66,10 +65,11 @@
   <div class="sidebar">
     <div>
       <div class="brand">
+        <div class="brand-icon">P</div>
         <h1>pyormavubo</h1>
       </div>
       <button class="btn-new-chat" onclick="resetChat()">+ Новый чат</button>
-      <button class="btn-settings" id="openSettingsBtn">⚙️ Настройки</button>
+      <button class="btn-settings">⚙️ Настройки</button>
       <div class="history-title">История запросов</div>
       <div class="history-list" id="historyList"></div>
     </div>
@@ -126,9 +126,21 @@
     const contextMenu = document.getElementById('contextMenu');
     let activeHistoryItem = null;
 
+    let historyData = JSON.parse(localStorage.getItem('py_history')) || [
+      'Создание интерфейса ИИ',
+      'Генерация кода HTML/CSS',
+      'Настройка Telegram бота'
+    ];
+
+    let messagesData = JSON.parse(localStorage.getItem('py_messages')) || [];
+
+    function saveState() {
+      localStorage.setItem('py_history', JSON.stringify(historyData));
+      localStorage.setItem('py_messages', JSON.stringify(messagesData));
+    }
+
     function generateAIResponse(query) {
       const q = query.toLowerCase().trim();
-      
       if (q.includes('привет') || q.includes('хай') || q.includes('здравствуй') || q.includes('салам')) {
         return "Привет! Я pyormavubo AI. Чем могу помочь тебе сегодня?";
       }
@@ -136,40 +148,61 @@
         return "Я — pyormavubo AI, твой персональный нейросетевой ассистент!";
       }
       if (q.includes('что умеешь') || q.includes('что ты можешь')) {
-        return "Я могу генерировать код, отвечать на вопросы, создавать сценарии, помогать с логикой и программированием!";
+        return "Я могу генерировать код, отвечать на вопросы, создавать сценарии и помогать с проектами!";
       }
-      if (q.includes('код') || q.includes('html') || q.includes('css') || q.includes('js') || q.includes('скрипт')) {
-        return "Отлично! Давай напишем код. Опиши подробнее, какой функционал нужно реализовать.";
-      }
-      
       return 'Я получил ваш запрос: "' + query + '". Готов помочь с этим или ответить на любые вопросы!';
     }
 
-    function addHistoryItem(text) {
+    function renderHistory() {
       const historyList = document.getElementById('historyList');
-      const item = document.createElement('div');
-      item.className = 'history-item';
-      
-      const textSpan = document.createElement('span');
-      textSpan.className = 'history-text';
-      textSpan.innerText = text;
-      textSpan.onclick = function() { quickSend(text); };
+      historyList.innerHTML = '';
+      historyData.forEach((text) => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        
+        const textSpan = document.createElement('span');
+        textSpan.className = 'history-text';
+        textSpan.innerText = text;
+        textSpan.onclick = function() { quickSend(text); };
 
-      const dotsSpan = document.createElement('span');
-      dotsSpan.className = 'history-dots';
-      dotsSpan.innerText = '···';
-      dotsSpan.onclick = function(e) {
-        e.stopPropagation();
-        openContextMenu(e, item);
-      };
+        const dotsSpan = document.createElement('span');
+        dotsSpan.className = 'history-dots';
+        dotsSpan.innerText = '···';
+        dotsSpan.onclick = function(e) {
+          e.stopPropagation();
+          openContextMenu(e, item, text);
+        };
 
-      item.appendChild(textSpan);
-      item.appendChild(dotsSpan);
-      historyList.prepend(item);
+        item.appendChild(textSpan);
+        item.appendChild(dotsSpan);
+        historyList.appendChild(item);
+      });
     }
 
-    function openContextMenu(e, item) {
-      activeHistoryItem = item;
+    function renderMessages() {
+      const chatBox = document.getElementById('chatBox');
+      const heroSection = document.getElementById('heroSection');
+      
+      if (messagesData.length > 0) {
+        heroSection.style.display = 'none';
+        chatBox.style.display = 'flex';
+        chatBox.innerHTML = '';
+        messagesData.forEach(msg => {
+          const div = document.createElement('div');
+          div.className = 'msg ' + (msg.type === 'user' ? 'msg-user' : 'msg-ai');
+          div.innerText = msg.text;
+          chatBox.appendChild(div);
+        });
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } else {
+        heroSection.style.display = 'block';
+        chatBox.style.display = 'none';
+        chatBox.innerHTML = '';
+      }
+    }
+
+    function openContextMenu(e, item, text) {
+      activeHistoryItem = { element: item, text: text };
       contextMenu.style.top = e.clientY + 'px';
       contextMenu.style.left = (e.clientX + 10) + 'px';
       contextMenu.classList.add('active');
@@ -181,17 +214,22 @@
 
     function actionMenu(type) {
       if (!activeHistoryItem) return;
-      if (type === 'delete') {
-        activeHistoryItem.remove();
-      } else if (type === 'rename') {
-        const textSpan = activeHistoryItem.querySelector('.history-text');
-        const newText = prompt('Введите новое название:', textSpan.innerText);
-        if (newText) textSpan.innerText = newText;
+      const index = historyData.indexOf(activeHistoryItem.text);
+      
+      if (type === 'delete' && index !== -1) {
+        historyData.splice(index, 1);
+      } else if (type === 'rename' && index !== -1) {
+        const newText = prompt('Введите новое название:', activeHistoryItem.text);
+        if (newText) historyData[index] = newText;
       } else if (type === 'share') {
         alert('Ссылка на чат скопирована!');
-      } else if (type === 'pin') {
-        document.getElementById('historyList').prepend(activeHistoryItem);
+      } else if (type === 'pin' && index !== -1) {
+        const item = historyData.splice(index, 1)[0];
+        historyData.unshift(item);
       }
+      
+      saveState();
+      renderHistory();
       contextMenu.classList.remove('active');
     }
 
@@ -199,27 +237,22 @@
       const text = userInput.value.trim();
       if (!text) return;
 
-      document.getElementById('heroSection').style.display = 'none';
-      const chatBox = document.getElementById('chatBox');
-      chatBox.style.display = 'flex';
-
-      const userMsg = document.createElement('div');
-      userMsg.className = 'msg msg-user';
-      userMsg.innerText = text;
-      chatBox.appendChild(userMsg);
+      messagesData.push({ type: 'user', text: text });
+      if (!historyData.includes(text)) {
+        historyData.unshift(text);
+      }
 
       userInput.value = '';
-      addHistoryItem(text);
+      saveState();
+      renderHistory();
+      renderMessages();
 
       setTimeout(function() {
-        const aiMsg = document.createElement('div');
-        aiMsg.className = 'msg msg-ai';
-        aiMsg.innerText = generateAIResponse(text);
-        chatBox.appendChild(aiMsg);
-        chatBox.scrollTop = chatBox.scrollHeight;
+        const reply = generateAIResponse(text);
+        messagesData.push({ type: 'ai', text: reply });
+        saveState();
+        renderMessages();
       }, 300);
-
-      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
     sendBtn.onclick = sendMessage;
@@ -231,14 +264,14 @@
     }
 
     function resetChat() {
-      document.getElementById('heroSection').style.display = 'block';
-      const chatBox = document.getElementById('chatBox');
-      chatBox.innerHTML = '';
-      chatBox.style.display = 'none';
+      messagesData = [];
+      saveState();
+      renderMessages();
     }
 
     window.onload = function() {
-      ['Настройка Telegram бота', 'Генерация кода HTML/CSS', 'Создание интерфейса ИИ'].forEach(addHistoryItem);
+      renderHistory();
+      renderMessages();
     };
   </script>
 </body>
