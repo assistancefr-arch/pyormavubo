@@ -3,74 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PyormaVubo — AI Ассистент</title>
+  <title>pyormavubo-cosmicblaze</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
     body { background-color: #0b0f19; color: #ffffff; display: flex; height: 100vh; overflow: hidden; }
     
     /* Sidebar */
-    .sidebar { width: 260px; background-color: #070a10; border-right: 1px solid #151d2a; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 15px; }
-    .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; }
+    .sidebar { width: 260px; background-color: #070a10; border-right: 1px solid #151d2a; display: flex; flex-direction: column; justify-content: space-between; padding: 15px; }
+    .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
     .brand img { width: 28px; height: 28px; border-radius: 6px; }
-    .brand h1 { font-size: 18px; font-weight: 700; color: #00f2fe; }
+    .brand h1 { font-size: 16px; font-weight: 700; color: #00f2fe; }
     
-    .btn-new-chat { width: 100%; background: transparent; color: #00f2fe; border: 1px solid #1e293b; padding: 10px; border-radius: 8px; font-weight: 500; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: flex-start; gap: 8px; margin-bottom: 10px; transition: 0.2s; }
+    .btn-new-chat { width: 100%; background: transparent; color: #00f2fe; border: 1px solid #1e293b; padding: 9px; border-radius: 8px; font-weight: 500; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: flex-start; gap: 8px; margin-bottom: 8px; transition: 0.2s; }
     .btn-new-chat:hover { border-color: #00f2fe; background: rgba(0, 242, 254, 0.05); }
 
-    .btn-settings { width: 100%; background: #0f172a; color: #cbd5e1; border: 1px solid #1e293b; padding: 9px 12px; border-radius: 8px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 20px; transition: 0.2s; }
+    .btn-settings { width: 100%; background: #0f172a; color: #cbd5e1; border: 1px solid #1e293b; padding: 8px 12px; border-radius: 8px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 15px; transition: 0.2s; }
     .btn-settings:hover { border-color: #38bdf8; color: #fff; }
     
-    .history-label { font-size: 11px; text-transform: uppercase; color: #475569; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 12px; }
-    .history-list { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; max-height: 50vh; }
-    .history-item { padding: 8px 10px; border-radius: 6px; color: #94a3b8; font-size: 13px; cursor: pointer; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .history-label { font-size: 11px; text-transform: uppercase; color: #475569; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 10px; }
+    .history-list { display: flex; flex-direction: column; gap: 6px; overflow-y: auto; max-height: 45vh; }
+    .history-item { padding: 7px 10px; border-radius: 6px; color: #94a3b8; font-size: 13px; cursor: pointer; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .history-item:hover { background-color: #0f172a; color: #fff; }
     
-    .sidebar-footer { border-top: 1px solid #151d2a; padding-top: 15px; font-size: 12px; color: #64748b; display: flex; justify-content: space-between; align-items: center; }
+    .sidebar-footer { border-top: 1px solid #151d2a; padding-top: 12px; font-size: 12px; color: #64748b; display: flex; justify-content: space-between; align-items: center; }
     
     /* Main Content */
-    .main { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 25px 40px; position: relative; background: #0b0f19; }
+    .main { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 15px 30px 20px 30px; position: relative; background: #0b0f19; }
     
     .top-bar { display: flex; justify-content: flex-end; }
-    .top-btn { background: #0f172a; border: 1px solid #1e293b; color: #38bdf8; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; text-decoration: none; }
+    .top-btn { background: #0f172a; border: 1px solid #1e293b; color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; text-decoration: none; }
     .top-btn:hover { border-color: #38bdf8; }
     
-    .hero { text-align: center; margin-top: -20px; transition: 0.3s; }
-    .hero h2 { font-size: 38px; font-weight: 800; color: #00f2fe; margin-bottom: 10px; letter-spacing: -0.5px; }
-    .hero p { color: #64748b; font-size: 14px; }
+    .hero { text-align: center; margin-top: 0; }
+    .hero h2 { font-size: 34px; font-weight: 800; color: #00f2fe; margin-bottom: 6px; letter-spacing: -0.5px; }
+    .hero p { color: #64748b; font-size: 13px; }
     
-    .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 720px; margin: 30px auto 0 auto; width: 100%; }
-    .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 16px; text-align: left; cursor: pointer; transition: 0.2s; }
+    .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 680px; margin: 18px auto 0 auto; width: 100%; }
+    .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 12px 14px; text-align: left; cursor: pointer; transition: 0.2s; }
     .card:hover { border-color: #00f2fe; }
-    .card-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
-    .card-desc { font-size: 12px; color: #475569; }
+    .card-title { font-weight: 600; font-size: 13px; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
+    .card-desc { font-size: 11px; color: #475569; }
     
     /* Chat Container */
-    .chat-messages { flex: 1; max-width: 720px; width: 100%; margin: 0 auto; overflow-y: auto; display: none; flex-direction: column; gap: 16px; padding-bottom: 20px; }
-    .msg { padding: 12px 16px; border-radius: 10px; font-size: 14px; max-width: 80%; line-height: 1.5; }
+    .chat-messages { flex: 1; max-width: 680px; width: 100%; margin: 0 auto; overflow-y: auto; display: none; flex-direction: column; gap: 12px; padding-bottom: 15px; }
+    .msg { padding: 10px 14px; border-radius: 10px; font-size: 13px; max-width: 80%; line-height: 1.4; word-break: break-word; }
     .msg-user { background: #0f172a; border: 1px solid #1e293b; align-self: flex-end; color: #fff; }
     .msg-ai { background: rgba(0, 242, 254, 0.08); border: 1px solid rgba(0, 242, 254, 0.2); align-self: flex-start; color: #e2e8f0; }
 
     /* Chat Input */
-    .input-container { max-width: 720px; margin: 0 auto; width: 100%; position: relative; }
-    .chat-input { width: 100%; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 16px 50px 16px 45px; color: #fff; font-size: 14px; outline: none; }
+    .input-container { max-width: 680px; margin: 0 auto; width: 100%; position: relative; }
+    .chat-input { width: 100%; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 45px 12px 40px; color: #fff; font-size: 13px; outline: none; }
     .chat-input:focus { border-color: #00f2fe; }
-    .input-plus { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #475569; font-size: 18px; cursor: pointer; }
-    .input-submit { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; background: #00f2fe; border: none; border-radius: 8px; color: #000; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .input-plus { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #475569; font-size: 16px; cursor: pointer; }
+    .input-submit { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; background: #00f2fe; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
     /* Modal Settings */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 100; }
-    .modal-overlay.active { display: flex; }
-    .modal { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; width: 440px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-header h3 { font-size: 18px; color: #00f2fe; font-weight: 700; }
-    .modal-close { background: none; border: none; color: #64748b; font-size: 20px; cursor: pointer; }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 1000; }
+    .modal-overlay.active { display: flex !important; }
+    .modal { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; width: 420px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-header h3 { font-size: 16px; color: #00f2fe; font-weight: 700; }
+    .modal-close { background: none; border: none; color: #64748b; font-size: 18px; cursor: pointer; }
     .modal-close:hover { color: #fff; }
     
-    .setting-group { margin-bottom: 18px; }
-    .setting-label { display: block; font-size: 13px; color: #cbd5e1; font-weight: 600; margin-bottom: 8px; }
-    .setting-select { width: 100%; background: #070a10; border: 1px solid #1e293b; color: #fff; padding: 10px; border-radius: 8px; font-size: 13px; outline: none; }
+    .setting-group { margin-bottom: 14px; }
+    .setting-label { display: block; font-size: 12px; color: #cbd5e1; font-weight: 600; margin-bottom: 6px; }
+    .setting-select { width: 100%; background: #070a10; border: 1px solid #1e293b; color: #fff; padding: 8px; border-radius: 8px; font-size: 12px; outline: none; }
     .setting-select:focus { border-color: #00f2fe; }
-    .btn-save { width: 100%; background: #00f2fe; color: #000; border: none; padding: 11px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 10px; }
+    .btn-save { width: 100%; background: #00f2fe; color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 8px; }
     .btn-save:hover { opacity: 0.9; }
   </style>
 </head>
@@ -80,17 +80,17 @@
     <div>
       <div class="brand">
         <img src="logo.jpg" alt="Logo" onerror="this.style.display='none'">
-        <h1>PyormaVubo</h1>
+        <h1>pyormavubo</h1>
       </div>
       
       <button class="btn-new-chat" onclick="resetChat()">+ Новый чат</button>
-      <button class="btn-settings" onclick="openSettings()">⚙️ Настройки</button>
+      <button class="btn-settings" id="openSettingsBtn">⚙️ Настройки</button>
       
       <div class="history-label">История запросов</div>
       <div class="history-list" id="historyList">
-        <div class="history-item">Создание интерфейса ИИ</div>
-        <div class="history-item">Генерация кода HTML/CSS</div>
-        <div class="history-item">Настройка Telegram бота</div>
+        <div class="history-item" onclick="quickSend('Создание интерфейса ИИ')">Создание интерфейса ИИ</div>
+        <div class="history-item" onclick="quickSend('Генерация кода HTML/CSS')">Генерация кода HTML/CSS</div>
+        <div class="history-item" onclick="quickSend('Настройка Telegram бота')">Настройка Telegram бота</div>
       </div>
     </div>
     
@@ -106,7 +106,7 @@
     </div>
 
     <div class="hero" id="heroSection">
-      <h2 id="main-title">PyormaVubo</h2>
+      <h2 id="main-title">pyormavubo-cosmicblaze</h2>
       <p id="main-desc">Ваш персональный центр нейросетевых задач. Что сделаем сегодня?</p>
 
       <div class="cards-grid">
@@ -133,16 +133,16 @@
 
     <div class="input-container">
       <span class="input-plus">+</span>
-      <input type="text" class="chat-input" id="userInput" placeholder="Введите сообщение или вопрос..." onkeydown="checkEnter(event)">
-      <button class="input-submit" onclick="sendMessage()">→</button>
+      <input type="text" class="chat-input" id="userInput" placeholder="Введите сообщение или вопрос...">
+      <button class="input-submit" id="sendBtn">→</button>
     </div>
   </div>
 
   <div class="modal-overlay" id="settingsModal">
     <div class="modal">
       <div class="modal-header">
-        <h3>Настройки PyormaVubo</h3>
-        <button class="modal-close" onclick="closeSettings()">✕</button>
+        <h3>Настройки pyormavubo-cosmicblaze</h3>
+        <button class="modal-close" id="closeSettingsBtn">✕</button>
       </div>
 
       <div class="setting-group">
@@ -179,13 +179,20 @@
         </select>
       </div>
 
-      <button class="btn-save" onclick="saveSettings()">Сохранить настройки</button>
+      <button class="btn-save" id="saveSettingsBtn">Сохранить настройки</button>
     </div>
   </div>
 
   <script>
-    function openSettings() { document.getElementById('settingsModal').classList.add('active'); }
-    function closeSettings() { document.getElementById('settingsModal').classList.remove('active'); }
+    const modal = document.getElementById('settingsModal');
+    const openBtn = document.getElementById('openSettingsBtn');
+    const closeBtn = document.getElementById('closeSettingsBtn');
+    const saveBtn = document.getElementById('saveSettingsBtn');
+    const sendBtn = document.getElementById('sendBtn');
+    const userInput = document.getElementById('userInput');
+
+    openBtn.onclick = function() { modal.classList.add('active'); };
+    closeBtn.onclick = function() { modal.classList.remove('active'); };
 
     const i18n = {
       'ru': { desc: "Ваш персональный центр нейросетевых задач. Что сделаем сегодня?", newChat: "+ Новый чат", cards: ["📘 Создать веб-код", "🧠 Решить задачу", "📓 Сценарий и контент", "⚡ Объяснить тему"] },
@@ -197,4 +204,85 @@
       'kk': { desc: "Сіздің жеке ИИ орталығыңыз. Бүгін не істейміз?", newChat: "+ Жаңа чат", cards: ["📘 Веб-код жасау", "🧠 Есепті шығару", "📓 Сценарий мен контент", "⚡ Тақырыпты түсіндіру"] },
       'fi': { desc: "Henkilökohtainen tekoälykeskuksesi. Mitä teemme tänään?", newChat: "+ Uusi keskustelu", cards: ["📘 Luo verkkokoodia", "🧠 Ratkaise tehtävä", "📓 Käsikirjoitus & sisältö", "⚡ Selitä aihe"] },
       'vi': { desc: "Trung tâm AI cá nhân của bạn. Hôm nay chúng ta sẽ làm gì?", newChat: "+ Trò chuyện mới", cards: ["📘 Tạo mã web", "🧠 Giải bài tập", "📓 Kịch bản & nội dung", "⚡ Giải thích chủ đề"] },
-      'bn': { desc: "আপনার ব্যক্তিগত এআই কেন্দ্র। আজ আমরা কি করব?", newChat: "+ নতুন চ্যাট", cards: ["📘 ওয়েব কোড তৈরি", "🧠 সমস্যা সমাধান", "📓 স্ক্রিপ্ট ও কনটেন্ট", "⚡ বিষয় ব্যাখ্যা"]
+      'bn': { desc: "আপনার ব্যক্তিগত এআই কেন্দ্র। আজ আমরা কি করব?", newChat: "+ নতুন চ্যাট", cards: ["📘 ওয়েব কোড তৈরি", "🧠 সমস্যা সমাধান", "📓 স্ক্রিপ্ট ও কনটেন্ট", "⚡ বিষয় ব্যাখ্যা"] }
+    };
+
+    function applyLanguage(lang) {
+      const data = i18n[lang] || i18n['ru'];
+      document.getElementById('main-desc').innerText = data.desc;
+      document.querySelector('.btn-new-chat').innerText = data.newChat;
+
+      const cardTitles = document.querySelectorAll('.card-title');
+      data.cards.forEach((text, index) => {
+        if (cardTitles[index]) cardTitles[index].innerText = text;
+      });
+
+      localStorage.setItem('pyorma_lang', lang);
+    }
+
+    saveBtn.onclick = function() {
+      applyLanguage(document.getElementById('appLanguage').value);
+      modal.classList.remove('active');
+    };
+
+    function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      const hero = document.getElementById('heroSection');
+      const chatBox = document.getElementById('chatBox');
+
+      hero.style.display = 'none';
+      chatBox.style.display = 'flex';
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'msg msg-user';
+      userMsg.innerText = text;
+      chatBox.appendChild(userMsg);
+
+      userInput.value = '';
+
+      const historyList = document.getElementById('historyList');
+      const histItem = document.createElement('div');
+      histItem.className = 'history-item';
+      histItem.innerText = text;
+      histItem.onclick = function() { quickSend(text); };
+      historyList.prepend(histItem);
+
+      setTimeout(() => {
+        const aiMsg = document.createElement('div');
+        aiMsg.className = 'msg msg-ai';
+        aiMsg.innerText = `🤖 pyormavubo-cosmicblaze: Принято! Выполняю ваш запрос по теме "${text}".`;
+        chatBox.appendChild(aiMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 500);
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    sendBtn.onclick = sendMessage;
+    userInput.onkeydown = function(e) {
+      if (e.key === 'Enter') sendMessage();
+    };
+
+    function quickSend(text) {
+      userInput.value = text;
+      sendMessage();
+    }
+
+    function resetChat() {
+      document.getElementById('heroSection').style.display = 'block';
+      const chatBox = document.getElementById('chatBox');
+      chatBox.innerHTML = '';
+      chatBox.style.display = 'none';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedLang = localStorage.getItem('pyorma_lang') || 'ru';
+      document.getElementById('appLanguage').value = savedLang;
+      applyLanguage(savedLang);
+    });
+  </script>
+
+</body>
+</html>
