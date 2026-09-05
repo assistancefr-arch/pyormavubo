@@ -1,17 +1,138 @@
-<script>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pyormavubo-cosmicblaze</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { display: flex; height: 100vh; background-color: #0b0f19; color: #ffffff; overflow: hidden; }
+    
+    .sidebar { width: 260px; background-color: #070a10; padding: 20px 14px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid #1e293b; user-select: none; }
+    .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-left: 6px; }
+    .brand img { width: 28px; height: 28px; border-radius: 6px; object-fit: cover; }
+    .brand h1 { font-size: 18px; font-weight: 700; color: #00f2fe; text-shadow: 0 0 12px rgba(0,242,254,0.3); }
+    
+    .btn-new-chat { width: 100%; padding: 10px; background: transparent; border: 1px solid #00f2fe; color: #00f2fe; border-radius: 8px; cursor: pointer; margin-bottom: 8px; font-weight: 600; text-align: left; transition: 0.2s; }
+    .btn-new-chat:hover { background: rgba(0, 242, 254, 0.1); }
+    .btn-settings { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #1e293b; color: #cbd5e1; border-radius: 8px; cursor: pointer; margin-bottom: 15px; text-align: left; }
+    
+    .history-title { font-size: 11px; color: #475569; margin-bottom: 10px; text-transform: uppercase; font-weight: 700; padding-left: 6px; }
+    .history-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+    
+    .history-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: #0f172a; border-radius: 6px; font-size: 13px; color: #94a3b8; cursor: pointer; position: relative; transition: 0.2s; }
+    .history-item:hover { background: #1e293b; color: #fff; }
+    .history-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+    .history-dots { opacity: 0; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 14px; color: #94a3b8; transition: 0.2s; }
+    .history-item:hover .history-dots { opacity: 1; }
+    .history-dots:hover { background: #334155; color: #fff; }
+
+    /* Всплывающее меню */
+    .context-menu { display: none; position: fixed; background: #182232; border: 1px solid #2e3e52; border-radius: 10px; width: 170px; padding: 6px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 2000; }
+    .context-menu.active { display: block; }
+    .context-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; font-size: 12px; color: #cbd5e1; border-radius: 6px; cursor: pointer; transition: 0.15s; }
+    .context-item:hover { background: #273549; color: #fff; }
+    .context-item.delete { color: #f87171; }
+    .context-item.delete:hover { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+    .main { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 30px; position: relative; }
+    .top-bar { display: flex; justify-content: flex-end; align-items: center; width: 100%; }
+    .btn-telegram { background: rgba(14, 165, 233, 0.15); border: 1px solid rgba(14, 165, 233, 0.4); color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-decoration: none; transition: 0.2s; }
+    .btn-telegram:hover { background: rgba(14, 165, 233, 0.25); }
+
+    .hero { text-align: center; margin-top: auto; margin-bottom: auto; }
+    .hero h2 { font-size: 32px; font-weight: 700; margin-bottom: 30px; color: #ffffff; }
+    
+    .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 680px; margin: 0 auto; width: 100%; }
+    .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 14px; text-align: left; cursor: pointer; transition: 0.2s; }
+    .card:hover { border-color: #00f2fe; background: #141e33; }
+    .card-title { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+    .card-desc { font-size: 11px; color: #475569; }
+
+    .chat-box { flex: 1; max-width: 680px; width: 100%; margin: 0 auto; overflow-y: auto; display: none; flex-direction: column; gap: 14px; padding-bottom: 20px; }
+    .msg { padding: 12px 16px; border-radius: 12px; font-size: 13.5px; max-width: 82%; line-height: 1.5; word-break: break-word; }
+    .msg-user { background: #0f172a; border: 1px solid #1e293b; align-self: flex-end; color: #fff; }
+    .msg-ai { background: rgba(0, 242, 254, 0.06); border: 1px solid rgba(0, 242, 254, 0.2); align-self: flex-start; color: #e2e8f0; }
+
+    .input-container { max-width: 680px; margin: 0 auto; width: 100%; position: relative; display: flex; align-items: center; }
+    .input-plus { position: absolute; left: 15px; color: #64748b; font-size: 16px; cursor: pointer; }
+    .chat-input { width: 100%; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 45px 12px 35px; color: #fff; font-size: 13px; outline: none; }
+    .chat-input:focus { border-color: #00f2fe; }
+    .input-submit { position: absolute; right: 8px; width: 28px; height: 28px; background: #00f2fe; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div>
+      <div class="brand">
+        <h1>pyormavubo</h1>
+      </div>
+      <button class="btn-new-chat" onclick="resetChat()">+ Новый чат</button>
+      <button class="btn-settings" id="openSettingsBtn">⚙️ Настройки</button>
+      <div class="history-title">История запросов</div>
+      <div class="history-list" id="historyList"></div>
+    </div>
+    <div style="font-size: 12px; color: #64748b;">Режим: Cosmic Pro AI ⚡</div>
+  </div>
+
+  <div class="main">
+    <div class="top-bar">
+      <a href="https://t.me" target="_blank" class="btn-telegram">Telegram-бот ↗</a>
+    </div>
+
+    <div class="hero" id="heroSection">
+      <h2>С чего начнем сегодня?</h2>
+
+      <div class="cards-grid">
+        <div class="card" onclick="quickSend('Создать веб-код')">
+          <div class="card-title" style="color: #38bdf8;">📘 Создать веб-код</div>
+          <div class="card-desc">Разработка интерфейсов и блоков</div>
+        </div>
+        <div class="card" onclick="quickSend('Решить задачу')">
+          <div class="card-title" style="color: #ec4899;">🧠 Решить задачу</div>
+          <div class="card-desc">Алгоритмы, логика и головоломки</div>
+        </div>
+        <div class="card" onclick="quickSend('Сценарий и контент')">
+          <div class="card-title" style="color: #a855f7;">📓 Сценарий и контент</div>
+          <div class="card-desc">Идеи для роликов и проектов</div>
+        </div>
+        <div class="card" onclick="quickSend('Объяснить тему')">
+          <div class="card-title" style="color: #eab308;">⚡ Объяснить тему</div>
+          <div class="card-desc">Разбор технологий и терминов</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-box" id="chatBox"></div>
+
+    <div class="input-container">
+      <span class="input-plus">+</span>
+      <input type="text" class="chat-input" id="userInput" placeholder='Введите: "Придумай концепт для видео..."'>
+      <button class="input-submit" id="sendBtn">→</button>
+    </div>
+  </div>
+
+  <div class="context-menu" id="contextMenu">
+    <div class="context-item" onclick="actionMenu('share')">🔗 Поделиться</div>
+    <div class="context-item" onclick="actionMenu('rename')">✏️ Переименовать</div>
+    <div class="context-item" onclick="actionMenu('pin')">📌 Закрепить</div>
+    <div class="context-item delete" onclick="actionMenu('delete')">🗑️ Удалить</div>
+  </div>
+
+  <script>
     const sendBtn = document.getElementById('sendBtn');
     const userInput = document.getElementById('userInput');
     const contextMenu = document.getElementById('contextMenu');
     let activeHistoryItem = null;
 
-    // Расширенная логика ответов ИИ
     function generateAIResponse(query) {
       const q = query.toLowerCase().trim();
       
       if (q.includes('привет') || q.includes('хай') || q.includes('здравствуй') || q.includes('салам')) {
         return "Привет! Я pyormavubo AI. Чем могу помочь тебе сегодня?";
       }
-      if (q.includes('кто ты') || q.includes('ты кто') || q.includes('как тебя зовут') || q.includes('твое имя') || q.includes('твое имя')) {
+      if (q.includes('кто ты') || q.includes('ты кто') || q.includes('как тебя зовут') || q.includes('твое имя')) {
         return "Я — pyormavubo AI, твой персональный нейросетевой ассистент!";
       }
       if (q.includes('что умеешь') || q.includes('что ты можешь')) {
@@ -21,7 +142,7 @@
         return "Отлично! Давай напишем код. Опиши подробнее, какой функционал нужно реализовать.";
       }
       
-      return `Я принял ваш запрос: "${query}". Готов помочь с этим или ответить на любые вопросы!`;
+      return 'Я получил ваш запрос: "' + query + '". Готов помочь с этим или ответить на любые вопросы!';
     }
 
     function addHistoryItem(text) {
@@ -32,12 +153,12 @@
       const textSpan = document.createElement('span');
       textSpan.className = 'history-text';
       textSpan.innerText = text;
-      textSpan.onclick = () => quickSend(text);
+      textSpan.onclick = function() { quickSend(text); };
 
       const dotsSpan = document.createElement('span');
       dotsSpan.className = 'history-dots';
-      dotsSpan.innerHTML = '&#8943;'; // Символ троеточия
-      dotsSpan.onclick = (e) => {
+      dotsSpan.innerText = '···';
+      dotsSpan.onclick = function(e) {
         e.stopPropagation();
         openContextMenu(e, item);
       };
@@ -49,12 +170,12 @@
 
     function openContextMenu(e, item) {
       activeHistoryItem = item;
-      contextMenu.style.top = `${e.clientY}px`;
-      contextMenu.style.left = `${e.clientX + 10}px`;
+      contextMenu.style.top = e.clientY + 'px';
+      contextMenu.style.left = (e.clientX + 10) + 'px';
       contextMenu.classList.add('active');
     }
 
-    document.addEventListener('click', () => {
+    document.addEventListener('click', function() {
       contextMenu.classList.remove('active');
     });
 
@@ -90,7 +211,7 @@
       userInput.value = '';
       addHistoryItem(text);
 
-      setTimeout(() => {
+      setTimeout(function() {
         const aiMsg = document.createElement('div');
         aiMsg.className = 'msg msg-ai';
         aiMsg.innerText = generateAIResponse(text);
@@ -102,7 +223,7 @@
     }
 
     sendBtn.onclick = sendMessage;
-    userInput.onkeydown = (e) => { if (e.key === 'Enter') sendMessage(); };
+    userInput.onkeydown = function(e) { if (e.key === 'Enter') sendMessage(); };
 
     function quickSend(text) {
       userInput.value = text;
@@ -116,7 +237,9 @@
       chatBox.style.display = 'none';
     }
 
-    window.onload = () => {
+    window.onload = function() {
       ['Настройка Telegram бота', 'Генерация кода HTML/CSS', 'Создание интерфейса ИИ'].forEach(addHistoryItem);
     };
   </script>
+</body>
+</html>
