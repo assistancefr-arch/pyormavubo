@@ -35,8 +35,8 @@
     .top-btn:hover { border-color: #38bdf8; }
     
     .hero { text-align: center; margin-top: 0; }
-    .hero h2 { font-size: 34px; font-weight: 800; color: #00f2fe; margin-bottom: 6px; letter-spacing: -0.5px; }
-    .hero p { color: #64748b; font-size: 13px; }
+    .hero h2 { font-size: 32px; font-weight: 800; color: #00f2fe; margin-bottom: 6px; letter-spacing: -0.5px; }
+    .hero p { color: #94a3b8; font-size: 14px; font-weight: 500; min-height: 20px; }
     
     .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 680px; margin: 18px auto 0 auto; width: 100%; }
     .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 12px 14px; text-align: left; cursor: pointer; transition: 0.2s; }
@@ -52,7 +52,7 @@
 
     /* Chat Input */
     .input-container { max-width: 680px; margin: 0 auto; width: 100%; position: relative; }
-    .chat-input { width: 100%; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 45px 12px 40px; color: #fff; font-size: 13px; outline: none; }
+    .chat-input { width: 100%; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 45px 12px 40px; color: #fff; font-size: 13px; outline: none; transition: 0.3s; }
     .chat-input:focus { border-color: #00f2fe; }
     .input-plus { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #475569; font-size: 16px; cursor: pointer; }
     .input-submit { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; background: #00f2fe; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
@@ -68,8 +68,8 @@
     
     .setting-group { margin-bottom: 14px; }
     .setting-label { display: block; font-size: 12px; color: #cbd5e1; font-weight: 600; margin-bottom: 6px; }
-    .setting-select { width: 100%; background: #070a10; border: 1px solid #1e293b; color: #fff; padding: 8px; border-radius: 8px; font-size: 12px; outline: none; }
-    .setting-select:focus { border-color: #00f2fe; }
+    .setting-input, .setting-select { width: 100%; background: #070a10; border: 1px solid #1e293b; color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px; outline: none; }
+    .setting-input:focus, .setting-select:focus { border-color: #00f2fe; }
     .btn-save { width: 100%; background: #00f2fe; color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 8px; }
     .btn-save:hover { opacity: 0.9; }
   </style>
@@ -107,7 +107,7 @@
 
     <div class="hero" id="heroSection">
       <h2 id="main-title">pyormavubo-cosmicblaze</h2>
-      <p id="main-desc">Ваш персональный центр нейросетевых задач. Что сделаем сегодня?</p>
+      <p id="main-desc">Загрузка динамического приветствия...</p>
 
       <div class="cards-grid">
         <div class="card" onclick="quickSend('Создать веб-код')">
@@ -133,7 +133,7 @@
 
     <div class="input-container">
       <span class="input-plus">+</span>
-      <input type="text" class="chat-input" id="userInput" placeholder="Введите сообщение или вопрос...">
+      <input type="text" class="chat-input" id="userInput" placeholder="Спросите меня о чём угодно...">
       <button class="input-submit" id="sendBtn">→</button>
     </div>
   </div>
@@ -143,6 +143,11 @@
       <div class="modal-header">
         <h3>Настройки pyormavubo-cosmicblaze</h3>
         <button class="modal-close" id="closeSettingsBtn">✕</button>
+      </div>
+
+      <div class="setting-group">
+        <label class="setting-label">👤 Ваше имя (для обращения)</label>
+        <input type="text" class="setting-input" id="userNameInput" placeholder="Например: Yuliya">
       </div>
 
       <div class="setting-group">
@@ -160,22 +165,9 @@
         <select class="setting-select" id="appLanguage">
           <option value="ru">Русский</option>
           <option value="fr">Français (Французский)</option>
-          <option value="de">Deutsch (Немецкий)</option>
-          <option value="ja">日本語 (Японский)</option>
           <option value="en">English (Английский)</option>
+          <option value="de">Deutsch (Немецкий)</option>
           <option value="es">Español (Испанский)</option>
-          <option value="it">Italiano (Итальянский)</option>
-          <option value="zh">中文 (Китайский)</option>
-          <option value="be">Беларуская (Белорусский)</option>
-          <option value="uk">Українська (Украинский)</option>
-          <option value="la">Lingua Latina (Латинский)</option>
-          <option value="el">Ελληνικά (Греческий)</option>
-          <option value="kk">Қазақша (Казахский)</option>
-          <option value="fi">Suomi (Финский)</option>
-          <option value="vi">Tiếng Việt (Вьетнамский)</option>
-          <option value="ro">Română (Румынский)</option>
-          <option value="es-cu">Español de Cuba (Кубинский)</option>
-          <option value="bn">বাংলা (Бенгальский)</option>
         </select>
       </div>
 
@@ -194,34 +186,76 @@
     openBtn.onclick = function() { modal.classList.add('active'); };
     closeBtn.onclick = function() { modal.classList.remove('active'); };
 
-    const i18n = {
-      'ru': { desc: "Ваш персональный центр нейросетевых задач. Что сделаем сегодня?", newChat: "+ Новый чат", cards: ["📘 Создать веб-код", "🧠 Решить задачу", "📓 Сценарий и контент", "⚡ Объяснить тему"] },
-      'en': { desc: "Your personal AI center. What are we doing today?", newChat: "+ New Chat", cards: ["📘 Web Development", "🧠 Solve Problem", "📓 Script & Content", "⚡ Explain Topic"] },
-      'fr': { desc: "Votre centre personnel d'IA. Que faisons-nous aujourd'hui?", newChat: "+ Nouvelle conversation", cards: ["📘 Développer du code", "🧠 Résoudre un problème", "📓 Scénario & Contenu", "⚡ Expliquer un sujet"] },
-      'de': { desc: "Ihr persönliches KI-Zentrum. Was machen wir heute?", newChat: "+ Neuer Chat", cards: ["📘 Webcode erstellen", "🧠 Aufgabe lösen", "📓 Skript & Inhalt", "⚡ Thema erklären"] },
-      'es': { desc: "Tu centro personal de IA. ¿Qué hacemos hoy?", newChat: "+ Nuevo chat", cards: ["📘 Crear código web", "🧠 Resolver problema", "📓 Guion y contenido", "⚡ Explicar tema"] },
-      'la': { desc: "Centrum tuum artificialis intelligentiae. Quid hodie faciemus?", newChat: "+ Nova confabulatio", cards: ["📘 Codice creare", "🧠 Quaestionem solvere", "📓 Argumentum scribere", "⚡ Rem explicare"] },
-      'kk': { desc: "Сіздің жеке ИИ орталығыңыз. Бүгін не істейміз?", newChat: "+ Жаңа чат", cards: ["📘 Веб-код жасау", "🧠 Есепті шығару", "📓 Сценарий мен контент", "⚡ Тақырыпты түсіндіру"] },
-      'fi': { desc: "Henkilökohtainen tekoälykeskuksesi. Mitä teemme tänään?", newChat: "+ Uusi keskustelu", cards: ["📘 Luo verkkokoodia", "🧠 Ratkaise tehtävä", "📓 Käsikirjoitus & sisältö", "⚡ Selitä aihe"] },
-      'vi': { desc: "Trung tâm AI cá nhân của bạn. Hôm nay chúng ta sẽ làm gì?", newChat: "+ Trò chuyện mới", cards: ["📘 Tạo mã web", "🧠 Giải bài tập", "📓 Kịch bản & nội dung", "⚡ Giải thích chủ đề"] },
-      'bn': { desc: "আপনার ব্যক্তিগত এআই কেন্দ্র। আজ আমরা কি করব?", newChat: "+ নতুন চ্যাট", cards: ["📘 ওয়েব কোড তৈরি", "🧠 সমস্যা সমাধান", "📓 স্ক্রিপ্ট ও কনটেন্ট", "⚡ বিষয় ব্যাখ্যা"] }
-    };
+    // --- Система динамических приветствий ---
+    function getTimeContext() {
+      const hour = new Date().getHours();
+      if (hour >= 5 && hour < 12) return 'morning';
+      if (hour >= 12 && hour < 18) return 'day';
+      if (hour >= 18 && hour < 23) return 'evening';
+      return 'night';
+    }
 
-    function applyLanguage(lang) {
-      const data = i18n[lang] || i18n['ru'];
-      document.getElementById('main-desc').innerText = data.desc;
-      document.querySelector('.btn-new-chat').innerText = data.newChat;
+    function generateDynamicGreeting() {
+      const name = localStorage.getItem('pyorma_username') || '';
+      const time = getTimeContext();
+      const userTag = name ? `, ${name}` : '';
 
-      const cardTitles = document.querySelectorAll('.card-title');
-      data.cards.forEach((text, index) => {
-        if (cardTitles[index]) cardTitles[index].innerText = text;
-      });
+      const greetings = {
+        morning: [
+          `Доброе утро${userTag}! Чем мы займёмся сегодня?`,
+          `Свежий день — новые задачи${userTag}! С чего начнём?`,
+          `Toujours prêt à répondre${userTag}! Готов к работе.`
+        ],
+        day: [
+          `C'est à vous${userTag}! Какую задачу решим прямо сейчас?`,
+          `Добрый день${userTag}! Спросите меня о чем угодно.`,
+          `Чем я могу помочь вам сегодня${userTag}?`
+        ],
+        evening: [
+          `Добрый вечер${userTag}! Время подвести итоги или создать что-то новое.`,
+          `C'est à vous${userTag}! Готов помочь с любым проектом.`,
+          `Вечерний брейншторм${userTag}? Напишите вашу идею.`
+        ],
+        night: [
+          `Доброй ночи${userTag}! Работаем над ночными проектами?`,
+          `Toujours prêt à répondre${userTag}! ИИ не спит, давайте код.`
+        ]
+      };
 
-      localStorage.setItem('pyorma_lang', lang);
+      const options = greetings[time];
+      return options[Math.floor(Math.random() * options.length)];
+    }
+
+    // --- Система сменяющихся подсказок (Animated Placeholder) ---
+    const placeholderPrompts = [
+      "Напишите: 'Помоги написать HTML/CSS код...'",
+      "Задайте вопрос: 'Как настроить Telegram бота?'",
+      "Спросите: 'Придумай сценарий для видео'",
+      "C'est à vous! Введите ваш запрос...",
+      "Помочь решить сложную логическую задачу?"
+    ];
+    let promptIndex = 0;
+
+    function rotatePlaceholders() {
+      setInterval(() => {
+        if (document.activeElement !== userInput) {
+          userInput.placeholder = placeholderPrompts[promptIndex];
+          promptIndex = (promptIndex + 1) % placeholderPrompts.length;
+        }
+      }, 4000);
+    }
+
+    // --- Обновление приветствия ---
+    function updateGreeting() {
+      document.getElementById('main-desc').innerText = generateDynamicGreeting();
     }
 
     saveBtn.onclick = function() {
-      applyLanguage(document.getElementById('appLanguage').value);
+      const userName = document.getElementById('userNameInput').value.trim();
+      localStorage.setItem('pyorma_username', userName);
+      localStorage.setItem('pyorma_lang', document.getElementById('appLanguage').value);
+      
+      updateGreeting();
       modal.classList.remove('active');
     };
 
@@ -275,12 +309,15 @@
       const chatBox = document.getElementById('chatBox');
       chatBox.innerHTML = '';
       chatBox.style.display = 'none';
+      updateGreeting();
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      const savedLang = localStorage.getItem('pyorma_lang') || 'ru';
-      document.getElementById('appLanguage').value = savedLang;
-      applyLanguage(savedLang);
+      const savedName = localStorage.getItem('pyorma_username') || '';
+      document.getElementById('userNameInput').value = savedName;
+      
+      updateGreeting();
+      rotatePlaceholders();
     });
   </script>
 
