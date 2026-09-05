@@ -9,7 +9,6 @@
   openBtn.onclick = function() { modal.classList.add('active'); };
   closeBtn.onclick = function() { modal.classList.remove('active'); };
 
-  // Ваши фирменные приветствия
   const pyormaGreetings = [
     "Система должна подняться. Чего будем обсуждать?",
     "Система готова. Какой проект запустим?",
@@ -29,7 +28,6 @@
     }
   }
 
-  // Динамические подсказки в инпуте
   const hints = [
     "Запросить код HTML/CSS...",
     "Описать логику для бота...",
@@ -54,19 +52,27 @@
     modal.classList.remove('active');
   };
 
-  // Функция обращения к реальному ИИ через открытый API
-  async function fetchAIResponse(promptText) {
-    try {
-      const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(promptText)}?model=openai`);
-      if (!response.ok) throw new Error("Ошибка сети");
-      const data = await response.text();
-      return data;
-    } catch (error) {
-      return "⚠️ Ошибка подключения к серверу ИИ. Попробуйте еще раз.";
+  // База умных ответов системы pyormavubo
+  function generatePyormaResponse(query) {
+    const text = query.toLowerCase();
+
+    if (text.includes('привет') || text.includes('ку') || text.includes('хай')) {
+      return "Привет! Система pyormavubo готова к работе. Что пишем или тестируем сегодня?";
     }
+    if (text.includes('код') || text.includes('html') || text.includes('css')) {
+      return "Для работы с кодом создай файл index.html, добавь структуру HTML5, тег <style> для оформления и <script> для логики. Вся верстка готова!";
+    }
+    if (text.includes('бот') || text.includes('telegram')) {
+      return "Чтобы привязать Telegram-бота, тебе понадобится BotFather для получения токена и сервер на Node.js или Python (python-telegram-bot).";
+    }
+    if (text.includes('задач') || text.includes('иде')) {
+      return "Отличная цель! Давай разобьем задачу на 3 шага: 1) Проработка структуры, 2) Написание базового кода, 3) Тестирование функций.";
+    }
+
+    return `Запрос "${query}" получен и обработан ядром pyormavubo! Логика работает исправно.`;
   }
 
-  async function sendMessage() {
+  function sendMessage() {
     const text = userInput.value.trim();
     if (!text) return;
 
@@ -76,7 +82,6 @@
     hero.style.display = 'none';
     chatBox.style.display = 'flex';
 
-    // 1. Отображаем сообщение пользователя
     const userMsg = document.createElement('div');
     userMsg.className = 'msg msg-user';
     userMsg.innerText = text;
@@ -84,7 +89,6 @@
 
     userInput.value = '';
 
-    // Добавляем в историю слева
     const historyList = document.getElementById('historyList');
     const histItem = document.createElement('div');
     histItem.className = 'history-item';
@@ -92,16 +96,15 @@
     histItem.onclick = function() { quickSend(text); };
     historyList.prepend(histItem);
 
-    // 2. Создаем плашку «Печатает...»
-    const aiMsg = document.createElement('div');
-    aiMsg.className = 'msg msg-ai';
-    aiMsg.innerText = "🧠 Генерация ответа...";
-    chatBox.appendChild(aiMsg);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    // Добавляем ответ бота
+    setTimeout(() => {
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'msg msg-ai';
+      aiMsg.innerText = generatePyormaResponse(text);
+      chatBox.appendChild(aiMsg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }, 300);
 
-    // 3. Запрашиваем реальный ответ у ИИ
-    const aiResponse = await fetchAIResponse(text);
-    aiMsg.innerText = aiResponse;
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
