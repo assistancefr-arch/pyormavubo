@@ -94,7 +94,7 @@
     </div>
 
     <div class="hero" id="heroSection">
-      <h2 id="dynamicGreeting">С чего начнем сегодня?</h2>
+      <h2 id="dynamicGreeting">Система должна подняться. Чего будем обсуждать?</h2>
 
       <div class="cards-grid">
         <div class="card" onclick="quickSend('Создать веб-код')">
@@ -120,7 +120,7 @@
 
     <div class="input-container">
       <span class="input-plus">+</span>
-      <input type="text" class="chat-input" id="userInput" placeholder="Спросите о чем угодно...">
+      <input type="text" class="chat-input" id="userInput" placeholder="Задайте вопрос pyormavubo">
       <button class="input-submit" id="sendBtn">→</button>
     </div>
   </div>
@@ -128,13 +128,13 @@
   <div class="modal-overlay" id="settingsModal">
     <div class="modal">
       <div class="modal-header">
-        <h3>Персонализация</h3>
+        <h3>Настройки</h3>
         <button class="modal-close" id="closeSettingsBtn">✕</button>
       </div>
 
       <div class="setting-group">
-        <label class="setting-label">👤 Ваше имя (для онбординга)</label>
-        <input type="text" class="setting-input" id="userNameInput" placeholder="Укажите ваше имя...">
+        <label class="setting-label">👤 Ваше имя</label>
+        <input type="text" class="setting-input" id="userNameInput" placeholder="Введите имя...">
       </div>
 
       <button class="btn-save" id="saveSettingsBtn">Сохранить</button>
@@ -152,58 +152,52 @@
     openBtn.onclick = function() { modal.classList.add('active'); };
     closeBtn.onclick = function() { modal.classList.remove('active'); };
 
-    // --- 1. РОТАЦИЯ ПРИВЕТСТВИЙ С ПЕРСОНАЛИЗАЦИЕЙ ---
-    const greetingsList = [
-      "С чего начнем сегодня?",
-      "Какую задачу разберем?",
-      "Готов к работе. Что создадим?",
-      "Вам слово!",
-      "О чем поговорим сегодня?",
-      "Чем я могу помочь прямо сейчас?",
-      "Включаем креатив?"
+    // Твой уникальный список фраз
+    const pyormaGreetings = [
+      "Система должна подняться. Чего будем обсуждать?",
+      "Система готова. Какой проект запустим?",
+      "На связи. С какой задачи начнем?",
+      "Канал связи открыт. Что делаем?"
     ];
 
-    function applyGreetingRotation() {
-      const savedName = localStorage.getItem('pyorma_username') || '';
-      const randomIndex = Math.floor(Math.random() * greetingsList.length);
-      let selectedText = greetingsList[randomIndex];
+    // Функция проверки имени и вывода приветствия
+    function applyGreeting() {
+      const savedName = localStorage.getItem('pyorma_username');
+      const randomIndex = Math.floor(Math.random() * pyormaGreetings.length);
+      const baseText = pyormaGreetings[randomIndex];
 
-      if (savedName) {
-        // Персонализированный онбординг
-        document.getElementById('dynamicGreeting').innerText = `${savedName}, ${selectedText.toLowerCase()}`;
+      if (savedName && savedName.trim() !== '') {
+        document.getElementById('dynamicGreeting').innerText = `${savedName}! ${baseText}`;
       } else {
-        document.getElementById('dynamicGreeting').innerText = selectedText;
+        document.getElementById('dynamicGreeting').innerText = baseText;
       }
     }
 
-    // --- 2. ДИНАМИЧЕСКИЙ ПЛЕЙСХОЛДЕР (СМЕНА ПОДСКАЗОК) ---
-    const placeholderSuggestions = [
-      "Спросите: 'Напиши скрипт для сайта...'",
-      "Введите: 'Придумай концепт для видео...'",
-      "Спросите: 'Как работает этот алгоритм?'",
-      "Задайте любой вопрос или дайте задачу...",
-      "Напишите: 'Создай стильный блок интерфейса...'"
+    // Динамический плейсхолдер
+    const hints = [
+      "Запросить код HTML/CSS...",
+      "Описать логику для бота...",
+      "Задать технический вопрос...",
+      "Сгенерировать идею проекта..."
     ];
-    let placeholderIdx = 0;
+    let hintIndex = 0;
 
-    function startDynamicPlaceholder() {
+    function rotateHints() {
       setInterval(() => {
         if (document.activeElement !== userInput && userInput.value === '') {
-          userInput.placeholder = placeholderSuggestions[placeholderIdx];
-          placeholderIdx = (placeholderIdx + 1) % placeholderSuggestions.length;
+          userInput.placeholder = hints[hintIndex];
+          hintIndex = (hintIndex + 1) % hints.length;
         }
       }, 3500);
     }
 
-    // --- 3. СОХРАНЕНИЕ НАСТРОЕК ---
     saveBtn.onclick = function() {
       const userName = document.getElementById('userNameInput').value.trim();
       localStorage.setItem('pyorma_username', userName);
-      applyGreetingRotation();
+      applyGreeting();
       modal.classList.remove('active');
     };
 
-    // --- ЛОГИКА ЧАТА ---
     function sendMessage() {
       const text = userInput.value.trim();
       if (!text) return;
@@ -254,15 +248,15 @@
       const chatBox = document.getElementById('chatBox');
       chatBox.innerHTML = '';
       chatBox.style.display = 'none';
-      applyGreetingRotation();
+      applyGreeting();
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       const savedName = localStorage.getItem('pyorma_username') || '';
       document.getElementById('userNameInput').value = savedName;
       
-      applyGreetingRotation();
-      startDynamicPlaceholder();
+      applyGreeting();
+      rotateHints();
     });
   </script>
 
