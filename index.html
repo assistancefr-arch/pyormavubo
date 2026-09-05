@@ -14,8 +14,11 @@
     .brand img { width: 28px; height: 28px; border-radius: 6px; }
     .brand h1 { font-size: 18px; font-weight: 700; color: #00f2fe; }
     
-    .btn-new-chat { width: 100%; background: transparent; color: #00f2fe; border: 1px solid #1e293b; padding: 10px; border-radius: 8px; font-weight: 500; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: flex-start; gap: 8px; margin-bottom: 25px; transition: 0.2s; }
+    .btn-new-chat { width: 100%; background: transparent; color: #00f2fe; border: 1px solid #1e293b; padding: 10px; border-radius: 8px; font-weight: 500; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: flex-start; gap: 8px; margin-bottom: 10px; transition: 0.2s; }
     .btn-new-chat:hover { border-color: #00f2fe; background: rgba(0, 242, 254, 0.05); }
+
+    .btn-settings { width: 100%; background: #0f172a; color: #cbd5e1; border: 1px solid #1e293b; padding: 9px 12px; border-radius: 8px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 20px; transition: 0.2s; }
+    .btn-settings:hover { border-color: #38bdf8; color: #fff; }
     
     .history-label { font-size: 11px; text-transform: uppercase; color: #475569; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 12px; }
     .history-list { display: flex; flex-direction: column; gap: 8px; }
@@ -47,6 +50,22 @@
     .chat-input:focus { border-color: #00f2fe; }
     .input-plus { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #475569; font-size: 18px; cursor: pointer; }
     .input-submit { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; background: #00f2fe; border: none; border-radius: 8px; color: #000; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    /* Modal Settings */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 100; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: #0f172a; border: 1px solid #1e293b; border-radius: 14px; width: 440px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-header h3 { font-size: 18px; color: #00f2fe; font-weight: 700; }
+    .modal-close { background: none; border: none; color: #64748b; font-size: 20px; cursor: pointer; }
+    .modal-close:hover { color: #fff; }
+    
+    .setting-group { margin-bottom: 18px; }
+    .setting-label { display: block; font-size: 13px; color: #cbd5e1; font-weight: 600; margin-bottom: 8px; }
+    .setting-select { width: 100%; background: #070a10; border: 1px solid #1e293b; color: #fff; padding: 10px; border-radius: 8px; font-size: 13px; outline: none; }
+    .setting-select:focus { border-color: #00f2fe; }
+    .btn-save { width: 100%; background: #00f2fe; color: #000; border: none; padding: 11px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 10px; }
+    .btn-save:hover { opacity: 0.9; }
   </style>
 </head>
 <body>
@@ -59,6 +78,7 @@
       </div>
       
       <button class="btn-new-chat">+ Новый чат</button>
+      <button class="btn-settings" onclick="openSettings()">⚙️ Настройки</button>
       
       <div class="history-label">История запросов</div>
       <div class="history-list">
@@ -80,8 +100,8 @@
     </div>
 
     <div class="hero">
-      <h2>PyormaVubo</h2>
-      <p>Ваш персональный центр нейросетевых задач. Что сделаем сегодня?</p>
+      <h2 id="main-title">PyormaVubo</h2>
+      <p id="main-desc">Ваш персональный центр нейросетевых задач. Что сделаем сегодня?</p>
 
       <div class="cards-grid">
         <div class="card">
@@ -109,6 +129,72 @@
       <button class="input-submit">→</button>
     </div>
   </div>
+
+  <!-- Окно настроек -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Настройки PyormaVubo</h3>
+        <button class="modal-close" onclick="closeSettings()">✕</button>
+      </div>
+
+      <div class="setting-group">
+        <label class="setting-label">🎭 Стиль общения ИИ-бота</label>
+        <select class="setting-select" id="botStyle">
+          <option value="friendly">Дружелюбный и поддерживающий</option>
+          <option value="expert">Экспертный и лаконичный</option>
+          <option value="official">Официально-деловой</option>
+          <option value="game">Игровой и неформальный</option>
+        </select>
+      </div>
+
+      <div class="setting-group">
+        <label class="setting-label">🌐 Язык интерфейса</label>
+        <select class="setting-select" id="appLanguage">
+          <option value="ru">Русский</option>
+          <option value="fr">Français (Французский)</option>
+          <option value="de">Deutsch (Немецкий)</option>
+          <option value="ja">日本語 (Японский)</option>
+          <option value="en">English (Английский)</option>
+          <option value="es">Español (Испанский)</option>
+          <option value="it">Italiano (Итальянский)</option>
+          <option value="zh">中文 (Китайский)</option>
+          <option value="be">Беларуская (Белорусский)</option>
+          <option value="uk">Українська (Украинский)</option>
+        </select>
+      </div>
+
+      <button class="btn-save" onclick="saveSettings()">Сохранить настройки</button>
+    </div>
+  </div>
+
+  <script>
+    function openSettings() {
+      document.getElementById('settingsModal').classList.add('active');
+    }
+
+    function closeSettings() {
+      document.getElementById('settingsModal').classList.remove('active');
+    }
+
+    function saveSettings() {
+      const lang = document.getElementById('appLanguage').value;
+      
+      if (lang === 'fr') {
+        document.getElementById('main-desc').innerText = "Votre centre personnel d'IA. Que faisons-nous aujourd'hui?";
+      } else if (lang === 'en') {
+        document.getElementById('main-desc').innerText = "Your personal AI center. What are we doing today?";
+      } else if (lang === 'ru') {
+        document.getElementById('main-desc').innerText = "Ваш персональный центр нейросетевых задач. Что сделаем сегодня?";
+      } else if (lang === 'de') {
+        document.getElementById('main-desc').innerText = "Ihr persönliches KI-Zentrum. Was machen wir heute?";
+      } else if (lang === 'es') {
+        document.getElementById('main-desc').innerText = "Tu centro personal de IA. ¿Qué hacemos hoy?";
+      }
+
+      closeSettings();
+    }
+  </script>
 
 </body>
 </html>
