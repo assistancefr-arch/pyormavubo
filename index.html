@@ -60,7 +60,6 @@
     .chat-input:focus { border-color: #00f2fe; }
     .input-submit { position: absolute; right: 8px; width: 28px; height: 28px; background: #00f2fe; border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; }
 
-    /* Окно настроек */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 3000; justify-content: center; align-items: center; }
     .modal-overlay.active { display: flex; }
     .modal-content { background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; width: 320px; box-shadow: 0 10px 30px rgba(0, 242, 254, 0.15); }
@@ -81,38 +80,38 @@
         <img src="logo.jpg" alt="Logo" class="brand-img">
         <h1>pyormavubo</h1>
       </div>
-      <button class="btn-new-chat" onclick="resetChat()">+ Новый чат</button>
-      <button class="btn-settings" onclick="openSettings()">⚙️ Настройки</button>
-      <div class="history-title">История запросов</div>
+      <button class="btn-new-chat" id="btn-new-chat" onclick="resetChat()">+ Новый чат</button>
+      <button class="btn-settings" id="btn-settings" onclick="openSettings()">⚙️ Настройки</button>
+      <div class="history-title" id="history-title">История запросов</div>
       <div class="history-list" id="historyList"></div>
     </div>
-    <div style="font-size: 12px; color: #64748b;">Режим: Cosmic Pro AI ⚡</div>
+    <div style="font-size: 12px; color: #64748b;" id="mode-text">Режим: Cosmic Pro AI ⚡</div>
   </div>
 
   <div class="main">
     <div class="top-bar">
-      <a href="https://t.me" target="_blank" class="btn-telegram">Telegram-бот ↗</a>
+      <a href="https://t.me" target="_blank" class="btn-telegram" id="btn-telegram">Telegram-бот ↗</a>
     </div>
 
     <div class="hero" id="heroSection">
-      <h2>С чего начнем сегодня?</h2>
+      <h2 id="hero-title">С чего начнем сегодня?</h2>
 
       <div class="cards-grid">
-        <div class="card" onclick="quickSend('Создать веб-код')">
-          <div class="card-title" style="color: #38bdf8;">📘 Создать веб-код</div>
-          <div class="card-desc">Разработка интерфейсов и блоков</div>
+        <div class="card" onclick="quickSend(translations[currentLang]?.c1Title || 'Создать веб-код')">
+          <div class="card-title" id="c1-title" style="color: #38bdf8;">📘 Создать веб-код</div>
+          <div class="card-desc" id="c1-desc">Разработка интерфейсов и блоков</div>
         </div>
-        <div class="card" onclick="quickSend('Решить задачу')">
-          <div class="card-title" style="color: #ec4899;">🧠 Решить задачу</div>
-          <div class="card-desc">Алгоритмы, логика и головоломки</div>
+        <div class="card" onclick="quickSend(translations[currentLang]?.c2Title || 'Решить задачу')">
+          <div class="card-title" id="c2-title" style="color: #ec4899;">🧠 Решить задачу</div>
+          <div class="card-desc" id="c2-desc">Алгоритмы, логика и головоломки</div>
         </div>
-        <div class="card" onclick="quickSend('Сценарий и контент')">
-          <div class="card-title" style="color: #a855f7;">📓 Сценарий и контент</div>
-          <div class="card-desc">Идеи для роликов и проектов</div>
+        <div class="card" onclick="quickSend(translations[currentLang]?.c3Title || 'Сценарий и контент')">
+          <div class="card-title" id="c3-title" style="color: #a855f7;">📓 Сценарий и контент</div>
+          <div class="card-desc" id="c3-desc">Идеи для роликов и проектов</div>
         </div>
-        <div class="card" onclick="quickSend('Объяснить тему')">
-          <div class="card-title" style="color: #eab308;">⚡ Объяснить тему</div>
-          <div class="card-desc">Разбор технологий и терминов</div>
+        <div class="card" onclick="quickSend(translations[currentLang]?.c4Title || 'Объяснить тему')">
+          <div class="card-title" id="c4-title" style="color: #eab308;">⚡ Объяснить тему</div>
+          <div class="card-desc" id="c4-desc">Разбор технологий и терминов</div>
         </div>
       </div>
     </div>
@@ -127,20 +126,19 @@
   </div>
 
   <div class="context-menu" id="contextMenu">
-    <div class="context-item" onclick="actionMenu('share')">🔗 Поделиться</div>
-    <div class="context-item" onclick="actionMenu('rename')">✏️ Переименовать</div>
-    <div class="context-item" onclick="actionMenu('pin')">📌 Закрепить</div>
-    <div class="context-item delete" onclick="actionMenu('delete')">🗑️ Удалить</div>
+    <div class="context-item" id="ctx-share" onclick="actionMenu('share')">🔗 Поделиться</div>
+    <div class="context-item" id="ctx-rename" onclick="actionMenu('rename')">✏️ Переименовать</div>
+    <div class="context-item" id="ctx-pin" onclick="actionMenu('pin')">📌 Закрепить</div>
+    <div class="context-item delete" id="ctx-delete" onclick="actionMenu('delete')">🗑️ Удалить</div>
   </div>
 
-  <!-- Модальное окно Настроек -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>⚙️ Настройки</h3>
+        <h3 id="modal-title">⚙️ Настройки</h3>
         <span class="modal-close" onclick="closeSettings()">&times;</span>
       </div>
-      <label class="setting-label" for="language-select">Язык интерфейса:</label>
+      <label class="setting-label" id="setting-label" for="language-select">Язык интерфейса:</label>
       <select name="language" id="language-select" class="setting-select">
         <option value="ru">Русский</option>
         <option value="en">English</option>
@@ -194,6 +192,44 @@
   </div>
 
   <script>
+    const translations = {
+      ru: { newChat: "+ Новый чат", settings: "⚙️ Настройки", historyTitle: "История запросов", modeText: "Режим: Cosmic Pro AI ⚡", tgBot: "Telegram-бот ↗", heroTitle: "С чего начнем сегодня?", c1Title: "📘 Создать веб-код", c1Desc: "Разработка интерфейсов и блоков", c2Title: "🧠 Решить задачу", c2Desc: "Алгоритмы, логика и головоломки", c3Title: "📓 Сценарий и контент", c3Desc: "Идеи для роликов и проектов", c4Title: "⚡ Объяснить тему", c4Desc: "Разбор технологий и терминов", placeholder: 'Введите: "Придумай концепт для видео..."', modalTitle: "⚙️ Настройки", langLabel: "Язык интерфейса:", share: "🔗 Поделиться", rename: "✏️ Переименовать", pin: "📌 Закрепить", delete: "🗑️ Удалить" },
+      en: { newChat: "+ New Chat", settings: "⚙️ Settings", historyTitle: "Chat History", modeText: "Mode: Cosmic Pro AI ⚡", tgBot: "Telegram Bot ↗", heroTitle: "Where shall we begin today?", c1Title: "📘 Generate Web Code", c1Desc: "UI design and layout blocks", c2Title: "🧠 Solve Problem", c2Desc: "Algorithms and logic puzzles", c3Title: "📓 Script & Content", c3Desc: "Ideas for videos and projects", c4Title: "⚡ Explain Topic", c4Desc: "Breakdown of tech terms", placeholder: 'Type: "Brainstorm video concept..."', modalTitle: "⚙️ Settings", langLabel: "Interface Language:", share: "🔗 Share", rename: "✏️ Rename", pin: "📌 Pin", delete: "🗑️ Delete" },
+      fr: { newChat: "+ Nouvelle conversation", settings: "⚙️ Paramètres", historyTitle: "Historique", modeText: "Mode: Cosmic Pro AI ⚡", tgBot: "Bot Telegram ↗", heroTitle: "Par quoi начинаем сегодня?", c1Title: "📘 Créer du code web", c1Desc: "Développement d'interfaces", c2Title: "🧠 Résoudre un problème", c2Desc: "Algorithmes et énigmes", c3Title: "📓 Script et contenu", c3Desc: "Idées pour vidéos et projets", c4Title: "⚡ Expliquer un sujet", c4Desc: "Explication des technologies", placeholder: 'Tapez: "Idée de concept vidéo..."', modalTitle: "⚙️ Paramètres", langLabel: "Langue de l'interface:", share: "🔗 Partager", rename: "✏️ Renommer", pin: "📌 Épingler", delete: "🗑️ Supprimer" },
+      de: { newChat: "+ Neuer Chat", settings: "⚙️ Einstellungen", historyTitle: "Verlauf", modeText: "Modus: Cosmic Pro AI ⚡", tgBot: "Telegram-Bot ↗", heroTitle: "Womit beginnen wir heute?", c1Title: "📘 Webcode erstellen", c1Desc: "Entwicklung von Interfaces", c2Title: "🧠 Aufgabe lösen", c2Desc: "Algorithmen und Logik", c3Title: "📓 Skript & Content", c3Desc: "Ideen für Videos", c4Title: "⚡ Thema erklären", c4Desc: "Technologien verständlich", placeholder: 'Geben Sie ein: "Videokonzept..."', modalTitle: "⚙️ Einstellungen", langLabel: "Sprache:", share: "🔗 Teilen", rename: "✏️ Umbenennen", pin: "📌 Anheften", delete: "🗑️ Löschen" },
+      es: { newChat: "+ Nuevo чат", settings: "⚙️ Ajustes", historyTitle: "Historial", modeText: "Modo: Cosmic Pro AI ⚡", tgBot: "Bot de Telegram ↗", heroTitle: "¿Por dónde empezamos hoy?", c1Title: "📘 Crear código web", c1Desc: "Desarrollo de interfaces", c2Title: "🧠 Resolver проблема", c2Desc: "Algoritmos y lógica", c3Title: "📓 Guion y contenido", c3Desc: "Ideas para videos", c4Title: "⚡ Explicar tema", c4Desc: "Análisis de tecnologías", placeholder: 'Escribe: "Idea para un video..."', modalTitle: "⚙️ Ajustes", langLabel: "Idioma de interfaz:", share: "🔗 Compartir", rename: "✏️ Renombrar", pin: "📌 Fijar", delete: "🗑️ Eliminar" }
+    };
+
+    let currentLang = localStorage.getItem('py_language') || 'ru';
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      const dict = translations[lang] || translations['en'] || translations['ru'];
+      
+      document.getElementById('btn-new-chat').innerText = dict.newChat;
+      document.getElementById('btn-settings').innerText = dict.settings;
+      document.getElementById('history-title').innerText = dict.historyTitle;
+      document.getElementById('mode-text').innerText = dict.modeText;
+      document.getElementById('btn-telegram').innerText = dict.tgBot;
+      document.getElementById('hero-title').innerText = dict.heroTitle;
+      document.getElementById('c1-title').innerText = dict.c1Title;
+      document.getElementById('c1-desc').innerText = dict.c1Desc;
+      document.getElementById('c2-title').innerText = dict.c2Title;
+      document.getElementById('c2-desc').innerText = dict.c2Desc;
+      document.getElementById('c3-title').innerText = dict.c3Title;
+      document.getElementById('c3-desc').innerText = dict.c3Desc;
+      document.getElementById('c4-title').innerText = dict.c4Title;
+      document.getElementById('c4-desc').innerText = dict.c4Desc;
+      document.getElementById('userInput').placeholder = dict.placeholder;
+      document.getElementById('modal-title').innerText = dict.modalTitle;
+      document.getElementById('setting-label').innerText = dict.langLabel;
+      
+      document.getElementById('ctx-share').innerText = dict.share;
+      document.getElementById('ctx-rename').innerText = dict.rename;
+      document.getElementById('ctx-pin').innerText = dict.pin;
+      document.getElementById('ctx-delete').innerText = dict.delete;
+    }
+
     const sendBtn = document.getElementById('sendBtn');
     const userInput = document.getElementById('userInput');
     const contextMenu = document.getElementById('contextMenu');
@@ -209,14 +245,12 @@
 
     let messagesData = JSON.parse(localStorage.getItem('py_messages')) || [];
 
-    // Сохранение и загрузка языка
-    const savedLang = localStorage.getItem('py_language');
-    if (savedLang) {
-      languageSelect.value = savedLang;
-    }
+    languageSelect.value = currentLang;
 
     languageSelect.addEventListener('change', (e) => {
-      localStorage.setItem('py_language', e.target.value);
+      const selectedLang = e.target.value;
+      localStorage.setItem('py_language', selectedLang);
+      applyLanguage(selectedLang);
     });
 
     function openSettings() {
@@ -240,16 +274,10 @@
 
     function generateAIResponse(query) {
       const q = query.toLowerCase().trim();
-      if (q.includes('привет') || q.includes('хай') || q.includes('здравствуй') || q.includes('салам')) {
+      if (q.includes('привет') || q.includes('хай') || q.includes('hello') || q.includes('bonjour')) {
         return "Привет! Я pyormavubo AI. Чем могу помочь тебе сегодня?";
       }
-      if (q.includes('кто ты') || q.includes('ты кто') || q.includes('как тебя зовут') || q.includes('твое имя')) {
-        return "Я — pyormavubo AI, твой персональный нейросетевой ассистент!";
-      }
-      if (q.includes('что умеешь') || q.includes('что ты можешь')) {
-        return "Я могу генерировать код, отвечать на вопросы, создавать сценарии и помогать с проектами!";
-      }
-      return 'Я получил ваш запрос: "' + query + '". Готов помочь с этим или ответить на любые вопросы!';
+      return 'Я получил ваш запрос: "' + query + '". Готов помочь с этим!';
     }
 
     function renderHistory() {
@@ -320,10 +348,10 @@
       if (type === 'delete' && index !== -1) {
         historyData.splice(index, 1);
       } else if (type === 'rename' && index !== -1) {
-        const newText = prompt('Введите новое название:', activeHistoryItem.text);
+        const newText = prompt('Новое название / New name:', activeHistoryItem.text);
         if (newText) historyData[index] = newText;
       } else if (type === 'share') {
-        alert('Ссылка на чат скопирована!');
+        alert('Ссылка скопирована / Link copied!');
       } else if (type === 'pin' && index !== -1) {
         const item = historyData.splice(index, 1)[0];
         historyData.unshift(item);
@@ -371,6 +399,7 @@
     }
 
     window.onload = function() {
+      applyLanguage(currentLang);
       renderHistory();
       renderMessages();
     };
