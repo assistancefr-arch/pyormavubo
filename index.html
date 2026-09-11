@@ -22,7 +22,8 @@
     .history-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
     
     .history-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: #0f172a; border-radius: 6px; font-size: 13px; color: #94a3b8; cursor: pointer; position: relative; transition: 0.2s; }
-    .history-item:hover { background: #1e293b; color: #fff; }
+    .history-item:hover, .history-item.active { background: #1e293b; color: #fff; }
+    .history-item.active { border-left: 3px solid #00f2fe; }
     .history-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
     .history-dots { opacity: 0; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 14px; color: #94a3b8; transition: 0.2s; }
     .history-item:hover .history-dots { opacity: 1; }
@@ -69,7 +70,6 @@
     .modal-close:hover { color: #fff; }
     .setting-label { font-size: 12px; color: #cbd5e1; margin-bottom: 6px; display: block; }
     .setting-select { width: 100%; padding: 8px 10px; background: #070a10; border: 1px solid #1e293b; color: #fff; border-radius: 6px; outline: none; font-size: 13px; cursor: pointer; }
-    .setting-select:focus { border-color: #00f2fe; }
   </style>
 </head>
 <body>
@@ -80,7 +80,7 @@
         <img src="logo.jpg" alt="Logo" class="brand-img">
         <h1>pyormavubo</h1>
       </div>
-      <button class="btn-new-chat" id="btn-new-chat" onclick="resetChat()">+ Новый чат</button>
+      <button class="btn-new-chat" id="btn-new-chat" onclick="createNewChat()">+ Новый чат</button>
       <button class="btn-settings" id="btn-settings" onclick="openSettings()">⚙️ Настройки</button>
       <div class="history-title" id="history-title">История запросов</div>
       <div class="history-list" id="historyList"></div>
@@ -97,19 +97,19 @@
       <h2 id="hero-title">С чего начнем сегодня?</h2>
 
       <div class="cards-grid">
-        <div class="card" onclick="quickSend(getTranslation().c1Title)">
+        <div class="card" onclick="startCardChat('📘 Создать веб-код')">
           <div class="card-title" id="c1-title" style="color: #38bdf8;">📘 Создать веб-код</div>
           <div class="card-desc" id="c1-desc">Разработка интерфейсов и блоков</div>
         </div>
-        <div class="card" onclick="quickSend(getTranslation().c2Title)">
+        <div class="card" onclick="startCardChat('🧠 Решить задачу')">
           <div class="card-title" id="c2-title" style="color: #ec4899;">🧠 Решить задачу</div>
           <div class="card-desc" id="c2-desc">Алгоритмы, логика и головоломки</div>
         </div>
-        <div class="card" onclick="quickSend(getTranslation().c3Title)">
+        <div class="card" onclick="startCardChat('📓 Сценарий и контент')">
           <div class="card-title" id="c3-title" style="color: #a855f7;">📓 Сценарий и контент</div>
           <div class="card-desc" id="c3-desc">Идеи для роликов и проектов</div>
         </div>
-        <div class="card" onclick="quickSend(getTranslation().c4Title)">
+        <div class="card" onclick="startCardChat('⚡ Объяснить тему')">
           <div class="card-title" id="c4-title" style="color: #eab308;">⚡ Объяснить тему</div>
           <div class="card-desc" id="c4-desc">Разбор технологий и терминов</div>
         </div>
@@ -128,7 +128,6 @@
   <div class="context-menu" id="contextMenu">
     <div class="context-item" id="ctx-share" onclick="actionMenu('share')">🔗 Поделиться</div>
     <div class="context-item" id="ctx-rename" onclick="actionMenu('rename')">✏️ Переименовать</div>
-    <div class="context-item" id="ctx-pin" onclick="actionMenu('pin')">📌 Закрепить</div>
     <div class="context-item delete" id="ctx-delete" onclick="actionMenu('delete')">🗑️ Удалить</div>
   </div>
 
@@ -149,20 +148,20 @@
 
   <script>
     const translations = {
-      ru: { newChat: "+ Новый чат", settings: "⚙️ Настройки", historyTitle: "История запросов", modeText: "Режим: Cosmic Pro AI ⚡", tgBot: "Telegram-бот ↗", heroTitle: "С чего начнем сегодня?", c1Title: "📘 Создать веб-код", c1Desc: "Разработка интерфейсов и блоков", c2Title: "🧠 Решить задачу", c2Desc: "Алгоритмы, логика и головоломки", c3Title: "📓 Сценарий и контент", c3Desc: "Идеи для роликов и проектов", c4Title: "⚡ Объяснить тему", c4Desc: "Разбор технологий и терминов", placeholder: 'Введите сообщение...', modalTitle: "⚙️ Настройки", langLabel: "Язык интерфейса:", share: "🔗 Поделиться", rename: "✏️ Переименовать", pin: "📌 Закрепить", delete: "🗑️ Удалить" },
-      en: { newChat: "+ New Chat", settings: "⚙️ Settings", historyTitle: "Chat History", modeText: "Mode: Cosmic Pro AI ⚡", tgBot: "Telegram Bot ↗", heroTitle: "Where shall we begin today?", c1Title: "📘 Generate Web Code", c1Desc: "UI design and layout blocks", c2Title: "🧠 Solve Problem", c2Desc: "Algorithms and logic puzzles", c3Title: "📓 Script & Content", c3Desc: "Ideas for videos and projects", c4Title: "⚡ Explain Topic", c4Desc: "Breakdown of tech terms", placeholder: 'Type a message...', modalTitle: "⚙️ Settings", langLabel: "Interface Language:", share: "🔗 Share", rename: "✏️ Rename", pin: "📌 Pin", delete: "🗑️ Delete" },
-      fr: { newChat: "+ Nouvelle conversation", settings: "⚙️ Paramètres", historyTitle: "Historique", modeText: "Mode: Cosmic Pro AI ⚡", tgBot: "Bot Telegram ↗", heroTitle: "Par quoi commençons-nous aujourd'hui ?", c1Title: "📘 Créer du code web", c1Desc: "Développement d'interfaces", c2Title: "🧠 Résoudre un problème", c2Desc: "Algorithmes et énigmes", c3Title: "📓 Script et contenu", c3Desc: "Idées pour vidéos et projets", c4Title: "⚡ Expliquer un sujet", c4Desc: "Explication des technologies", placeholder: 'Saisissez un message...', modalTitle: "⚙️ Paramètres", langLabel: "Langue de l'interface:", share: "🔗 Partager", rename: "✏️ Renommer", pin: "📌 Épingler", delete: "🗑️ Supprimer" }
+      ru: { newChat: "+ Новый чат", settings: "⚙️ Настройки", historyTitle: "История запросов", modeText: "Режим: Cosmic Pro AI ⚡", tgBot: "Telegram-бот ↗", heroTitle: "С чего начнем сегодня?", c1Title: "📘 Создать веб-код", c1Desc: "Разработка интерфейсов и блоков", c2Title: "🧠 Решить задачу", c2Desc: "Алгоритмы, логика и головоломки", c3Title: "📓 Сценарий и контент", c3Desc: "Идеи для роликов и проектов", c4Title: "⚡ Объяснить тему", c4Desc: "Разбор технологий и терминов", placeholder: 'Введите сообщение...', modalTitle: "⚙️ Настройки", langLabel: "Язык интерфейса:", share: "🔗 Поделиться", rename: "✏️ Переименовать", delete: "🗑️ Удалить" },
+      en: { newChat: "+ New Chat", settings: "⚙️ Settings", historyTitle: "Chat History", modeText: "Mode: Cosmic Pro AI ⚡", tgBot: "Telegram Bot ↗", heroTitle: "Where shall we begin today?", c1Title: "📘 Generate Web Code", c1Desc: "UI design and layout blocks", c2Title: "🧠 Solve Problem", c2Desc: "Algorithms and logic puzzles", c3Title: "📓 Script & Content", c3Desc: "Ideas for videos and projects", c4Title: "⚡ Explain Topic", c4Desc: "Breakdown of tech terms", placeholder: 'Type a message...', modalTitle: "⚙️ Settings", langLabel: "Interface Language:", share: "🔗 Share", rename: "✏️ Rename", delete: "🗑️ Delete" },
+      fr: { newChat: "+ Nouvelle conversation", settings: "⚙️ Paramètres", historyTitle: "Historique", modeText: "Mode: Cosmic Pro AI ⚡", tgBot: "Bot Telegram ↗", heroTitle: "Par quoi commençons-nous aujourd'hui ?", c1Title: "📘 Créer du code web", c1Desc: "Développement d'interfaces", c2Title: "🧠 Résoudre un problème", c2Desc: "Algorithmes et énigmes", c3Title: "📓 Script et contenu", c3Desc: "Idées pour vidéos et projets", c4Title: "⚡ Expliquer un sujet", c4Desc: "Explication des technologies", placeholder: 'Saisissez un message...', modalTitle: "⚙️ Paramètres", langLabel: "Langue de l'interface:", share: "🔗 Partager", rename: "✏️ Renommer", delete: "🗑️ Supprimer" }
     };
 
     let currentLang = localStorage.getItem('py_language') || 'ru';
+    let currentChatId = null;
 
-    function getTranslation(lang = currentLang) {
-      return translations[lang] || translations['ru'];
-    }
+    // Чат хранит структуру: [{ id: 123, title: "Название", messages: [...] }]
+    let chatsData = JSON.parse(localStorage.getItem('py_chats_v2')) || [];
 
     function applyLanguage(lang) {
       currentLang = lang;
-      const dict = getTranslation(lang);
+      const dict = translations[lang] || translations['ru'];
       
       document.getElementById('btn-new-chat').innerText = dict.newChat;
       document.getElementById('btn-settings').innerText = dict.settings;
@@ -181,10 +180,8 @@
       document.getElementById('userInput').placeholder = dict.placeholder;
       document.getElementById('modal-title').innerText = dict.modalTitle;
       document.getElementById('setting-label').innerText = dict.langLabel;
-      
       document.getElementById('ctx-share').innerText = dict.share;
       document.getElementById('ctx-rename').innerText = dict.rename;
-      document.getElementById('ctx-pin').innerText = dict.pin;
       document.getElementById('ctx-delete').innerText = dict.delete;
     }
 
@@ -193,22 +190,12 @@
     const contextMenu = document.getElementById('contextMenu');
     const settingsModal = document.getElementById('settingsModal');
     const languageSelect = document.getElementById('language-select');
-    let activeHistoryItem = null;
-
-    let historyData = JSON.parse(localStorage.getItem('py_history')) || [
-      'Создание интерфейса ИИ',
-      'Генерация кода HTML/CSS',
-      'Настройка Telegram бота'
-    ];
-
-    let messagesData = JSON.parse(localStorage.getItem('py_messages')) || [];
+    let targetChatId = null;
 
     languageSelect.value = currentLang;
-
     languageSelect.addEventListener('change', (e) => {
-      const selectedLang = e.target.value;
-      localStorage.setItem('py_language', selectedLang);
-      applyLanguage(selectedLang);
+      localStorage.setItem('py_language', e.target.value);
+      applyLanguage(e.target.value);
     });
 
     function openSettings() { settingsModal.classList.add('active'); }
@@ -219,45 +206,47 @@
     };
 
     function saveState() {
-      localStorage.setItem('py_history', JSON.stringify(historyData));
-      localStorage.setItem('py_messages', JSON.stringify(messagesData));
+      localStorage.setItem('py_chats_v2', JSON.stringify(chatsData));
     }
 
-    // Улучшенный генератор ответов ИИ
     function generateAIResponse(query) {
       const q = query.toLowerCase().trim();
-      
-      if (q.includes('привет') || q.includes('хай') || q.includes('hello') || q.includes('bonjour')) {
-        return "Привет! Я pyormavubo AI. Чем могу помочь тебе сегодня?";
-      }
-      if (q.includes('как тебя зовут') || q.includes('ты кто') || q.includes('кто ты')) {
-        return "Меня зовут pyormavubo AI! Я твой цифровой ассистент.";
-      }
-      if (q.includes('что ты умеешь') || q.includes('помощь')) {
-        return "Я могу писать код, генерировать идеи для контента, решать задачи и отвечать на твои вопросы!";
-      }
-
+      if (q.includes('привет') || q.includes('хай') || q.includes('hello')) return "Привет! Я pyormavubo AI. Чем могу помочь тебе сегодня?";
+      if (q.includes('как тебя зовут') || q.includes('ты кто')) return "Меня зовут pyormavubo AI! Я твой цифровой ассистент.";
       return "Интересный вопрос! Давай разберем детально: " + query;
+    }
+
+    function createNewChat() {
+      currentChatId = null;
+      renderHistory();
+      renderMessages();
+    }
+
+    function switchChat(chatId) {
+      currentChatId = chatId;
+      renderHistory();
+      renderMessages();
     }
 
     function renderHistory() {
       const historyList = document.getElementById('historyList');
       historyList.innerHTML = '';
-      historyData.forEach((text) => {
+
+      chatsData.forEach((chat) => {
         const item = document.createElement('div');
-        item.className = 'history-item';
+        item.className = 'history-item' + (chat.id === currentChatId ? ' active' : '');
         
         const textSpan = document.createElement('span');
         textSpan.className = 'history-text';
-        textSpan.innerText = text;
-        textSpan.onclick = function() { quickSend(text); };
+        textSpan.innerText = chat.title;
+        textSpan.onclick = function() { switchChat(chat.id); };
 
         const dotsSpan = document.createElement('span');
         dotsSpan.className = 'history-dots';
         dotsSpan.innerText = '···';
         dotsSpan.onclick = function(e) {
           e.stopPropagation();
-          openContextMenu(e, item, text);
+          openContextMenu(e, chat.id);
         };
 
         item.appendChild(textSpan);
@@ -269,12 +258,14 @@
     function renderMessages() {
       const chatBox = document.getElementById('chatBox');
       const heroSection = document.getElementById('heroSection');
-      
-      if (messagesData.length > 0) {
+      const activeChat = chatsData.find(c => c.id === currentChatId);
+
+      if (activeChat && activeChat.messages.length > 0) {
         heroSection.style.display = 'none';
         chatBox.style.display = 'flex';
         chatBox.innerHTML = '';
-        messagesData.forEach(msg => {
+        
+        activeChat.messages.forEach(msg => {
           const div = document.createElement('div');
           div.className = 'msg ' + (msg.type === 'user' ? 'msg-user' : 'msg-ai');
           div.innerText = msg.text;
@@ -288,8 +279,49 @@
       }
     }
 
-    function openContextMenu(e, item, text) {
-      activeHistoryItem = { element: item, text: text };
+    function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      let activeChat = chatsData.find(c => c.id === currentChatId);
+
+      // Если новый чат
+      if (!activeChat) {
+        const shortTitle = text.length > 22 ? text.substring(0, 22) + '...' : text;
+        activeChat = {
+          id: Date.now(),
+          title: shortTitle,
+          messages: []
+        };
+        chatsData.unshift(activeChat);
+        currentChatId = activeChat.id;
+      }
+
+      activeChat.messages.push({ type: 'user', text: text });
+      userInput.value = '';
+      
+      saveState();
+      renderHistory();
+      renderMessages();
+
+      setTimeout(function() {
+        const reply = generateAIResponse(text);
+        activeChat.messages.push({ type: 'ai', text: reply });
+        saveState();
+        renderMessages();
+      }, 300);
+    }
+
+    function startCardChat(text) {
+      userInput.value = text;
+      sendMessage();
+    }
+
+    sendBtn.onclick = sendMessage;
+    userInput.onkeydown = function(e) { if (e.key === 'Enter') sendMessage(); };
+
+    function openContextMenu(e, chatId) {
+      targetChatId = chatId;
       contextMenu.style.top = e.clientY + 'px';
       contextMenu.style.left = (e.clientX + 10) + 'px';
       contextMenu.classList.add('active');
@@ -302,63 +334,23 @@
     });
 
     function actionMenu(type) {
-      if (!activeHistoryItem) return;
-      const index = historyData.indexOf(activeHistoryItem.text);
+      if (!targetChatId) return;
+      const index = chatsData.findIndex(c => c.id === targetChatId);
       
       if (type === 'delete' && index !== -1) {
-        historyData.splice(index, 1);
+        chatsData.splice(index, 1);
+        if (currentChatId === targetChatId) currentChatId = null;
       } else if (type === 'rename' && index !== -1) {
-        const newText = prompt('Новое название:', activeHistoryItem.text);
-        if (newText) historyData[index] = newText;
+        const newText = prompt('Новое название:', chatsData[index].title);
+        if (newText) chatsData[index].title = newText;
       } else if (type === 'share') {
         alert('Ссылка скопирована!');
-      } else if (type === 'pin' && index !== -1) {
-        const item = historyData.splice(index, 1)[0];
-        historyData.unshift(item);
       }
       
       saveState();
       renderHistory();
+      renderMessages();
       contextMenu.classList.remove('active');
-    }
-
-    function sendMessage() {
-      const text = userInput.value.trim();
-      if (!text) return;
-
-      // Если это самое первое сообщение в текущем диалоге, создаем сжатый заголовок для боковой панели
-      if (messagesData.length === 0) {
-        let shortTitle = text.length > 20 ? text.substring(0, 20) + '...' : text;
-        historyData.unshift(shortTitle);
-      }
-
-      messagesData.push({ type: 'user', text: text });
-      userInput.value = '';
-      
-      saveState();
-      renderHistory();
-      renderMessages();
-
-      setTimeout(function() {
-        const reply = generateAIResponse(text);
-        messagesData.push({ type: 'ai', text: reply });
-        saveState();
-        renderMessages();
-      }, 300);
-    }
-
-    sendBtn.onclick = sendMessage;
-    userInput.onkeydown = function(e) { if (e.key === 'Enter') sendMessage(); };
-
-    function quickSend(text) {
-      userInput.value = text;
-      sendMessage();
-    }
-
-    function resetChat() {
-      messagesData = [];
-      saveState();
-      renderMessages();
     }
 
     window.onload = function() {
