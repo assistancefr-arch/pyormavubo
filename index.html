@@ -120,7 +120,7 @@
 
     <div class="input-container">
       <span class="input-plus">+</span>
-      <input type="text" class="chat-input" id="userInput" placeholder='Введите: "Придумай концепт для видео..."'>
+      <input type="text" class="chat-input" id="userInput" placeholder='Введите запрос...'>
       <button class="input-submit" id="sendBtn">→</button>
     </div>
   </div>
@@ -143,85 +143,21 @@
         <option value="ru">Русский</option>
         <option value="en">English</option>
         <option value="fr">Français</option>
-        <option value="de">Deutsch</option>
-        <option value="es">Español</option>
-        <option value="la">Latina</option>
-        <option value="kk">Қазақша</option>
-        <option value="fi">Suomi</option>
-        <option value="vi">Tiếng Việt</option>
-        <option value="bn">বাংলা</option>
-        <option value="it">Italiano</option>
-        <option value="pt">Português</option>
-        <option value="pl">Polski</option>
-        <option value="uz">Oʻzbekcha</option>
-        <option value="zh">中文</option>
-        <option value="ja">日本語</option>
-        <option value="es-pe">Español (Perú)</option>
-        <option value="fr-be">Français (Belgique)</option>
-        <option value="ce">Нохчийн</option>
-        <option value="ar">العربية</option>
-        <option value="hi">हिन्दी</option>
-        <option value="en-au">English (Australia)</option>
-        <option value="fr-td">Français (Tchad)</option>
-        <option value="bm-ml">Bamanankan (Mali)</option>
-        <option value="kri-sl">Krio (Sierra Leone)</option>
-        <option value="tr">Türkçe</option>
-        <option value="ar-tn">العربية (Tunisie)</option>
-        <option value="ar-sy">العربية (Syria)</option>
-        <option value="en-us">English (United States)</option>
-        <option value="fa-ir">فارسی (Iran)</option>
-        <option value="ar-iq">العربية (Iraq)</option>
-        <option value="el">Ελληνικά</option>
-        <option value="ar-qa">العربية (Qatar)</option>
-        <option value="ur-pk">اردو (Pakistan)</option>
-        <option value="he-il">עברית (Israel)</option>
-        <option value="ko">한국어</option>
-        <option value="es-ar">Español (Argentina)</option>
-        <option value="ar-ye">العربية (Yemen)</option>
-        <option value="lo-la">ພາສາລາວ (Лаос)</option>
-        <option value="es-mx">Español (México)</option>
-        <option value="fr-mc">Français (Monaco)</option>
-        <option value="ar-om">العربية (Оман)</option>
-        <option value="un">UN (ООН)</option>
-        <option value="fr-ne">Français (Niger)</option>
-        <option value="en-ng">English (Nigeria)</option>
-        <option value="sv">Svenska</option>
-        <option value="nl">Nederlands</option>
       </select>
     </div>
   </div>
 
   <script>
     const translations = {
-      ru: { newChat: "+ Новый чат", settings: "⚙️ Настройки", historyTitle: "История запросов", modeText: "Режим: Cosmic Pro AI ⚡", tgBot: "Telegram-бот ↗", heroTitle: "С чего начнем сегодня?", c1Title: "📘 Создать веб-код", c1Desc: "Разработка интерфейсов и блоков", c2Title: "🧠 Решить задачу", c2Desc: "Алгоритмы, логика и головоломки", c3Title: "📓 Сценарий и контент", c3Desc: "Идеи для роликов и проектов", c4Title: "⚡ Объяснить тему", c4Desc: "Разбор технологий и терминов", placeholder: 'Введите: "Придумай концепт для видео..."', modalTitle: "⚙️ Настройки", langLabel: "Язык интерфейса:", share: "🔗 Поделиться", rename: "✏️ Переименовать", pin: "📌 Закрепить", delete: "🗑️ Удалить" },
-      en: { newChat: "+ New Chat", settings: "⚙️ Settings", historyTitle: "Chat History", modeText: "Mode: Cosmic Pro AI ⚡", tgBot: "Telegram Bot ↗", heroTitle: "Where shall we begin today?", c1Title: "📘 Generate Web Code", c1Desc: "UI design and layout blocks", c2Title: "🧠 Solve Problem", c2Desc: "Algorithms and logic puzzles", c3Title: "📓 Script & Content", c3Desc: "Ideas for videos and projects", c4Title: "⚡ Explain Topic", c4Desc: "Breakdown of tech terms", placeholder: 'Type: "Brainstorm video concept..."', modalTitle: "⚙️ Settings", langLabel: "Interface Language:", share: "🔗 Share", rename: "✏️ Rename", pin: "📌 Pin", delete: "🗑️ Delete" },
-      fr: { newChat: "+ Nouvelle conversation", settings: "⚙️ Paramètres", historyTitle: "Historique", modeText: "Mode: Cosmic Pro AI ⚡", tgBot: "Bot Telegram ↗", heroTitle: "Par quoi commençons-nous aujourd'hui ?", c1Title: "📘 Créer du code web", c1Desc: "Développement d'interfaces", c2Title: "🧠 Résoudre un problème", c2Desc: "Algorithmes et énigmes", c3Title: "📓 Script et contenu", c3Desc: "Idées pour vidéos et projets", c4Title: "⚡ Expliquer un sujet", c4Desc: "Explication des technologies", placeholder: 'Tapez: "Idée de concept vidéo..."', modalTitle: "⚙️ Paramètres", langLabel: "Langue de l'interface:", share: "🔗 Partager", rename: "✏️ Renommer", pin: "📌 Épingler", delete: "🗑️ Supprimer" },
-      de: { newChat: "+ Neuer Chat", settings: "⚙️ Einstellungen", historyTitle: "Verlauf", modeText: "Modus: Cosmic Pro AI ⚡", tgBot: "Telegram-Bot ↗", heroTitle: "Womit beginnen wir heute?", c1Title: "📘 Webcode erstellen", c1Desc: "Entwicklung von Interfaces", c2Title: "🧠 Aufgabe lösen", c2Desc: "Algorithmen und Logik", c3Title: "📓 Skript & Content", c3Desc: "Ideen für Videos", c4Title: "⚡ Thema erklären", c4Desc: "Technologien verständlich", placeholder: 'Geben Sie ein: "Videokonzept..."', modalTitle: "⚙️ Einstellungen", langLabel: "Sprache:", share: "🔗 Teilen", rename: "✏️ Umbenennen", pin: "📌 Anheften", delete: "🗑️ Löschen" },
-      es: { newChat: "+ Nuevo chat", settings: "⚙️ Ajustes", historyTitle: "Historial", modeText: "Modo: Cosmic Pro AI ⚡", tgBot: "Bot de Telegram ↗", heroTitle: "¿Por dónde empezamos hoy?", c1Title: "📘 Crear código web", c1Desc: "Desarrollo de interfaces", c2Title: "🧠 Resolver проблема", c2Desc: "Algoritmos y lógica", c3Title: "📓 Guion y contenido", c3Desc: "Ideas para videos", c4Title: "⚡ Explicar tema", c4Desc: "Análisis de tecnologías", placeholder: 'Escribe: "Idea para un video..."', modalTitle: "⚙️ Ajustes", langLabel: "Idioma de interfaz:", share: "🔗 Compartir", rename: "✏️ Renombrar", pin: "📌 Fijar", delete: "🗑️ Eliminar" },
-      la: { newChat: "+ Nova Confabulatio", settings: "⚙️ Configurationes", historyTitle: "Historia", modeText: "Modus: Cosmic Pro AI ⚡", tgBot: "Telegram Bot ↗", heroTitle: "Unde hodie incipiemus?", c1Title: "📘 Codicem Telarem Creare", c1Desc: "Uso et formae", c2Title: "🧠 Enigma Solvere", c2Desc: "Algorithmi et logica", c3Title: "📓 Argumentum & Res", c3Desc: "Consilia pelliculis", c4Title: "⚡ Rem Explicare", c4Desc: "Explicatio technologiae", placeholder: 'Scribe: "Consilium pelliculae..."', modalTitle: "⚙️ Configurationes", langLabel: "Lingua:", share: "🔗 Communicare", rename: "✏️ Mutare nomen", pin: "📌 Figere", delete: "🗑️ Delere" },
-      kk: { newChat: "+ Жаңа чат", settings: "⚙️ Баптаулар", historyTitle: "Сұраныстар тарихы", modeText: "Режим: Cosmic Pro AI ⚡", tgBot: "Telegram-бот ↗", heroTitle: "Бүгін неден бастаймыз?", c1Title: "📘 Веб-код жасау", c1Desc: "Интерфейстер мен блоктарды әзірлеу", c2Title: "🧠 Есепті шығару", c2Desc: "Алгоритмдер мен логика", c3Title: "📓 Сценарий мен контент", c3Desc: "Видеолар мен жобалар идеясы", c4Title: "⚡ Тақырыпты түсіндіру", c4Desc: "Технологияларды талдау", placeholder: 'Енгізіңіз: "Видео концепциясы..."', modalTitle: "⚙️ Баптаулар", langLabel: "Интерфейс тілі:", share: "🔗 Бөлісу", rename: "✏️ Атын ауыстыру", pin: "📌 Бекіту", delete: "🗑️ Өшіру" },
-      fi: { newChat: "+ Uusi keskustelu", settings: "⚙️ Asetukset", historyTitle: "Historia", modeText: "Tila: Cosmic Pro AI ⚡", tgBot: "Telegram-botti ↗", heroTitle: "Mistä aloitetaan tänään?", c1Title: "📘 Luo verkkokoodia", c1Desc: "Käyttöliittymät ja lohkot", c2Title: "🧠 Ratkaise tehtävä", c2Desc: "Algoritmit ja logiikka", c3Title: "📓 Käsikirjoitus & sisältö", c3Desc: "Ideat videoille", c4Title: "⚡ Selitä aihe", c4Desc: "Teknologioiden purku", placeholder: 'Kirjoita: "Videoideat..."', modalTitle: "⚙️ Asetukset", langLabel: "Kieli:", share: "🔗 Jaa", rename: "✏️ Nimeä uudelleen", pin: "📌 Kiinnitä", delete: "🗑️ Poista" },
-      vi: { newChat: "+ Cuộc trò chuyện mới", settings: "⚙️ Cài đặt", historyTitle: "Lịch sử", modeText: "Chế độ: Cosmic Pro AI ⚡", tgBot: "Bot Telegram ↗", heroTitle: "Hôm nay chúng ta bắt đầu từ đâu?", c1Title: "📘 Tạo mã Web", c1Desc: "Phát triển giao diện", c2Title: "🧠 Giải bài toán", c2Desc: "Thuật toán và lô-gích", c3Title: "📓 Kịch bản & Nội dung", c3Desc: "Ý tưởng cho video", c4Title: "⚡ Giải thích chủ đề", c4Desc: "Phân tích công nghệ", placeholder: 'Nhập: "Ý tưởng video..."', modalTitle: "⚙️ Cài đặt", langLabel: "Ngôn ngữ giao diện:", share: "🔗 Chia sẻ", rename: "✏️ Đổi tên", pin: "📌 Ghim", delete: "🗑️ Xóa" },
-      bn: { newChat: "+ নতুন চ্যাট", settings: "⚙️ সেটিংসি", historyTitle: "ইতিহাস", modeText: "মোড: Cosmic Pro AI ⚡", tgBot: "টেলিগ্রাম বট ↗", heroTitle: "আজ আমরা কোথা থেকে শুরু করব?", c1Title: "📘 ওয়েব কোড তৈরি করুন", c1Desc: "ইন্টারফেস разработка", c2Title: "🧠 সমস্যা সমাধান করুন", c2Desc: "অ্যালগরিদম এবং যুক্তি", c3Title: "📓 স্ক্রিপ্ট এবং কন্টেন্ট", c3Desc: "ভিডিও ধারণা", c4Title: "⚡ বিষয় ব্যাখ্যা করুন", c4Desc: "প্রযুক্তির ব্যাখ্যা", placeholder: 'লিখুন: "ভিডিও আইডিয়া..."', modalTitle: "⚙️ সেটিংসি", langLabel: "ভাষা:", share: "🔗 শেয়ার", rename: "✏️ নাম পরিবর্তন", pin: "📌 পিন", delete: "🗑️ মুছে ফেলুন" },
-      it: { newChat: "+ Nuova chat", settings: "⚙️ Impostazioni", historyTitle: "Cronologia", modeText: "Modalità: Cosmic Pro AI ⚡", tgBot: "Bot Telegram ↗", heroTitle: "Da dove iniziamo oggi?", c1Title: "📘 Genera codice Web", c1Desc: "Sviluppo interfaccia", c2Title: "🧠 Risolvi problema", c2Desc: "Algoritmi e logica", c3Title: "📓 Sceneggiatura & Contenuti", c3Desc: "Idee per video", c4Title: "⚡ Spiega argomento", c4Desc: "Analisi tecnologie", placeholder: 'Scrivi: "Concetto per un video..."', modalTitle: "⚙️ Impostazioni", langLabel: "Lingua interfaccia:", share: "🔗 Condividi", rename: "✏️ Rinomina", pin: "📌 Fissa", delete: "🗑️ Elimina" },
-      pt: { newChat: "+ Novo chat", settings: "⚙️ Configurações", historyTitle: "Histórico", modeText: "Modo: Cosmic Pro AI ⚡", tgBot: "Bot do Telegram ↗", heroTitle: "Por onde começamos hoje?", c1Title: "📘 Criar código Web", c1Desc: "Desenvolvimento de interfaces", c2Title: "🧠 Resolver problema", c2Desc: "Algoritmos e lógica", c3Title: "📓 Roteiro e conteúdo", c3Desc: "Ideias para vídeos", c4Title: "⚡ Explicar tópico", c4Desc: "Análise de tecnologia", placeholder: 'Digite: "Ideia para vídeo..."', modalTitle: "⚙️ Configurações", langLabel: "Idioma da interface:", share: "🔗 Compartilhar", rename: "✏️ Renomear", pin: "📌 Fixar", delete: "🗑️ Excluir" },
-      pl: { newChat: "+ Nowy czat", settings: "⚙️ Ustawienia", historyTitle: "Historia", modeText: "Tryb: Cosmic Pro AI ⚡", tgBot: "Bot Telegram ↗", heroTitle: "Od czego dzisiaj zaczynamy?", c1Title: "📘 Generuj kod Web", c1Desc: "Tworzenie interfejsów", c2Title: "🧠 Rozwiąż problem", c2Desc: "Algorytmy i logika", c3Title: "📓 Scenariusz i treść", c3Desc: "Pomysły na wideo", c4Title: "⚡ Wyjaśnij temat", c4Desc: "Omówienie technologii", placeholder: 'Wpisz: "Pomysł na wideo..."', modalTitle: "⚙️ Ustawienia", langLabel: "Język interfejsu:", share: "🔗 Udostępnij", rename: "✏️ Zmień nazwę", pin: "📌 Przypnij", delete: "🗑️ Usuń" },
-      uz: { newChat: "+ Yangi chat", settings: "⚙️ Sozlamalar", historyTitle: "Tarix", modeText: "Rejim: Cosmic Pro AI ⚡", tgBot: "Telegram bot ↗", heroTitle: "Bugun nimadan boshlaymiz?", c1Title: "📘 Veb-kod yaratish", c1Desc: "Interfeyslarni ishlab chiqish", c2Title: "🧠 Masalani yechish", c2Desc: "Algoritmlar va mantiq", c3Title: "📓 Ssenariy va kontent", c3Desc: "Videolar uchun g'oyalar", c4Title: "⚡ Mavzuni tushuntirish", c4Desc: "Texnologiyalar tahlili", placeholder: 'Kiritg: "Video g\'oyasi..."', modalTitle: "⚙️ Sozlamalar", langLabel: "Interfeys tili:", share: "🔗 Ulashish", rename: "✏️ Nomini o'zgartirish", pin: "📌 Qatshish", delete: "🗑️ O'chirish" },
-      zh: { newChat: "+ 新建对话", settings: "⚙️ 设置", historyTitle: "历史记录", modeText: "模式: Cosmic Pro AI ⚡", tgBot: "Telegram 机器人 ↗", heroTitle: "今天我们从什么开始？", c1Title: "📘 生成网页代码", c1Desc: "界面与组件开发", c2Title: "🧠 解决问题", c2Desc: "算法与逻辑难题", c3Title: "📓 剧本与内容", c3Desc: "视频与项目创意", c4Title: "⚡ 解释概念", c4Desc: "技术名词拆解", placeholder: '输入："构思一个视频方案..."', modalTitle: "⚙️ 设置", langLabel: "界面语言：", share: "🔗 分享", rename: "✏️ 重命名", pin: "📌 置顶", delete: "🗑️ 删除" },
-      ja: { newChat: "+ 新しいチャット", settings: "⚙️ 設定", historyTitle: "履歴", modeText: "モード: Cosmic Pro AI ⚡", tgBot: "Telegramボット ↗", heroTitle: "今日は何から始めますか？", c1Title: "📘 Webコード生成", c1Desc: "UIとブロックの開発", c2Title: "🧠 𝄠題を解決", c2Desc: "アルゴリズムと論理", c3Title: "📓 台本与コンテンツ", c3Desc: "動画のアイデア", c4Title: "⚡ トピック解説", c4Desc: "技術用語の解説", placeholder: '入力: "動画の企画アイデア..."', modalTitle: "⚙️ 設定", langLabel: "表示言語:", share: "🔗 共有", rename: "✏️ 名前を変更", pin: "📌 ピン留め", delete: "🗑️ 削除" },
-      ar: { newChat: "+ محادثة جديدة", settings: "⚙️ الإعدادات", historyTitle: "سجل المحادثات", modeText: "الوضع: Cosmic Pro AI ⚡", tgBot: "بوت تلغرام ↗", heroTitle: "من أين نبدأ اليوم؟", c1Title: "📘 إنشاء كود ويب", c1Desc: "تطوير الواجهات والكتل", c2Title: "🧠 حل مشكلة", c2Desc: "الخوارزميات والمنطق", c3Title: "📓 سيناريو ومحتوى", c3Desc: "أفكار للفيديوهات", c4Title: "⚡ شرح موضوع", c4Desc: "تبسيط المفاهيم التقنية", placeholder: 'اكتب: "فكرة لمقطع فيديو..."', modalTitle: "⚙️ الإعدادات", langLabel: "لغة الواجهة:", share: "🔗 مشاركة", rename: "✏️ إعادة تسمية", pin: "📌 تثبيت", delete: "🗑️ حذف" },
-      hi: { newChat: "+ नया चैट", settings: "⚙️ सेटिंग्स", historyTitle: "इतिहास", modeText: "मोड: Cosmic Pro AI ⚡", tgBot: "टेलीग्राम बॉट ↗", heroTitle: "आज कहाँ से शुरुआत करें?", c1Title: "📘 वेब कोड बनाएं", c1Desc: "इंटरफेस और ब्लॉक बनाएं", c2Title: "🧠 समस्या हल करें", c2Desc: "एल्गोरिदम और तर्क", c3Title: "📓 स्क्रिप्ट और कंटेंट", c3Desc: "वीडियो के लिए विचार", c4Title: "⚡ विषय समझें", c4Desc: "तकनीक का विश्लेषण", placeholder: 'लिखें: "वीडियो का विचार..."', modalTitle: "⚙️ सेटिंग्स", langLabel: "भाषा:", share: "🔗 शेयर करें", rename: "✏️ नाम बदलें", pin: "📌 पिन करें", delete: "🗑️ हटाएं" },
-      tr: { newChat: "+ Yeni Sohbet", settings: "⚙️ Ayarlar", historyTitle: "Geçmiş", modeText: "Mod: Cosmic Pro AI ⚡", tgBot: "Telegram Bot ↗", heroTitle: "Bugün nereden başlayalım?", c1Title: "📘 Web Kodu Üret", c1Desc: "Arayüz geliştirme", c2Title: "🧠 Problem Çöz", c2Desc: "Algoritmalar ve mantık", c3Title: "📓 Senaryo ve İçerik", c3Desc: "Video fikirleri", c4Title: "⚡ Konuyu Açıkla", c4Desc: "Teknoloji analizi", placeholder: 'Yazın: "Video fikri..."', modalTitle: "⚙️ Ayarlar", langLabel: "Arayüz Dili:", share: "🔗 Paylaş", rename: "✏️ Yeniden Adlandır", pin: "📌 Sabitle", delete: "🗑️ Sil" },
-      ko: { newChat: "+ 새 대화", settings: "⚙️ 설정", historyTitle: "대화 기록", modeText: "모드: Cosmic Pro AI ⚡", tgBot: "텔레그램 봇 ↗", heroTitle: "오늘 무엇부터 시작할까요?", c1Title: "📘 웹 코드 생성", c1Desc: "UI 및 블록 개발", c2Title: "🧠 문제 해결", c2Desc: "알고리즘 및 논리", c3Title: "📓 대본 및 콘텐츠", c3Desc: "비디오 아이디어", c4Title: "⚡ 개념 설명", c4Desc: "기술 용어 풀이", placeholder: '입력: "비디오 기획안..."', modalTitle: "⚙️ 설정", langLabel: "인터페이스 언어:", share: "🔗 공유", rename: "✏️ 이름 변경", pin: "📌 고정", delete: "🗑️ 삭제" },
-      ce: { newChat: "+ ЧIагIам кхолла", settings: "⚙️ Уьйраш", historyTitle: "Харжаман истори", modeText: "Режим: Cosmic Pro AI ⚡", tgBot: "Telegram-бот ↗", heroTitle: "Тахана стенца дIадолора ду?", c1Title: "📘 Веб-код кхолла", c1Desc: "Интерфейсаш кхоллаар", c2Title: "🧠 ТIедиллинарг кхочушдан", c2Desc: "Алгоритмаш а, логика а", c3Title: "📓 Сценари а, контент а", c3Desc: "Видеон идееш", c4Title: "⚡ Тема кхето", c4Desc: "Технологеш таллар", placeholder: 'ДIаязде: "Видеон концепт..."', modalTitle: "⚙️ Уьйраш", langLabel: "Мотт:", share: "🔗 ДIасахьажо", rename: "✏️ ЦIе цIинъян", pin: "📌 ЧIагIдан", delete: "🗑️ ДIайаккха" },
-      sv: { newChat: "+ Ny chatt", settings: "⚙️ Inställningar", historyTitle: "Historik", modeText: "Läge: Cosmic Pro AI ⚡", tgBot: "Telegram-bot ↗", heroTitle: "Var ska vi börja idag?", c1Title: "📘 Skapa webbkod", c1Desc: "Utveckling av gränssnitt", c2Title: "🧠 Lös problem", c2Desc: "Algoritmer och logik", c3Title: "📓 Manus & Innehåll", c3Desc: "Idéer för videor", c4Title: "⚡ Förklara ämne", c4Desc: "Teknikförklaring", placeholder: 'Skriv: "Videoidé..."', modalTitle: "⚙️ Inställningar", langLabel: "Språk:", share: "🔗 Dela", rename: "✏️ Byt namn", pin: "📌 Nåla fast", delete: "🗑️ Ta bort" },
-      nl: { newChat: "+ Nieuwe chat", settings: "⚙️ Instellingen", historyTitle: "Geschiedenis", modeText: "Modus: Cosmic Pro AI ⚡", tgBot: "Telegram-bot ↗", heroTitle: "Waar beginnen we vandaag?", c1Title: "📘 Webcode genereren", c1Desc: "UI-ontwikkeling", c2Title: "🧠 Probleem oplossen", c2Desc: "Algoritmen en logica", c3Title: "📓 Script & Content", c3Desc: "Video-ideeën", c4Title: "⚡ Onderwerp uitleggen", c4Desc: "Technologie-analyse", placeholder: 'Typ: "Video-idee..."', modalTitle: "⚙️ Instellingen", langLabel: "Taal:", share: "🔗 Delen", rename: "✏️ Naam wijzigen", pin: "📌 Vastpinnen", delete: "🗑️ Verwijderen" }
+      ru: { newChat: "+ Новый чат", settings: "⚙️ Настройки", historyTitle: "История запросов", modeText: "Режим: Cosmic Pro AI ⚡", tgBot: "Telegram-бот ↗", heroTitle: "С чего начнем сегодня?", c1Title: "📘 Создать веб-код", c1Desc: "Разработка интерфейсов и блоков", c2Title: "🧠 Решить задачу", c2Desc: "Алгоритмы, логика и головоломки", c3Title: "📓 Сценарий и контент", c3Desc: "Идеи для роликов и проектов", c4Title: "⚡ Объяснить тему", c4Desc: "Разбор технологий и терминов", placeholder: 'Введите сообщение...', modalTitle: "⚙️ Настройки", langLabel: "Язык интерфейса:", share: "🔗 Поделиться", rename: "✏️ Переименовать", pin: "📌 Закрепить", delete: "🗑️ Удалить" },
+      en: { newChat: "+ New Chat", settings: "⚙️ Settings", historyTitle: "Chat History", modeText: "Mode: Cosmic Pro AI ⚡", tgBot: "Telegram Bot ↗", heroTitle: "Where shall we begin today?", c1Title: "📘 Generate Web Code", c1Desc: "UI design and layout blocks", c2Title: "🧠 Solve Problem", c2Desc: "Algorithms and logic puzzles", c3Title: "📓 Script & Content", c3Desc: "Ideas for videos and projects", c4Title: "⚡ Explain Topic", c4Desc: "Breakdown of tech terms", placeholder: 'Type a message...', modalTitle: "⚙️ Settings", langLabel: "Interface Language:", share: "🔗 Share", rename: "✏️ Rename", pin: "📌 Pin", delete: "🗑️ Delete" },
+      fr: { newChat: "+ Nouvelle conversation", settings: "⚙️ Paramètres", historyTitle: "Historique", modeText: "Mode: Cosmic Pro AI ⚡", tgBot: "Bot Telegram ↗", heroTitle: "Par quoi commençons-nous aujourd'hui ?", c1Title: "📘 Créer du code web", c1Desc: "Développement d'interfaces", c2Title: "🧠 Résoudre un problème", c2Desc: "Algorithmes et énigmes", c3Title: "📓 Script et contenu", c3Desc: "Idées pour vidéos et projets", c4Title: "⚡ Expliquer un sujet", c4Desc: "Explication des technologies", placeholder: 'Saisissez un message...', modalTitle: "⚙️ Paramètres", langLabel: "Langue de l'interface:", share: "🔗 Partager", rename: "✏️ Renommer", pin: "📌 Épingler", delete: "🗑️ Supprimer" }
     };
 
     let currentLang = localStorage.getItem('py_language') || 'ru';
 
     function getTranslation(lang = currentLang) {
-      return translations[lang] || translations[lang.split('-')[0]] || translations['en'] || translations['ru'];
+      return translations[lang] || translations['ru'];
     }
 
     function applyLanguage(lang) {
@@ -275,18 +211,11 @@
       applyLanguage(selectedLang);
     });
 
-    function openSettings() {
-      settingsModal.classList.add('active');
-    }
-
-    function closeSettings() {
-      settingsModal.classList.remove('active');
-    }
+    function openSettings() { settingsModal.classList.add('active'); }
+    function closeSettings() { settingsModal.classList.remove('active'); }
 
     window.onclick = function(event) {
-      if (event.target === settingsModal) {
-        closeSettings();
-      }
+      if (event.target === settingsModal) closeSettings();
     };
 
     function saveState() {
@@ -294,12 +223,21 @@
       localStorage.setItem('py_messages', JSON.stringify(messagesData));
     }
 
+    // Улучшенный генератор ответов ИИ
     function generateAIResponse(query) {
       const q = query.toLowerCase().trim();
+      
       if (q.includes('привет') || q.includes('хай') || q.includes('hello') || q.includes('bonjour')) {
         return "Привет! Я pyormavubo AI. Чем могу помочь тебе сегодня?";
       }
-      return 'Я получил ваш запрос: "' + query + '". Готов помочь с этим!';
+      if (q.includes('как тебя зовут') || q.includes('ты кто') || q.includes('кто ты')) {
+        return "Меня зовут pyormavubo AI! Я твой цифровой ассистент.";
+      }
+      if (q.includes('что ты умеешь') || q.includes('помощь')) {
+        return "Я могу писать код, генерировать идеи для контента, решать задачи и отвечать на твои вопросы!";
+      }
+
+      return "Интересный вопрос! Давай разберем детально: " + query;
     }
 
     function renderHistory() {
@@ -370,10 +308,10 @@
       if (type === 'delete' && index !== -1) {
         historyData.splice(index, 1);
       } else if (type === 'rename' && index !== -1) {
-        const newText = prompt('Новое название / New name:', activeHistoryItem.text);
+        const newText = prompt('Новое название:', activeHistoryItem.text);
         if (newText) historyData[index] = newText;
       } else if (type === 'share') {
-        alert('Ссылка скопирована / Link copied!');
+        alert('Ссылка скопирована!');
       } else if (type === 'pin' && index !== -1) {
         const item = historyData.splice(index, 1)[0];
         historyData.unshift(item);
@@ -388,12 +326,15 @@
       const text = userInput.value.trim();
       if (!text) return;
 
-      messagesData.push({ type: 'user', text: text });
-      if (!historyData.includes(text)) {
-        historyData.unshift(text);
+      // Если это самое первое сообщение в текущем диалоге, создаем сжатый заголовок для боковой панели
+      if (messagesData.length === 0) {
+        let shortTitle = text.length > 20 ? text.substring(0, 20) + '...' : text;
+        historyData.unshift(shortTitle);
       }
 
+      messagesData.push({ type: 'user', text: text });
       userInput.value = '';
+      
       saveState();
       renderHistory();
       renderMessages();
