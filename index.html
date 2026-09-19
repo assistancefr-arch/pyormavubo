@@ -47,7 +47,6 @@
     .history-title { font-size: 11px; color: #475569; margin-bottom: 10px; text-transform: uppercase; font-weight: 700; padding-left: 6px; }
     .history-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
 
-    /* Элементы истории и кнопка с точками (⋮) */
     .history-item { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: #0f172a; border-radius: 6px; font-size: 13px; color: #94a3b8; cursor: pointer; transition: 0.2s; }
     .history-item:hover, .history-item.active { background: var(--hover-color); color: #fff; }
     .history-item.active { border-left: 3px solid var(--accent-color); }
@@ -57,14 +56,12 @@
     .history-item:hover .action-btn { display: block; }
     .action-btn:hover { color: #fff; background: #334155; }
 
-    /* Выпадающее меню (кебаб-меню) */
     .dropdown-menu { display: none; position: absolute; right: 8px; top: 32px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; z-index: 20; width: 120px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); flex-direction: column; }
     .dropdown-menu.show { display: flex; }
     .dropdown-item { padding: 8px 10px; font-size: 12px; cursor: pointer; width: 100%; text-align: left; background: none; border: none; color: #cbd5e1; }
     .dropdown-item.delete { color: var(--danger-color); }
     .dropdown-item:hover { background: var(--hover-color); }
 
-    /* Основная область */
     .main { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 30px; position: relative; }
     .top-bar { display: flex; justify-content: flex-end; align-items: center; width: 100%; }
     .btn-telegram { background: rgba(14, 165, 233, 0.15); border: 1px solid rgba(14, 165, 233, 0.4); color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-decoration: none; }
@@ -89,7 +86,6 @@
     .chat-input:focus { border-color: var(--accent-color); }
     .input-submit { position: absolute; right: 8px; width: 28px; height: 28px; background: var(--accent-color); border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; }
 
-    /* Модальные окна */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 100; }
     .modal.show { display: flex; }
     .modal-content { background: #0f172a; border: 1px solid #1e293b; padding: 22px; border-radius: 12px; max-width: 460px; width: 100%; color: #fff; max-height: 85vh; overflow-y: auto; }
@@ -185,6 +181,23 @@
           <option value="fr">Français (French)</option>
           <option value="es">Español (Spanish)</option>
           <option value="de">Deutsch (German)</option>
+          <option value="it">Italiano (Italian)</option>
+          <option value="pt">Português (Portuguese)</option>
+          <option value="uk">Українська (Ukrainian)</option>
+          <option value="pl">Polski (Polish)</option>
+          <option value="zh">中文 (Chinese)</option>
+          <option value="ja">日本語 (Japanese)</option>
+          <option value="ko">한국어 (Korean)</option>
+          <option value="ar">العربية (Arabic)</option>
+          <option value="tr">Türkçe (Turkish)</option>
+          <option value="nl">Nederlands (Dutch)</option>
+          <option value="sv">Svenska (Swedish)</option>
+          <option value="fi">Suomi (Finnish)</option>
+          <option value="no">Norsk (Norwegian)</option>
+          <option value="da">Dansk (Danish)</option>
+          <option value="el">Ελληνικά (Greek)</option>
+          <option value="he">עברית (Hebrew)</option>
+          <option value="hi">हिन्दी (Hindi)</option>
         </select>
       </div>
 
@@ -244,234 +257,121 @@
       fontSize: '13.5px'
     };
 
-    // Полный словарь переводов интерфейса
+    // Расширенный словарь переводов
     const translations = {
       ru: {
-        newChat: "+ Новый чат",
-        settings: "⚙️ Настройки",
-        historyTitle: "История запросов",
-        modeText: "Режим:",
-        tgBot: "Telegram-бот ↗",
-        heroTitle: "С чего начнем сегодня?",
-        card1Title: "📘 Создать веб-код",
-        card1Desc: "Разработка интерфейсов и блоков",
-        card2Title: "🧠 Решить задачу",
-        card2Desc: "Алгоритмы, логика и головоломки",
-        card3Title: "📓 Сценарий и контент",
-        card3Desc: "Идеи для роликов и проектов",
-        card4Title: "⚡ Объяснить тему",
-        card4Desc: "Разбор технологий и терминов",
-        inputPlaceholder: "Введите сообщение...",
-        settingsTitle: "⚙️ Настройки приложения",
-        langLabel: "Язык интерфейса / Language",
-        themeLabel: "Тема оформления",
-        themeDark: "Темная Cosmic (По умолчанию)",
-        themeLight: "Светлая Minimal",
-        themeCyber: "Неон Киберпанк",
-        nameLabel: "Название приложения / бота",
-        logoLabel: "Ссылка на логотип (URL)",
-        fontLabel: "Размер шрифта в чате",
-        fontSmall: "Мелкий (12px)",
-        fontStandard: "Стандартный (13.5px)",
-        fontLarge: "Крупный (15px)",
-        clearLabel: "Очистка памяти браузера",
-        clearBtn: "Удалить всю историю чатов",
-        cancel: "Отмена",
-        save: "Сохранить",
-        deleteTitle: "Удалить чат?",
-        deleteDesc: "Это действие нельзя будет отменить.",
-        deleteBtn: "Удалить",
-        deleteMenu: "Удалить"
+        newChat: "+ Новый чат", settings: "⚙️ Настройки", historyTitle: "История запросов", modeText: "Режим:", tgBot: "Telegram-бот ↗",
+        heroTitle: "С чего начнем сегодня?", card1Title: "📘 Создать веб-код", card1Desc: "Разработка интерфейсов и блоков",
+        card2Title: "🧠 Решить задачу", card2Desc: "Алгоритмы, логика и головоломки", card3Title: "📓 Сценарий и контент", card3Desc: "Идеи для роликов и проектов",
+        card4Title: "⚡ Объяснить тему", card4Desc: "Разбор технологий и терминов", inputPlaceholder: "Введите сообщение...",
+        settingsTitle: "⚙️ Настройки приложения", langLabel: "Язык интерфейса / Language", themeLabel: "Тема оформления",
+        themeDark: "Темная Cosmic (По умолчанию)", themeLight: "Светлая Minimal", themeCyber: "Неон Киберпанк",
+        nameLabel: "Название приложения / бота", logoLabel: "Ссылка на логотип (URL)", fontLabel: "Размер шрифта в чате",
+        fontSmall: "Мелкий (12px)", fontStandard: "Стандартный (13.5px)", fontLarge: "Крупный (15px)",
+        clearLabel: "Очистка памяти браузера", clearBtn: "Удалить всю историю чатов", cancel: "Отмена", save: "Сохранить",
+        deleteTitle: "Удалить чат?", deleteDesc: "Это действие нельзя будет отменить.", deleteBtn: "Удалить", deleteMenu: "Удалить"
       },
       cs: {
-        newChat: "+ Nový chat",
-        settings: "⚙️ Nastavení",
-        historyTitle: "Historie dotazů",
-        modeText: "Režim:",
-        tgBot: "Telegram bot ↗",
-        heroTitle: "Čím dnes začneme?",
-        card1Title: "📘 Vytvořit kód",
-        card1Desc: "Vývoj rozhraní a bloků",
-        card2Title: "🧠 Vyřešit úkol",
-        card2Desc: "Algoritmy, logika a hádanky",
-        card3Title: "📓 Scénář a obsah",
-        card3Desc: "Nápady pro videa a projekty",
-        card4Title: "⚡ Vysvětlit téma",
-        card4Desc: "Rozbor technologií a termínů",
-        inputPlaceholder: "Napište zprávu...",
-        settingsTitle: "⚙️ Nastavení aplikace",
-        langLabel: "Jazyk rozhraní / Language",
-        themeLabel: "Téma vzhledu",
-        themeDark: "Tmavá Cosmic (Výchozí)",
-        themeLight: "Světlá Minimal",
-        themeCyber: "Neon Kyberpunk",
-        nameLabel: "Název aplikace / bota",
-        logoLabel: "Odkaz na logo (URL)",
-        fontLabel: "Velikost písma v chatu",
-        fontSmall: "Malé (12px)",
-        fontStandard: "Standardní (13.5px)",
-        fontLarge: "Velké (15px)",
-        clearLabel: "Vymazat paměť prohlížeče",
-        clearBtn: "Smazat celou historii chatů",
-        cancel: "Zrušit",
-        save: "Uložit",
-        deleteTitle: "Smazat chat?",
-        deleteDesc: "Tuto akci nelze vrátit zpět.",
-        deleteBtn: "Smazat",
-        deleteMenu: "Smazat"
+        newChat: "+ Nový chat", settings: "⚙️ Nastavení", historyTitle: "Historie dotazů", modeText: "Režim:", tgBot: "Telegram bot ↗",
+        heroTitle: "Čím dnes začneme?", card1Title: "📘 Vytvořit kód", card1Desc: "Vývoj rozhraní a bloků",
+        card2Title: "🧠 Vyřešit úkol", card2Desc: "Algoritmy, logika a hádanky", card3Title: "📓 Scénář a obsah", card3Desc: "Nápady pro videa a projekty",
+        card4Title: "⚡ Vysvětlit téma", card4Desc: "Rozbor technologií a termínů", inputPlaceholder: "Napište zprávu...",
+        settingsTitle: "⚙️ Nastavení aplikace", langLabel: "Jazyk rozhraní / Language", themeLabel: "Téma vzhledu",
+        themeDark: "Tmavá Cosmic (Výchozí)", themeLight: "Světlá Minimal", themeCyber: "Neon Kyberpunk",
+        nameLabel: "Název aplikace / bota", logoLabel: "Odkaz na logo (URL)", fontLabel: "Velikost písma v chatu",
+        fontSmall: "Malé (12px)", fontStandard: "Standardní (13.5px)", fontLarge: "Velké (15px)",
+        clearLabel: "Vymazat paměť prohlížeče", clearBtn: "Smazat celou historii chatů", cancel: "Zrušit", save: "Uložit",
+        deleteTitle: "Smazat chat?", deleteDesc: "Tuto akci nelze vrátit zpět.", deleteBtn: "Smazat", deleteMenu: "Smazat"
       },
       en: {
-        newChat: "+ New Chat",
-        settings: "⚙️ Settings",
-        historyTitle: "Chat History",
-        modeText: "Mode:",
-        tgBot: "Telegram Bot ↗",
-        heroTitle: "Where shall we begin today?",
-        card1Title: "📘 Create Web Code",
-        card1Desc: "Interface development & components",
-        card2Title: "🧠 Solve a Problem",
-        card2Desc: "Algorithms, logic & puzzles",
-        card3Title: "📓 Script & Content",
-        card3Desc: "Ideas for videos & projects",
-        card4Title: "⚡ Explain a Topic",
-        card4Desc: "Breakdown of tech & concepts",
-        inputPlaceholder: "Type a message...",
-        settingsTitle: "⚙️ App Settings",
-        langLabel: "Interface Language",
-        themeLabel: "Theme",
-        themeDark: "Dark Cosmic (Default)",
-        themeLight: "Light Minimal",
-        themeCyber: "Neon Cyberpunk",
-        nameLabel: "App / Bot Name",
-        logoLabel: "Logo URL",
-        fontLabel: "Chat Font Size",
-        fontSmall: "Small (12px)",
-        fontStandard: "Standard (13.5px)",
-        fontLarge: "Large (15px)",
-        clearLabel: "Browser Storage",
-        clearBtn: "Clear All Chat History",
-        cancel: "Cancel",
-        save: "Save",
-        deleteTitle: "Delete Chat?",
-        deleteDesc: "This action cannot be undone.",
-        deleteBtn: "Delete",
-        deleteMenu: "Delete"
+        newChat: "+ New Chat", settings: "⚙️ Settings", historyTitle: "Chat History", modeText: "Mode:", tgBot: "Telegram Bot ↗",
+        heroTitle: "Where shall we begin today?", card1Title: "📘 Create Web Code", card1Desc: "Interface development & components",
+        card2Title: "🧠 Solve a Problem", card2Desc: "Algorithms, logic & puzzles", card3Title: "📓 Script & Content", card3Desc: "Ideas for videos & projects",
+        card4Title: "⚡ Explain a Topic", card4Desc: "Breakdown of tech & concepts", inputPlaceholder: "Type a message...",
+        settingsTitle: "⚙️ App Settings", langLabel: "Interface Language", themeLabel: "Theme",
+        themeDark: "Dark Cosmic (Default)", themeLight: "Light Minimal", themeCyber: "Neon Cyberpunk",
+        nameLabel: "App / Bot Name", logoLabel: "Logo URL", fontLabel: "Chat Font Size",
+        fontSmall: "Small (12px)", fontStandard: "Standard (13.5px)", fontLarge: "Large (15px)",
+        clearLabel: "Browser Storage", clearBtn: "Clear All Chat History", cancel: "Cancel", save: "Save",
+        deleteTitle: "Delete Chat?", deleteDesc: "This action cannot be undone.", deleteBtn: "Delete", deleteMenu: "Delete"
       },
       fr: {
-        newChat: "+ Nouvelle discussion",
-        settings: "⚙️ Paramètres",
-        historyTitle: "Historique",
-        modeText: "Mode :",
-        tgBot: "Bot Telegram ↗",
-        heroTitle: "Par quoi commençons-nous ?",
-        card1Title: "📘 Créer du code Web",
-        card1Desc: "Développement d'interfaces et de blocs",
-        card2Title: "🧠 Résoudre un problème",
-        card2Desc: "Algorithmes, logique et énigmes",
-        card3Title: "📓 Scénario et contenu",
-        card3Desc: "Idées de vidéos et de projets",
-        card4Title: "⚡ Expliquer un sujet",
-        card4Desc: "Analyse des technologies et termes",
-        inputPlaceholder: "Écrivez un message...",
-        settingsTitle: "⚙️ Paramètres de l'application",
-        langLabel: "Langue de l'interface",
-        themeLabel: "Thème",
-        themeDark: "Sombre Cosmic (Par défaut)",
-        themeLight: "Clair Minimal",
-        themeCyber: "Néon Cyberpunk",
-        nameLabel: "Nom de l'application / bot",
-        logoLabel: "URL du logo",
-        fontLabel: "Taille de police",
-        fontSmall: "Petite (12px)",
-        fontStandard: "Standard (13.5px)",
-        fontLarge: "Grande (15px)",
-        clearLabel: "Stockage du navigateur",
-        clearBtn: "Effacer tout l'historique",
-        cancel: "Annuler",
-        save: "Enregistrer",
-        deleteTitle: "Supprimer la discussion ?",
-        deleteDesc: "Cette action est irréversible.",
-        deleteBtn: "Supprimer",
-        deleteMenu: "Supprimer"
+        newChat: "+ Nouvelle discussion", settings: "⚙️ Paramètres", historyTitle: "Historique", modeText: "Mode :", tgBot: "Bot Telegram ↗",
+        heroTitle: "Par quoi commençons-nous ?", card1Title: "📘 Créer du code Web", card1Desc: "Développement d'interfaces et de blocs",
+        card2Title: "🧠 Résoudre un problème", card2Desc: "Algorithmes, logique et énigmes", card3Title: "📓 Scénario et contenu", card3Desc: "Idées de vidéos et de projets",
+        card4Title: "⚡ Expliquer un sujet", card4Desc: "Analyse des technologies et termes", inputPlaceholder: "Écrivez un message...",
+        settingsTitle: "⚙️ Paramètres de l'application", langLabel: "Langue de l'interface", themeLabel: "Thème",
+        themeDark: "Sombre Cosmic (Par défaut)", themeLight: "Clair Minimal", themeCyber: "Néon Cyberpunk",
+        nameLabel: "Nom de l'application / bot", logoLabel: "URL du logo", fontLabel: "Taille de police",
+        fontSmall: "Petite (12px)", fontStandard: "Standard (13.5px)", fontLarge: "Grande (15px)",
+        clearLabel: "Stockage du navigateur", clearBtn: "Effacer tout l'historique", cancel: "Annuler", save: "Enregistrer",
+        deleteTitle: "Supprimer la discussion ?", deleteDesc: "Cette action est irréversible.", deleteBtn: "Supprimer", deleteMenu: "Supprimer"
       },
       es: {
-        newChat: "+ Nuevo Chat",
-        settings: "⚙️ Ajustes",
-        historyTitle: "Historial de Chat",
-        modeText: "Modo:",
-        tgBot: "Bot de Telegram ↗",
-        heroTitle: "¿Por dónde empezamos hoy?",
-        card1Title: "📘 Crear código Web",
-        card1Desc: "Desarrollo de interfaces y bloques",
-        card2Title: "🧠 Resolver un problema",
-        card2Desc: "Algoritmos, lógica y acertijos",
-        card3Title: "📓 Guión y contenido",
-        card3Desc: "Ideas para videos y proyectos",
-        card4Title: "⚡ Explicar un tema",
-        card4Desc: "Análisis de tecnología y términos",
-        inputPlaceholder: "Escribe un mensaje...",
-        settingsTitle: "⚙️ Ajustes de la aplicación",
-        langLabel: "Idioma de interfaz",
-        themeLabel: "Tema",
-        themeDark: "Oscuro Cosmic (Predeterminado)",
-        themeLight: "Claro Minimal",
-        themeCyber: "Neón Cyberpunk",
-        nameLabel: "Nombre de la aplicación / bot",
-        logoLabel: "URL del logotipo",
-        fontLabel: "Tamaño de fuente del chat",
-        fontSmall: "Pequeño (12px)",
-        fontStandard: "Estándar (13.5px)",
-        fontLarge: "Grande (15px)",
-        clearLabel: "Memoria del navegador",
-        clearBtn: "Borrar todo el historial",
-        cancel: "Cancelar",
-        save: "Guardar",
-        deleteTitle: "¿Eliminar chat?",
-        deleteDesc: "Esta acción no se puede deshacer.",
-        deleteBtn: "Eliminar",
-        deleteMenu: "Eliminar"
+        newChat: "+ Nuevo Chat", settings: "⚙️ Ajustes", historyTitle: "Historial de Chat", modeText: "Modo:", tgBot: "Bot de Telegram ↗",
+        heroTitle: "¿Por dónde empezamos hoy?", card1Title: "📘 Crear código Web", card1Desc: "Desarrollo de interfaces y bloques",
+        card2Title: "🧠 Resolver un problema", card2Desc: "Algoritmos, lógica y acertijos", card3Title: "📓 Guión y contenido", card3Desc: "Ideas para videos y proyectos",
+        card4Title: "⚡ Explicar un tema", card4Desc: "Análisis de tecnología y términos", inputPlaceholder: "Escribe un mensaje...",
+        settingsTitle: "⚙️ Ajustes de la aplicación", langLabel: "Idioma de interfaz", themeLabel: "Tema",
+        themeDark: "Oscuro Cosmic (Predeterminado)", themeLight: "Claro Minimal", themeCyber: "Neón Cyberpunk",
+        nameLabel: "Nombre de la aplicación / bot", logoLabel: "URL del logotipo", fontLabel: "Tamaño de fuente del chat",
+        fontSmall: "Pequeño (12px)", fontStandard: "Estándar (13.5px)", fontLarge: "Grande (15px)",
+        clearLabel: "Memoria del navegador", clearBtn: "Borrar todo el historial", cancel: "Cancelar", save: "Guardar",
+        deleteTitle: "¿Eliminar chat?", deleteDesc: "Esta acción no se puede deshacer.", deleteBtn: "Eliminar", deleteMenu: "Eliminar"
       },
       de: {
-        newChat: "+ Neuer Chat",
-        settings: "⚙️ Einstellungen",
-        historyTitle: "Chat-Verlauf",
-        modeText: "Modus:",
-        tgBot: "Telegram Bot ↗",
-        heroTitle: "Womit beginnen wir heute?",
-        card1Title: "📘 Webcode erstellen",
-        card1Desc: "Entwicklung von Interfaces & Blöcken",
-        card2Title: "🧠 Problem lösen",
-        card2Desc: "Algorithmen, Logik & Rätsel",
-        card3Title: "📓 Skript & Inhalt",
-        card3Desc: "Ideen für Videos & Projekte",
-        card4Title: "⚡ Thema erklären",
-        card4Desc: "Analyse von Technologien & Begriffen",
-        inputPlaceholder: "Nachricht eingeben...",
-        settingsTitle: "⚙️ App-Einstellungen",
-        langLabel: "Schnittstellensprache",
-        themeLabel: "Design-Thema",
-        themeDark: "Dunkel Cosmic (Standard)",
-        themeLight: "Hell Minimal",
-        themeCyber: "Neon Cyberpunk",
-        nameLabel: "App- / Bot-Name",
-        logoLabel: "Logo-URL",
-        fontLabel: "Schriftgröße im Chat",
-        fontSmall: "Klein (12px)",
-        fontStandard: "Standard (13.5px)",
-        fontLarge: "Groß (15px)",
-        clearLabel: "Browserspeicher leeren",
-        clearBtn: "Gesamten Verlauf löschen",
-        cancel: "Abbrechen",
-        save: "Speichern",
-        deleteTitle: "Chat löschen?",
-        deleteDesc: "Diese Aktion kann nicht rückgängig gemacht werden.",
-        deleteBtn: "Löschen",
-        deleteMenu: "Löschen"
+        newChat: "+ Neuer Chat", settings: "⚙️ Einstellungen", historyTitle: "Chat-Verlauf", modeText: "Modus:", tgBot: "Telegram Bot ↗",
+        heroTitle: "Womit beginnen wir heute?", card1Title: "📘 Webcode erstellen", card1Desc: "Entwicklung von Interfaces & Blöcken",
+        card2Title: "🧠 Problem lösen", card2Desc: "Algorithmen, Logik & Rätsel", card3Title: "📓 Skript & Inhalt", card3Desc: "Ideen für Videos & Projekte",
+        card4Title: "⚡ Thema erklären", card4Desc: "Analyse von Technologien & Begriffen", inputPlaceholder: "Nachricht eingeben...",
+        settingsTitle: "⚙️ App-Einstellungen", langLabel: "Schnittstellensprache", themeLabel: "Design-Thema",
+        themeDark: "Dunkel Cosmic (Standard)", themeLight: "Hell Minimal", themeCyber: "Neon Cyberpunk",
+        nameLabel: "App- / Bot-Name", logoLabel: "Logo-URL", fontLabel: "Schriftgröße im Chat",
+        fontSmall: "Klein (12px)", fontStandard: "Standard (13.5px)", fontLarge: "Groß (15px)",
+        clearLabel: "Browserspeicher leeren", clearBtn: "Gesamten Verlauf löschen", cancel: "Abbrechen", save: "Speichern",
+        deleteTitle: "Chat löschen?", deleteDesc: "Diese Aktion kann nicht rückgängig gemacht werden.", deleteBtn: "Löschen", deleteMenu: "Löschen"
+      },
+      uk: {
+        newChat: "+ Новий чат", settings: "⚙️ Налаштування", historyTitle: "Історія запитів", modeText: "Режим:", tgBot: "Telegram-бот ↗",
+        heroTitle: "З чого почнемо сьогодні?", card1Title: "📘 Створити веб-код", card1Desc: "Розробка інтерфейсів та блоків",
+        card2Title: "🧠 Вирішити завдання", card2Desc: "Алгоритми, логіка та головоломки", card3Title: "📓 Сценарій та контент", card3Desc: "Ідеї для роликів та проектів",
+        card4Title: "⚡ Пояснити тему", card4Desc: "Розбір технологій та термінів", inputPlaceholder: "Введіть повідомлення...",
+        settingsTitle: "⚙️ Налаштування програми", langLabel: "Мова інтерфейсу", themeLabel: "Тема оформлення",
+        themeDark: "Темна Cosmic (За замовчуванням)", themeLight: "Світла Minimal", themeCyber: "Неон Кіберпанк",
+        nameLabel: "Назва програми / бота", logoLabel: "Посилання на логотип (URL)", fontLabel: "Розмір шрифту у чаті",
+        fontSmall: "Дрібний (12px)", fontStandard: "Стандартний (13.5px)", fontLarge: "Великий (15px)",
+        clearLabel: "Очищення пам'яті браузера", clearBtn: "Видалити всю історію чатів", cancel: "Скасувати", save: "Зберегти",
+        deleteTitle: "Видалити чат?", deleteDesc: "Цю дію неможливо скасувати.", deleteBtn: "Видалити", deleteMenu: "Видалити"
+      },
+      pl: {
+        newChat: "+ Nowy czat", settings: "⚙️ Ustawienia", historyTitle: "Historia czatu", modeText: "Tryb:", tgBot: "Bot Telegram ↗",
+        heroTitle: "Od czego dzisiaj zaczniemy?", card1Title: "📘 Utwórz kod WWW", card1Desc: "Tworzenie interfejsów i bloków",
+        card2Title: "🧠 Rozwiąż problem", card2Desc: "Algorytmy, logika i łamigłówki", card3Title: "📓 Scenariusz i treść", card3Desc: "Pomysły na filmy i projekty",
+        card4Title: "⚡ Wyjaśnij temat", card4Desc: "Analiza technologii i pojęć", inputPlaceholder: "Wpisz wiadomość...",
+        settingsTitle: "⚙️ Ustawienia aplikacji", langLabel: "Język interfejsu", themeLabel: "Motyw",
+        themeDark: "Ciemny Cosmic (Domyślny)", themeLight: "Jasny Minimal", themeCyber: "Neon Cyberpunk",
+        nameLabel: "Nazwa aplikacji / bota", logoLabel: "URL logo", fontLabel: "Rozmiar czcionki czatu",
+        fontSmall: "Mała (12px)", fontStandard: "Standardowa (13.5px)", fontLarge: "Duża (15px)",
+        clearLabel: "Pamięć przeglądarki", clearBtn: "Usuń całą historię czatu", cancel: "Anuluj", save: "Zapisz",
+        deleteTitle: "Usunąć czat?", deleteDesc: "Tej операции nie można cofnąć.", deleteBtn: "Usuń", deleteMenu: "Usuń"
+      },
+      zh: {
+        newChat: "+ 新建聊天", settings: "⚙️ 设置", historyTitle: "历史记录", modeText: "模式:", tgBot: "Telegram 机器人 ↗",
+        heroTitle: "今天我们从什么开始？", card1Title: "📘 创建网页代码", card1Desc: "界面与组件开发",
+        card2Title: "🧠 解决难题", card2Desc: "算法、逻辑与谜题", card3Title: "📓 剧本与内容", card3Desc: "视频与项目创意",
+        card4Title: "⚡ 解释主题", card4Desc: "技术与概念解析", inputPlaceholder: "输入消息...",
+        settingsTitle: "⚙️ 应用设置", langLabel: "界面语言", themeLabel: "主题",
+        themeDark: "深色 Cosmic (默认)", themeLight: "浅色 Minimal", themeCyber: "霓虹赛博朋克",
+        nameLabel: "应用 / 机器人名称", logoLabel: "图标 URL", fontLabel: "聊天字体大小",
+        fontSmall: "小 (12px)", fontStandard: "标准 (13.5px)", fontLarge: "大 (15px)",
+        clearLabel: "浏览器存储", clearBtn: "清除所有聊天记录", cancel: "取消", save: "保存",
+        deleteTitle: "删除聊天？", deleteDesc: "此操作无法撤销。", deleteBtn: "删除", deleteMenu: "删除"
       }
     };
 
     function translateUI() {
       const lang = settings.lang;
+      // Если для выбранного языка нет полного словаря, берём английский как резервный
       const dict = translations[lang] || translations['en'];
 
       document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -678,7 +578,7 @@
     document.getElementById('closeSettingsBtn').addEventListener('click', () => settingsModal.classList.remove('show'));
     document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
 
-    // Автоматический предпросмотр языка сразу при переключении выпадающего списка
+    // Автоматический пересказ/перевод интерфейса прямо при смене значения в списке
     document.getElementById('langSelect').addEventListener('change', (e) => {
       settings.lang = e.target.value;
       translateUI();
