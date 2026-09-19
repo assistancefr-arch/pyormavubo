@@ -48,22 +48,24 @@
     .history-title { font-size: 11px; color: #475569; margin-bottom: 10px; text-transform: uppercase; font-weight: 700; padding-left: 6px; }
     .history-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
 
-    .history-item { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: #0f172a; border-radius: 6px; font-size: 13px; color: #94a3b8; cursor: pointer; transition: 0.2s; }
-    .history-item:hover, .history-item.active { background: var(--hover-color); color: #fff; }
-    .history-item.active { border-left: 3px solid var(--accent-color); }
-    .history-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; padding-right: 24px; }
+    /* Строка элемента истории чатов */
+    .chat-item { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: transparent; border-radius: 8px; font-size: 13px; color: #94a3b8; cursor: pointer; transition: 0.2s; }
+    .chat-item:hover, .chat-item.active { background: var(--hover-color); color: #fff; }
+    .chat-item.active { border-left: 3px solid var(--accent-color); }
+    .chat-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; padding-right: 8px; }
 
-    .action-btn { position: absolute; right: 8px; background: none; border: none; color: #64748b; font-size: 16px; padding: 2px 6px; cursor: pointer; border-radius: 4px; display: none; line-height: 1; }
-    .history-item:hover .action-btn { display: block; }
-    .action-btn:hover { color: #fff; background: #334155; }
+    .menu-btn { background: none; border: none; color: #64748b; padding: 4px; cursor: pointer; opacity: 0; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
+    .chat-item:hover .menu-btn { opacity: 1; }
+    .menu-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
 
-    .dropdown-menu { display: none; position: absolute; right: 8px; top: 32px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; z-index: 20; width: 120px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); flex-direction: column; }
-    .dropdown-menu.show { display: flex; }
-    .dropdown-item { padding: 8px 10px; font-size: 12px; cursor: pointer; width: 100%; text-align: left; background: none; border: none; color: #cbd5e1; }
-    .dropdown-item.delete { color: var(--danger-color); }
-    .dropdown-item:hover { background: var(--hover-color); }
+    .dropdown-menu { position: absolute; right: 10px; top: 38px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; z-index: 50; min-width: 140px; box-shadow: 0 4px 14px rgba(0,0,0,0.5); overflow: hidden; display: flex; flex-direction: column; }
+    .dropdown-menu.hidden { display: none; }
+    .dropdown-item { padding: 9px 12px; font-size: 12px; cursor: pointer; color: #cbd5e1; background: none; border: none; text-align: left; transition: background 0.15s; }
+    .dropdown-item:hover { background: var(--hover-color); color: #fff; }
+    .dropdown-item.danger { color: var(--danger-color); }
+    .dropdown-item.danger:hover { background: rgba(255, 77, 77, 0.15); }
 
-    /* Главный Canvas */
+    /* Главная область */
     .main { flex: 1; display: flex; flex-direction: column; position: relative; width: 100%; height: 100vh; overflow: hidden; }
     .top-bar { display: flex; justify-content: flex-end; align-items: center; width: 100%; max-width: var(--content-max-width); margin: 0 auto; padding: 16px 20px 0 20px; flex-shrink: 0; }
     .btn-telegram { background: rgba(14, 165, 233, 0.15); border: 1px solid rgba(14, 165, 233, 0.4); color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-decoration: none; }
@@ -77,26 +79,25 @@
     .card-title { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
     .card-desc { font-size: 11px; color: #475569; }
 
-    /* Сообщения диалога */
-    .chat-box { flex: 1; max-width: var(--content-max-width); width: 100%; margin: 0 auto; overflow-y: auto; display: none; flex-direction: column; gap: 20px; padding: 20px 20px 130px 20px; }
+    /* Рабочая область диалога */
+    .chat-box { flex: 1; max-width: var(--content-max-width); width: 100%; margin: 0 auto; overflow-y: auto; display: none; flex-direction: column; gap: 20px; padding: 20px 20px 140px 20px; }
     .msg-wrapper { display: flex; flex-direction: column; gap: 6px; width: 100%; position: relative; }
     
     .msg { padding: 12px 16px; border-radius: 12px; font-size: var(--chat-font-size); max-width: 85%; line-height: 1.6; word-break: break-word; }
     .msg-user { background: #0f172a; border: 1px solid #1e293b; align-self: flex-end; color: #fff; border-bottom-right-radius: 2px; }
     .msg-ai { background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.15); align-self: flex-start; color: #e2e8f0; border-bottom-left-radius: 2px; }
 
-    /* Курсор печати */
     .cursor-blink { display: inline-block; width: 7px; height: 15px; background-color: var(--accent-color); margin-left: 4px; animation: blink 0.8s infinite; vertical-align: middle; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-    /* Панель действий под ответом ассистента */
+    /* Панель действий под сообщением */
     .action-bar { display: flex; gap: 10px; font-size: 12px; color: #64748b; margin-top: 2px; padding-left: 4px; opacity: 0; transition: opacity 0.2s ease-in-out; }
     .msg-wrapper:hover .action-bar { opacity: 1; }
     .action-icon { cursor: pointer; transition: 0.2s; user-select: none; display: flex; align-items: center; gap: 5px; padding: 3px 6px; border-radius: 4px; }
     .action-icon:hover { color: var(--accent-color); background: rgba(255, 255, 255, 0.05); }
     .action-icon svg { width: 14px; height: 14px; fill: currentColor; }
 
-    /* Панель ввода (Input Dock) */
+    /* Поле ввода */
     .input-wrapper { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, transparent 0%, var(--bg-primary) 40%); padding: 20px 0 24px 0; display: flex; justify-content: center; }
     .input-container { max-width: var(--content-max-width); width: 100%; position: relative; display: flex; align-items: flex-end; padding: 0 20px; }
     .input-box { width: 100%; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 45px 12px 35px; color: #fff; font-size: 13.5px; outline: none; resize: none; max-height: 200px; min-height: 48px; line-height: 1.4; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
@@ -131,37 +132,37 @@
         <img src="logo.jpg" id="appLogo" alt="Logo" class="brand-img">
         <h1 id="appTitle">pyormavubo</h1>
       </div>
-      <button class="btn-new-chat" id="newChatBtn" data-i18n="newChat">+ Новый чат</button>
-      <button class="btn-settings" id="openSettingsBtn" data-i18n="settings">⚙️ Настройки</button>
-      <div class="history-title" data-i18n="historyTitle">История запросов</div>
-      <div class="history-list" id="historyList"></div>
+      <button class="btn-new-chat" id="newChatBtn">+ Новый чат</button>
+      <button class="btn-settings" id="openSettingsBtn">⚙️ Настройки</button>
+      <div class="history-title">История запросов</div>
+      <div class="history-list" id="chatHistoryList"></div>
     </div>
-    <div style="font-size: 12px; color: #64748b;" id="modeText"><span data-i18n="modeText">Режим:</span> Cosmic Pro AI ⚡</div>
+    <div style="font-size: 12px; color: #64748b;" id="modeText">Режим: Cosmic Pro AI ⚡</div>
   </div>
 
   <div class="main">
     <div class="top-bar">
-      <a href="https://t.me" target="_blank" class="btn-telegram" data-i18n="tgBot">Telegram-бот ↗</a>
+      <a href="https://t.me" target="_blank" class="btn-telegram">Telegram-бот ↗</a>
     </div>
 
     <div class="hero" id="heroSection">
-      <h2 data-i18n="heroTitle">С чего начнем сегодня?</h2>
+      <h2>С чего начнем сегодня?</h2>
       <div class="cards-grid">
         <div class="card" onclick="sendPrompt('📘 Создать веб-код')">
-          <div class="card-title" style="color: #38bdf8;" data-i18n="card1Title">📘 Создать веб-код</div>
-          <div class="card-desc" data-i18n="card1Desc">Разработка интерфейсов и блоков</div>
+          <div class="card-title" style="color: #38bdf8;">📘 Создать веб-код</div>
+          <div class="card-desc">Разработка интерфейсов и блоков</div>
         </div>
         <div class="card" onclick="sendPrompt('🧠 Решить задачу')">
-          <div class="card-title" style="color: #ec4899;" data-i18n="card2Title">🧠 Решить задачу</div>
-          <div class="card-desc" data-i18n="card2Desc">Алгоритмы, логика и головоломки</div>
+          <div class="card-title" style="color: #ec4899;">🧠 Решить задачу</div>
+          <div class="card-desc">Алгоритмы, логика и головоломки</div>
         </div>
         <div class="card" onclick="sendPrompt('📓 Сценарий и контент')">
-          <div class="card-title" style="color: #a855f7;" data-i18n="card3Title">📓 Сценарий и контент</div>
-          <div class="card-desc" data-i18n="card3Desc">Идеи для роликов и проектов</div>
+          <div class="card-title" style="color: #a855f7;">📓 Сценарий и контент</div>
+          <div class="card-desc">Идеи для роликов и проектов</div>
         </div>
         <div class="card" onclick="sendPrompt('⚡ Объяснить тему')">
-          <div class="card-title" style="color: #eab308;" data-i18n="card4Title">⚡ Объяснить тему</div>
-          <div class="card-desc" data-i18n="card4Desc">Разбор технологий и терминов</div>
+          <div class="card-title" style="color: #eab308;">⚡ Объяснить тему</div>
+          <div class="card-desc">Разбор технологий и терминов</div>
         </div>
       </div>
     </div>
@@ -177,112 +178,64 @@
     </div>
   </div>
 
-  <!-- Модальное окно удаления -->
-  <div class="modal" id="deleteModal">
-    <div class="modal-content">
-      <div class="modal-title" data-i18n="deleteTitle">Удалить чат?</div>
-      <p style="font-size: 13px; color: #94a3b8;" data-i18n="deleteDesc">Это действие нельзя будет отменить.</p>
-      <div class="modal-actions">
-        <button class="btn btn-secondary" id="cancelDeleteBtn" data-i18n="cancel">Отмена</button>
-        <button class="btn btn-danger" id="confirmDeleteBtn" data-i18n="deleteBtn">Удалить</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Модальное окно настроек -->
   <div class="modal" id="settingsModal">
     <div class="modal-content">
-      <div class="modal-title" data-i18n="settingsTitle">⚙️ Настройки приложения</div>
+      <div class="modal-title">⚙️ Настройки приложения</div>
 
       <div class="setting-group">
-        <label class="setting-label" data-i18n="langLabel">Язык интерфейса / Language</label>
-        <select class="setting-select" id="langSelect">
-          <option value="ru">Русский (Russian)</option>
-          <option value="cs">Čeština (Czech)</option>
-          <option value="en">English (English)</option>
-          <option value="fr">Français (French)</option>
-          <option value="es">Español (Spanish)</option>
-          <option value="de">Deutsch (German)</option>
-          <option value="it">Italiano (Italian)</option>
-          <option value="pt">Português (Portuguese)</option>
-          <option value="uk">Українська (Ukrainian)</option>
-          <option value="pl">Polski (Polish)</option>
-          <option value="zh">中文 (Chinese)</option>
-          <option value="ja">日本語 (Japanese)</option>
-          <option value="ko">한국어 (Korean)</option>
-          <option value="ar">العربية (Arabic)</option>
-          <option value="tr">Türkçe (Turkish)</option>
-          <option value="nl">Nederlands (Dutch)</option>
-          <option value="sv">Svenska (Swedish)</option>
-          <option value="fi">Suomi (Finnish)</option>
-          <option value="no">Norsk (Norwegian)</option>
-          <option value="da">Dansk (Danish)</option>
-          <option value="el">Ελληνικά (Greek)</option>
-          <option value="he">עברית (Hebrew)</option>
-          <option value="hi">हिन्दी (Hindi)</option>
-        </select>
-      </div>
-
-      <div class="setting-group">
-        <label class="setting-label" data-i18n="themeLabel">Тема оформления</label>
+        <label class="setting-label">Тема оформления</label>
         <select class="setting-select" id="themeSelect">
-          <option value="dark" data-i18n="themeDark">Темная Cosmic (По умолчанию)</option>
-          <option value="light" data-i18n="themeLight">Светлая Minimal</option>
-          <option value="cyberpunk" data-i18n="themeCyber">Неон Киберпанк</option>
+          <option value="dark">Темная Cosmic (По умолчанию)</option>
+          <option value="light">Светлая Minimal</option>
+          <option value="cyberpunk">Неон Киберпанк</option>
         </select>
       </div>
 
       <div class="setting-group">
-        <label class="setting-label" data-i18n="nameLabel">Название приложения / бота</label>
+        <label class="setting-label">Название приложения / бота</label>
         <input type="text" class="setting-input" id="titleInput" value="pyormavubo">
       </div>
 
       <div class="setting-group">
-        <label class="setting-label" data-i18n="logoLabel">Ссылка на логотип (URL)</label>
+        <label class="setting-label">Ссылка на логотип (URL)</label>
         <input type="text" class="setting-input" id="logoInput" value="logo.jpg">
       </div>
 
-      <div class="setting-group">
-        <label class="setting-label" data-i18n="fontLabel">Размер шрифта в чате</label>
-        <select class="setting-select" id="fontSizeSelect">
-          <option value="12px" data-i18n="fontSmall">Мелкий (12px)</option>
-          <option value="14px" data-i18n="fontStandard" selected>Стандартный (14px)</option>
-          <option value="16px" data-i18n="fontLarge">Крупный (16px)</option>
-        </select>
-      </div>
-
       <div class="setting-group" style="margin-top: 20px; border-top: 1px solid #1e293b; padding-top: 15px;">
-        <label class="setting-label" style="color: var(--danger-color);" data-i18n="clearLabel">Очистка памяти браузера</label>
-        <button class="btn btn-danger" id="clearAllBtn" style="width: 100%;" data-i18n="clearBtn">Удалить всю историю чатов</button>
+        <label class="setting-label" style="color: var(--danger-color);">Очистка памяти браузера</label>
+        <button class="btn btn-danger" id="clearAllBtn" style="width: 100%;">Удалить всю историю чатов</button>
       </div>
 
       <div class="modal-actions">
-        <button class="btn btn-secondary" id="closeSettingsBtn" data-i18n="cancel">Отмена</button>
-        <button class="btn btn-primary" id="saveSettingsBtn" data-i18n="save">Сохранить</button>
+        <button class="btn btn-secondary" id="closeSettingsBtn">Отмена</button>
+        <button class="btn btn-primary" id="saveSettingsBtn">Сохранить</button>
       </div>
     </div>
   </div>
 
   <script>
-    const STORAGE_KEY = 'py_chats_v9';
-    const SETTINGS_KEY = 'py_settings_v6';
-
-    let activeChatId = null;
-    let itemToDeleteId = null;
-    let isGenerating = false;
-    let currentStreamInterval = null;
-    let userScrolledUp = false;
+    const STORAGE_KEY = 'ai_chats_v10';
+    const SETTINGS_KEY = 'ai_settings_v10';
 
     let chats = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     let settings = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {
-      lang: 'ru',
       theme: 'dark',
       title: 'pyormavubo',
-      logo: 'logo.jpg',
-      fontSize: '14px'
+      logo: 'logo.jpg'
     };
 
-    // SVG Иконки для Action Bar
+    let activeChatId = null;
+    let isGenerating = false;
+    let currentStreamInterval = null;
+
+    const chatListContainer = document.getElementById('chatHistoryList');
+    const chatBox = document.getElementById('chatBox');
+    const heroSection = document.getElementById('heroSection');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const settingsModal = document.getElementById('settingsModal');
+
     const icons = {
       copy: `<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>`,
       regenerate: `<svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>`,
@@ -290,117 +243,112 @@
       dislike: `<svg viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>`
     };
 
-    const translations = {
-      ru: {
-        newChat: "+ Новый чат", settings: "⚙️ Настройки", historyTitle: "История запросов", modeText: "Режим:", tgBot: "Telegram-бот ↗",
-        heroTitle: "С чего начнем сегодня?", card1Title: "📘 Создать веб-код", card1Desc: "Разработка интерфейсов и блоков",
-        card2Title: "🧠 Решить задачу", card2Desc: "Алгоритмы, логика и головоломки", card3Title: "📓 Сценарий и контент", card3Desc: "Идеи для роликов и проектов",
-        card4Title: "⚡ Объяснить тему", card4Desc: "Разбор технологий и терминов", inputPlaceholder: "Введите сообщение...",
-        settingsTitle: "⚙️ Настройки приложения", langLabel: "Язык интерфейса / Language", themeLabel: "Тема оформления",
-        themeDark: "Темная Cosmic (По умолчанию)", themeLight: "Светлая Minimal", themeCyber: "Неон Киберпанк",
-        nameLabel: "Название приложения / бота", logoLabel: "Ссылка на логотип (URL)", fontLabel: "Размер шрифта в чате",
-        fontSmall: "Мелкий (12px)", fontStandard: "Стандартный (14px)", fontLarge: "Крупный (16px)",
-        clearLabel: "Очистка памяти браузера", clearBtn: "Удалить всю историю чатов", cancel: "Отмена", save: "Сохранить",
-        deleteTitle: "Удалить чат?", deleteDesc: "Это действие нельзя будет отменить.", deleteBtn: "Удалить", deleteMenu: "Удалить",
-        copy: "Скопировать", copied: "Скопировано!", regenerate: "Повторить"
-      },
-      en: {
-        newChat: "+ New Chat", settings: "⚙️ Settings", historyTitle: "Chat History", modeText: "Mode:", tgBot: "Telegram Bot ↗",
-        heroTitle: "Where shall we begin today?", card1Title: "📘 Create Web Code", card1Desc: "Interface development & components",
-        card2Title: "🧠 Solve a Problem", card2Desc: "Algorithms, logic & puzzles", card3Title: "📓 Script & Content", card3Desc: "Ideas for videos & projects",
-        card4Title: "⚡ Explain a Topic", card4Desc: "Breakdown of tech & concepts", inputPlaceholder: "Type a message...",
-        settingsTitle: "⚙️ App Settings", langLabel: "Interface Language", themeLabel: "Theme",
-        themeDark: "Dark Cosmic (Default)", themeLight: "Light Minimal", themeCyber: "Neon Cyberpunk",
-        nameLabel: "App / Bot Name", logoLabel: "Logo URL", fontLabel: "Chat Font Size",
-        fontSmall: "Small (12px)", fontStandard: "Standard (14px)", fontLarge: "Large (16px)",
-        clearLabel: "Browser Storage", clearBtn: "Clear All Chat History", cancel: "Cancel", save: "Save",
-        deleteTitle: "Delete Chat?", deleteDesc: "This action cannot be undone.", deleteBtn: "Delete", deleteMenu: "Delete",
-        copy: "Copy", copied: "Copied!", regenerate: "Regenerate"
-      }
-    };
+    // --- 1. Умная генерация заголовков ---
+    function generateChatTitle(text) {
+      const cleanText = text.trim();
+      const greetings = ['привет', 'здравствуйте', 'hi', 'hello', 'добрый день', 'добрый вечер'];
+      const isOnlyGreeting = greetings.includes(cleanText.toLowerCase());
 
-    function getI18nText(key) {
-      const dict = translations[settings.lang] || translations['en'];
-      return dict[key] || translations['en'][key] || key;
-    }
+      if (isOnlyGreeting) return 'Новый диалог';
 
-    function translateUI() {
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        el.innerText = getI18nText(key);
+      let promptText = cleanText;
+      greetings.forEach(g => {
+        const reg = new RegExp(`^${g}[,\\s!.]*`, 'i');
+        promptText = promptText.replace(reg, '');
       });
-      document.getElementById('userInput').placeholder = getI18nText('inputPlaceholder');
+
+      if (!promptText) return 'Новый диалог';
+
+      const words = promptText.split(/\s+/).slice(0, 4).join(' ');
+      return words.charAt(0).toUpperCase() + words.slice(1);
     }
 
-    const historyList = document.getElementById('historyList');
-    const chatBox = document.getElementById('chatBox');
-    const heroSection = document.getElementById('heroSection');
-    const userInput = document.getElementById('userInput');
-    const sendBtn = document.getElementById('sendBtn');
-    
-    const deleteModal = document.getElementById('deleteModal');
-    const settingsModal = document.getElementById('settingsModal');
-
-    // Авто-размер для Textarea с ограничением до 200px
-    userInput.addEventListener('input', function() {
-      this.style.height = 'auto';
-      this.style.height = Math.min(this.scrollHeight, 200) + 'px';
-    });
-
-    chatBox.addEventListener('scroll', () => {
-      const distanceToBottom = chatBox.scrollHeight - chatBox.scrollTop - chatBox.clientHeight;
-      userScrolledUp = distanceToBottom > 60;
-    });
-
-    function applySettings() {
-      document.getElementById('appTitle').innerText = settings.title;
-      document.getElementById('appLogo').src = settings.logo;
-      document.documentElement.style.setProperty('--chat-font-size', settings.fontSize);
-
-      document.body.className = '';
-      if (settings.theme === 'light') document.body.classList.add('theme-light');
-      if (settings.theme === 'cyberpunk') document.body.classList.add('theme-cyberpunk');
-
-      translateUI();
+    // --- 2. Естественные ответы бота ---
+    function generateAIResponse(userText) {
+      const lower = userText.toLowerCase().trim();
+      if (['привет', 'здравствуйте', 'hi', 'hello'].includes(lower)) {
+        return "Привет! Чем могу помочь сегодня? Можем написать код, разобрать идею или составить план.";
+      }
+      if (lower.includes('код') || lower.includes('css') || lower.includes('html') || lower.includes('js')) {
+        return "Отличная задача. Давайте разберем реализацию и построим чистую архитектуру компонента.";
+      }
+      return `Готов решить ваш запрос. Давайте разберем ключевые шаги и оптимизируем результат.`;
     }
 
-    function saveToStorage() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
-    }
-
-    function generateAutoTitle(chatId, firstMessageText) {
-      setTimeout(() => {
-        const chat = chats.find(c => c.id === chatId);
-        if (chat) {
-          const words = firstMessageText.split(' ').slice(0, 4).join(' ');
-          chat.title = words.charAt(0).toUpperCase() + words.slice(1);
-          saveToStorage();
-          renderHistory();
-        }
-      }, 1200);
-    }
-
-    function renderHistory() {
-      historyList.innerHTML = '';
-      const deleteText = getI18nText('deleteMenu');
+    // --- 3. Отрисовка списка чатов и Dropdown ---
+    function renderChatList() {
+      chatListContainer.innerHTML = '';
 
       chats.forEach(chat => {
         const item = document.createElement('div');
-        item.className = 'history-item' + (chat.id === activeChatId ? ' active' : '');
-        item.setAttribute('data-id', chat.id);
+        item.className = `chat-item ${chat.id === activeChatId ? 'active' : ''}`;
+        item.dataset.id = chat.id;
 
         item.innerHTML = `
-          <span class="history-text">${chat.title}</span>
-          <button class="action-btn">⋮</button>
-          <div class="dropdown-menu">
-            <button class="dropdown-item delete">${deleteText}</button>
+          <span class="chat-title">${chat.title}</span>
+          <button class="menu-btn" title="Опции">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu hidden">
+            <button class="dropdown-item btn-rename">✏️ Переименовать</button>
+            <button class="dropdown-item danger btn-delete">🗑️ Удалить</button>
           </div>
         `;
 
-        historyList.appendChild(item);
+        item.addEventListener('click', (e) => {
+          if (!e.target.closest('.menu-btn') && !e.target.closest('.dropdown-menu')) {
+            activeChatId = chat.id;
+            closeAllDropdowns();
+            renderChatList();
+            renderMessages();
+          }
+        });
+
+        const menuBtn = item.querySelector('.menu-btn');
+        const dropdown = item.querySelector('.dropdown-menu');
+
+        menuBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isHidden = dropdown.classList.contains('hidden');
+          closeAllDropdowns();
+          if (isHidden) dropdown.classList.remove('hidden');
+        });
+
+        item.querySelector('.btn-rename').addEventListener('click', (e) => {
+          e.stopPropagation();
+          closeAllDropdowns();
+          const newTitle = prompt('Введите новое название чата:', chat.title);
+          if (newTitle && newTitle.trim()) {
+            chat.title = newTitle.trim();
+            saveChats();
+            renderChatList();
+          }
+        });
+
+        item.querySelector('.btn-delete').addEventListener('click', (e) => {
+          e.stopPropagation();
+          closeAllDropdowns();
+          if (confirm('Вы уверены, что хотите удалить этот чат?')) {
+            chats = chats.filter(c => c.id !== chat.id);
+            if (activeChatId === chat.id) activeChatId = chats.length > 0 ? chats[0].id : null;
+            saveChats();
+            renderChatList();
+            renderMessages();
+          }
+        });
+
+        chatListContainer.appendChild(item);
       });
     }
 
+    function closeAllDropdowns() {
+      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
+    }
+    document.addEventListener('click', closeAllDropdowns);
+
+    // --- 4. Отрисовка диалога ---
     function renderMessages() {
       chatBox.innerHTML = '';
       const currentChat = chats.find(c => c.id === activeChatId);
@@ -422,11 +370,9 @@
             const actionBar = document.createElement('div');
             actionBar.className = 'action-bar';
             
-            const rawText = m.text.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/"/g, '&quot;');
-            
             actionBar.innerHTML = `
-              <span class="action-icon" onclick="copyMessage(this, \`${rawText}\`)">${icons.copy} <span>${getI18nText('copy')}</span></span>
-              <span class="action-icon" onclick="regenerateLastReply(${idx})">${icons.regenerate} <span>${getI18nText('regenerate')}</span></span>
+              <span class="action-icon" onclick="copyText(this, \`${m.text.replace(/`/g, '\\`')}\`)">${icons.copy} <span>Скопировать</span></span>
+              <span class="action-icon" onclick="regenerateReply(${idx})">${icons.regenerate} <span>Повторить</span></span>
               <span class="action-icon" onclick="this.style.color='var(--accent-color)'">${icons.like}</span>
               <span class="action-icon" onclick="this.style.color='var(--danger-color)'">${icons.dislike}</span>
             `;
@@ -436,23 +382,19 @@
           chatBox.appendChild(wrapper);
         });
 
-        if (!userScrolledUp) {
-          chatBox.scrollTop = chatBox.scrollHeight;
-        }
+        chatBox.scrollTop = chatBox.scrollHeight;
       } else {
         heroSection.style.display = 'block';
         chatBox.style.display = 'none';
       }
     }
 
-    function copyMessage(btnEl, text) {
+    function copyText(btnEl, text) {
       navigator.clipboard.writeText(text).then(() => {
         const textSpan = btnEl.querySelector('span');
-        const originalText = textSpan.innerText;
-        textSpan.innerText = getI18nText('copied');
-        setTimeout(() => {
-          textSpan.innerText = originalText;
-        }, 2000);
+        const orig = textSpan.innerText;
+        textSpan.innerText = 'Скопировано!';
+        setTimeout(() => textSpan.innerText = orig, 2000);
       });
     }
 
@@ -470,32 +412,23 @@
       chatBox.appendChild(wrapper);
 
       let currentLength = 0;
-      const speed = 20;
-
       currentStreamInterval = setInterval(() => {
         currentLength += 2;
         msgDiv.innerHTML = responseText.substring(0, currentLength) + '<span class="cursor-blink"></span>';
-
-        if (!userScrolledUp) {
-          chatBox.scrollTop = chatBox.scrollHeight;
-        }
+        chatBox.scrollTop = chatBox.scrollHeight;
 
         if (currentLength >= responseText.length) {
-          stopStreaming(chat, responseText, wrapper, msgDiv);
+          clearInterval(currentStreamInterval);
+          isGenerating = false;
+          sendBtn.innerText = '→';
+          sendBtn.classList.remove('stop-btn');
+
+          msgDiv.innerText = responseText;
+          chat.messages.push({ role: 'assistant', text: responseText });
+          saveChats();
+          renderMessages();
         }
-      }, speed);
-    }
-
-    function stopStreaming(chat, fullText, wrapper, msgDiv) {
-      clearInterval(currentStreamInterval);
-      isGenerating = false;
-      sendBtn.innerText = '→';
-      sendBtn.classList.remove('stop-btn');
-
-      msgDiv.innerText = fullText;
-      chat.messages.push({ role: 'assistant', text: fullText });
-      saveToStorage();
-      renderMessages();
+      }, 20);
     }
 
     function handleSend() {
@@ -511,52 +444,46 @@
       if (!text) return;
 
       let currentChat = chats.find(c => c.id === activeChatId);
-      let isFirstMessage = false;
 
       if (!currentChat) {
-        isFirstMessage = true;
-        const fallbackTitle = text.length > 25 ? text.substring(0, 25) + '...' : text;
         currentChat = {
           id: Date.now(),
-          title: fallbackTitle,
+          title: generateChatTitle(text),
           messages: []
         };
         chats.unshift(currentChat);
         activeChatId = currentChat.id;
+      } else if (currentChat.title === 'Новый диалог') {
+        currentChat.title = generateChatTitle(text);
       }
 
       currentChat.messages.push({ role: 'user', text: text });
       userInput.value = '';
       userInput.style.height = 'auto';
 
-      saveToStorage();
-      renderHistory();
+      saveChats();
+      renderChatList();
       renderMessages();
 
-      if (isFirstMessage) {
-        generateAutoTitle(currentChat.id, text);
-      }
-
       setTimeout(() => {
-        const replyText = `Принято! Ваш запрос: "${text}". Я сгенерировал этот ответ с поддержкой потоковой передачи данных (Streaming UI) и автоскроллом!`;
+        const replyText = generateAIResponse(text);
         streamAIResponse(currentChat, replyText);
       }, 300);
     }
 
-    function regenerateLastReply(msgIndex) {
+    function regenerateReply(idx) {
       const currentChat = chats.find(c => c.id === activeChatId);
       if (!currentChat) return;
 
-      currentChat.messages = currentChat.messages.slice(0, msgIndex);
-      saveToStorage();
+      currentChat.messages = currentChat.messages.slice(0, idx);
+      saveChats();
       renderMessages();
 
-      const lastUserMsg = currentChat.messages[currentChat.messages.length - 1];
-      const textToUse = lastUserMsg ? lastUserMsg.text : 'Запрос';
+      const lastMsg = currentChat.messages[currentChat.messages.length - 1];
+      const textToUse = lastMsg ? lastMsg.text : 'Запрос';
 
       setTimeout(() => {
-        const replyText = `[Повторная генерация] Ответ пересоздан для запроса: "${textToUse}".`;
-        streamAIResponse(currentChat, replyText);
+        streamAIResponse(currentChat, generateAIResponse(textToUse));
       }, 300);
     }
 
@@ -565,104 +492,71 @@
       handleSend();
     }
 
-    historyList.addEventListener('click', (e) => {
-      const itemEl = e.target.closest('.history-item');
-      if (!itemEl) return;
-      const id = Number(itemEl.getAttribute('data-id'));
-      const dropdown = itemEl.querySelector('.dropdown-menu');
+    function saveChats() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
+    }
 
-      if (e.target.classList.contains('action-btn')) {
-        e.stopPropagation();
-        document.querySelectorAll('.dropdown-menu').forEach(m => {
-          if (m !== dropdown) m.classList.remove('show');
-        });
-        dropdown.classList.toggle('show');
-        return;
-      }
-
-      if (e.target.classList.contains('delete')) {
-        e.stopPropagation();
-        itemToDeleteId = id;
-        dropdown.classList.remove('show');
-        deleteModal.classList.add('show');
-        return;
-      }
-
-      activeChatId = id;
-      renderHistory();
-      renderMessages();
+    // --- 5. Авто-размер поля ввода ---
+    userInput.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 200) + 'px';
     });
 
-    document.addEventListener('click', () => {
-      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
-    });
-
-    document.getElementById('newChatBtn').addEventListener('click', () => {
-      activeChatId = null;
-      renderHistory();
-      renderMessages();
-    });
-
-    document.getElementById('cancelDeleteBtn').addEventListener('click', () => deleteModal.classList.remove('show'));
-    document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
-      if (itemToDeleteId) {
-        chats = chats.filter(c => c.id !== itemToDeleteId);
-        if (activeChatId === itemToDeleteId) activeChatId = null;
-        saveToStorage();
-        renderHistory();
-        renderMessages();
-      }
-      deleteModal.classList.remove('show');
-    });
-
-    document.getElementById('openSettingsBtn').addEventListener('click', () => {
-      document.getElementById('langSelect').value = settings.lang;
-      document.getElementById('themeSelect').value = settings.theme;
-      document.getElementById('titleInput').value = settings.title;
-      document.getElementById('logoInput').value = settings.logo;
-      document.getElementById('fontSizeSelect').value = settings.fontSize;
-      settingsModal.classList.add('show');
-    });
-
-    document.getElementById('closeSettingsBtn').addEventListener('click', () => settingsModal.classList.remove('show'));
-    document.getElementById('saveSettingsBtn').addEventListener('click', () => {
-      settings.lang = document.getElementById('langSelect').value;
-      settings.theme = document.getElementById('themeSelect').value;
-      settings.title = document.getElementById('titleInput').value;
-      settings.logo = document.getElementById('logoInput').value;
-      settings.fontSize = document.getElementById('fontSizeSelect').value;
-
-      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-      applySettings();
-      renderHistory();
-      settingsModal.classList.remove('show');
-    });
-
-    document.getElementById('langSelect').addEventListener('change', (e) => {
-      settings.lang = e.target.value;
-      translateUI();
-    });
-
-    document.getElementById('clearAllBtn').addEventListener('click', () => {
-      localStorage.removeItem(STORAGE_KEY);
-      chats = [];
-      activeChatId = null;
-      renderHistory();
-      renderMessages();
-      settingsModal.classList.remove('show');
-    });
-
-    sendBtn.onclick = handleSend;
-    userInput.onkeydown = (e) => {
+    userInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         handleSend();
       }
+    });
+
+    sendBtn.onclick = handleSend;
+
+    document.getElementById('newChatBtn').onclick = () => {
+      activeChatId = null;
+      renderChatList();
+      renderMessages();
     };
+
+    // Настройки
+    document.getElementById('openSettingsBtn').onclick = () => {
+      document.getElementById('themeSelect').value = settings.theme;
+      document.getElementById('titleInput').value = settings.title;
+      document.getElementById('logoInput').value = settings.logo;
+      settingsModal.classList.add('show');
+    };
+
+    document.getElementById('closeSettingsBtn').onclick = () => settingsModal.classList.remove('show');
+
+    document.getElementById('saveSettingsBtn').onclick = () => {
+      settings.theme = document.getElementById('themeSelect').value;
+      settings.title = document.getElementById('titleInput').value;
+      settings.logo = document.getElementById('logoInput').value;
+
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+      applySettings();
+      settingsModal.classList.remove('show');
+    };
+
+    document.getElementById('clearAllBtn').onclick = () => {
+      localStorage.removeItem(STORAGE_KEY);
+      chats = [];
+      activeChatId = null;
+      renderChatList();
+      renderMessages();
+      settingsModal.classList.remove('show');
+    };
+
+    function applySettings() {
+      document.getElementById('appTitle').innerText = settings.title;
+      document.getElementById('appLogo').src = settings.logo;
+      document.body.className = '';
+      if (settings.theme === 'light') document.body.classList.add('theme-light');
+      if (settings.theme === 'cyberpunk') document.body.classList.add('theme-cyberpunk');
+    }
 
     window.onload = () => {
       applySettings();
-      renderHistory();
+      renderChatList();
       renderMessages();
     };
   </script>
