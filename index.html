@@ -120,7 +120,7 @@
       <div class="history-title" data-i18n="historyTitle">История запросов</div>
       <div class="history-list" id="historyList"></div>
     </div>
-    <div style="font-size: 12px; color: #64748b;" id="modeText">Режим: Cosmic Pro AI ⚡</div>
+    <div style="font-size: 12px; color: #64748b;" id="modeText"><span data-i18n="modeText">Режим:</span> Cosmic Pro AI ⚡</div>
   </div>
 
   <div class="main">
@@ -132,19 +132,19 @@
       <h2 data-i18n="heroTitle">С чего начнем сегодня?</h2>
       <div class="cards-grid">
         <div class="card" onclick="sendPrompt('📘 Создать веб-код')">
-          <div class="card-title" style="color: #38bdf8;">📘 Создать веб-код</div>
+          <div class="card-title" style="color: #38bdf8;" data-i18n="card1Title">📘 Создать веб-код</div>
           <div class="card-desc" data-i18n="card1Desc">Разработка интерфейсов и блоков</div>
         </div>
         <div class="card" onclick="sendPrompt('🧠 Решить задачу')">
-          <div class="card-title" style="color: #ec4899;">🧠 Решить задачу</div>
+          <div class="card-title" style="color: #ec4899;" data-i18n="card2Title">🧠 Решить задачу</div>
           <div class="card-desc" data-i18n="card2Desc">Алгоритмы, логика и головоломки</div>
         </div>
         <div class="card" onclick="sendPrompt('📓 Сценарий и контент')">
-          <div class="card-title" style="color: #a855f7;">📓 Сценарий и контент</div>
+          <div class="card-title" style="color: #a855f7;" data-i18n="card3Title">📓 Сценарий и контент</div>
           <div class="card-desc" data-i18n="card3Desc">Идеи для роликов и проектов</div>
         </div>
         <div class="card" onclick="sendPrompt('⚡ Объяснить тему')">
-          <div class="card-title" style="color: #eab308;">⚡ Объяснить тему</div>
+          <div class="card-title" style="color: #eab308;" data-i18n="card4Title">⚡ Объяснить тему</div>
           <div class="card-desc" data-i18n="card4Desc">Разбор технологий и терминов</div>
         </div>
       </div>
@@ -180,61 +180,20 @@
         <label class="setting-label" data-i18n="langLabel">Язык интерфейса / Language</label>
         <select class="setting-select" id="langSelect">
           <option value="ru">Русский (Russian)</option>
+          <option value="cs">Čeština (Czech)</option>
           <option value="en">English (English)</option>
           <option value="fr">Français (French)</option>
           <option value="es">Español (Spanish)</option>
           <option value="de">Deutsch (German)</option>
-          <option value="zh">中文 (Chinese)</option>
-          <option value="ja">日本語 (Japanese)</option>
-          <option value="ko">한국어 (Korean)</option>
-          <option value="it">Italiano (Italian)</option>
-          <option value="pt">Português (Portuguese)</option>
-          <option value="uk">Українська (Ukrainian)</option>
-          <option value="kk">Қазақша (Kazakh)</option>
-          <option value="ar">العربية (Arabic)</option>
-          <option value="hi">हिन्दी (Hindi)</option>
-          <option value="tr">Türkçe (Turkish)</option>
-          <option value="nl">Nederlands (Dutch)</option>
-          <option value="pl">Polski (Polish)</option>
-          <option value="sv">Svenska (Swedish)</option>
-          <option value="no">Norsk (Norwegian)</option>
-          <option value="fi">Suomi (Finnish)</option>
-          <option value="da">Dansk (Danish)</option>
-          <option value="cs">Čeština (Czech)</option>
-          <option value="el">Ελληνικά (Greek)</option>
-          <option value="he">עברית (Hebrew)</option>
-          <option value="th">ไทย (Thai)</option>
-          <option value="vi">Tiếng Việt (Vietnamese)</option>
-          <option value="id">Bahasa Indonesia</option>
-          <option value="ms">Bahasa Melayu</option>
-          <option value="ro">Română (Romanian)</option>
-          <option value="hu">Magyar (Hungarian)</option>
-          <option value="sk">Slovenčina (Slovak)</option>
-          <option value="bg">Български (Bulgarian)</option>
-          <option value="hr">Hrvatski (Croatian)</option>
-          <option value="sr">Српски (Serbian)</option>
-          <option value="sl">Slovenščina (Slovenian)</option>
-          <option value="lt">Lietuvių (Lithuanian)</option>
-          <option value="lv">Latviešu (Latvian)</option>
-          <option value="et">Eesti (Estonian)</option>
-          <option value="hy">Հայերեն (Armenian)</option>
-          <option value="ka">ქართული (Georgian)</option>
-          <option value="az">Azərbaycan (Azerbaijani)</option>
-          <option value="uz">Oʻzbekcha (Uzbek)</option>
-          <option value="be">Беларуская (Belarusian)</option>
-          <option value="fil">Filipino</option>
-          <option value="sw">Kiswahili (Swahili)</option>
-          <option value="fa">فارسی (Persian)</option>
-          <option value="ur">اردو (Urdu)</option>
         </select>
       </div>
 
       <div class="setting-group">
         <label class="setting-label" data-i18n="themeLabel">Тема оформления</label>
         <select class="setting-select" id="themeSelect">
-          <option value="dark">Темная Cosmic (По умолчанию)</option>
-          <option value="light">Светлая Minimal</option>
-          <option value="cyberpunk">Неон Киберпанк</option>
+          <option value="dark" data-i18n="themeDark">Темная Cosmic (По умолчанию)</option>
+          <option value="light" data-i18n="themeLight">Светлая Minimal</option>
+          <option value="cyberpunk" data-i18n="themeCyber">Неон Киберпанк</option>
         </select>
       </div>
 
@@ -251,9 +210,9 @@
       <div class="setting-group">
         <label class="setting-label" data-i18n="fontLabel">Размер шрифта в чате</label>
         <select class="setting-select" id="fontSizeSelect">
-          <option value="12px">Мелкий (12px)</option>
-          <option value="13.5px" selected>Стандартный (13.5px)</option>
-          <option value="15px">Крупный (15px)</option>
+          <option value="12px" data-i18n="fontSmall">Мелкий (12px)</option>
+          <option value="13.5px" data-i18n="fontStandard" selected>Стандартный (13.5px)</option>
+          <option value="15px" data-i18n="fontLarge">Крупный (15px)</option>
         </select>
       </div>
 
@@ -285,21 +244,36 @@
       fontSize: '13.5px'
     };
 
-    // Словарь локализации (i18n)
+    // Полный словарь переводов интерфейса
     const translations = {
       ru: {
         newChat: "+ Новый чат",
         settings: "⚙️ Настройки",
         historyTitle: "История запросов",
+        modeText: "Режим:",
         tgBot: "Telegram-бот ↗",
         heroTitle: "С чего начнем сегодня?",
+        card1Title: "📘 Создать веб-код",
+        card1Desc: "Разработка интерфейсов и блоков",
+        card2Title: "🧠 Решить задачу",
+        card2Desc: "Алгоритмы, логика и головоломки",
+        card3Title: "📓 Сценарий и контент",
+        card3Desc: "Идеи для роликов и проектов",
+        card4Title: "⚡ Объяснить тему",
+        card4Desc: "Разбор технологий и терминов",
         inputPlaceholder: "Введите сообщение...",
         settingsTitle: "⚙️ Настройки приложения",
         langLabel: "Язык интерфейса / Language",
         themeLabel: "Тема оформления",
+        themeDark: "Темная Cosmic (По умолчанию)",
+        themeLight: "Светлая Minimal",
+        themeCyber: "Неон Киберпанк",
         nameLabel: "Название приложения / бота",
         logoLabel: "Ссылка на логотип (URL)",
         fontLabel: "Размер шрифта в чате",
+        fontSmall: "Мелкий (12px)",
+        fontStandard: "Стандартный (13.5px)",
+        fontLarge: "Крупный (15px)",
         clearLabel: "Очистка памяти браузера",
         clearBtn: "Удалить всю историю чатов",
         cancel: "Отмена",
@@ -307,25 +281,73 @@
         deleteTitle: "Удалить чат?",
         deleteDesc: "Это действие нельзя будет отменить.",
         deleteBtn: "Удалить",
-        card1Desc: "Разработка интерфейсов и блоков",
-        card2Desc: "Алгоритмы, логика и головоломки",
-        card3Desc: "Идеи для роликов и проектов",
-        card4Desc: "Разбор технологий и терминов",
         deleteMenu: "Удалить"
+      },
+      cs: {
+        newChat: "+ Nový chat",
+        settings: "⚙️ Nastavení",
+        historyTitle: "Historie dotazů",
+        modeText: "Režim:",
+        tgBot: "Telegram bot ↗",
+        heroTitle: "Čím dnes začneme?",
+        card1Title: "📘 Vytvořit kód",
+        card1Desc: "Vývoj rozhraní a bloků",
+        card2Title: "🧠 Vyřešit úkol",
+        card2Desc: "Algoritmy, logika a hádanky",
+        card3Title: "📓 Scénář a obsah",
+        card3Desc: "Nápady pro videa a projekty",
+        card4Title: "⚡ Vysvětlit téma",
+        card4Desc: "Rozbor technologií a termínů",
+        inputPlaceholder: "Napište zprávu...",
+        settingsTitle: "⚙️ Nastavení aplikace",
+        langLabel: "Jazyk rozhraní / Language",
+        themeLabel: "Téma vzhledu",
+        themeDark: "Tmavá Cosmic (Výchozí)",
+        themeLight: "Světlá Minimal",
+        themeCyber: "Neon Kyberpunk",
+        nameLabel: "Název aplikace / bota",
+        logoLabel: "Odkaz na logo (URL)",
+        fontLabel: "Velikost písma v chatu",
+        fontSmall: "Malé (12px)",
+        fontStandard: "Standardní (13.5px)",
+        fontLarge: "Velké (15px)",
+        clearLabel: "Vymazat paměť prohlížeče",
+        clearBtn: "Smazat celou historii chatů",
+        cancel: "Zrušit",
+        save: "Uložit",
+        deleteTitle: "Smazat chat?",
+        deleteDesc: "Tuto akci nelze vrátit zpět.",
+        deleteBtn: "Smazat",
+        deleteMenu: "Smazat"
       },
       en: {
         newChat: "+ New Chat",
         settings: "⚙️ Settings",
         historyTitle: "Chat History",
+        modeText: "Mode:",
         tgBot: "Telegram Bot ↗",
-        heroTitle: "What shall we start with today?",
+        heroTitle: "Where shall we begin today?",
+        card1Title: "📘 Create Web Code",
+        card1Desc: "Interface development & components",
+        card2Title: "🧠 Solve a Problem",
+        card2Desc: "Algorithms, logic & puzzles",
+        card3Title: "📓 Script & Content",
+        card3Desc: "Ideas for videos & projects",
+        card4Title: "⚡ Explain a Topic",
+        card4Desc: "Breakdown of tech & concepts",
         inputPlaceholder: "Type a message...",
         settingsTitle: "⚙️ App Settings",
         langLabel: "Interface Language",
         themeLabel: "Theme",
+        themeDark: "Dark Cosmic (Default)",
+        themeLight: "Light Minimal",
+        themeCyber: "Neon Cyberpunk",
         nameLabel: "App / Bot Name",
         logoLabel: "Logo URL",
         fontLabel: "Chat Font Size",
+        fontSmall: "Small (12px)",
+        fontStandard: "Standard (13.5px)",
+        fontLarge: "Large (15px)",
         clearLabel: "Browser Storage",
         clearBtn: "Clear All Chat History",
         cancel: "Cancel",
@@ -333,69 +355,124 @@
         deleteTitle: "Delete Chat?",
         deleteDesc: "This action cannot be undone.",
         deleteBtn: "Delete",
-        card1Desc: "Interface & UI development",
-        card2Desc: "Algorithms, logic & puzzles",
-        card3Desc: "Ideas for videos & projects",
-        card4Desc: "Tech breakdown & terms",
         deleteMenu: "Delete"
       },
       fr: {
         newChat: "+ Nouvelle discussion",
         settings: "⚙️ Paramètres",
         historyTitle: "Historique",
+        modeText: "Mode :",
         tgBot: "Bot Telegram ↗",
         heroTitle: "Par quoi commençons-nous ?",
-        inputPlaceholder: "Tapez un message...",
-        settingsTitle: "⚙️ Paramètres",
+        card1Title: "📘 Créer du code Web",
+        card1Desc: "Développement d'interfaces et de blocs",
+        card2Title: "🧠 Résoudre un problème",
+        card2Desc: "Algorithmes, logique et énigmes",
+        card3Title: "📓 Scénario et contenu",
+        card3Desc: "Idées de vidéos et de projets",
+        card4Title: "⚡ Expliquer un sujet",
+        card4Desc: "Analyse des technologies et termes",
+        inputPlaceholder: "Écrivez un message...",
+        settingsTitle: "⚙️ Paramètres de l'application",
         langLabel: "Langue de l'interface",
         themeLabel: "Thème",
-        nameLabel: "Nom de l'application",
+        themeDark: "Sombre Cosmic (Par défaut)",
+        themeLight: "Clair Minimal",
+        themeCyber: "Néon Cyberpunk",
+        nameLabel: "Nom de l'application / bot",
         logoLabel: "URL du logo",
         fontLabel: "Taille de police",
+        fontSmall: "Petite (12px)",
+        fontStandard: "Standard (13.5px)",
+        fontLarge: "Grande (15px)",
         clearLabel: "Stockage du navigateur",
         clearBtn: "Effacer tout l'historique",
         cancel: "Annuler",
         save: "Enregistrer",
-        deleteTitle: "Supprimer ?",
+        deleteTitle: "Supprimer la discussion ?",
         deleteDesc: "Cette action est irréversible.",
         deleteBtn: "Supprimer",
-        card1Desc: "Développement d'interfaces",
-        card2Desc: "Algorithmes et logique",
-        card3Desc: "Idées de vidéos",
-        card4Desc: "Analyse technique",
         deleteMenu: "Supprimer"
       },
-      it: {
-        newChat: "+ Nuova chat",
-        settings: "⚙️ Impostazioni",
-        historyTitle: "Cronologia chat",
-        tgBot: "Telegram Bot ↗",
-        heroTitle: "Da dove cominciamo oggi?",
-        inputPlaceholder: "Scrivi un messaggio...",
-        settingsTitle: "⚙️ Impostazioni app",
-        langLabel: "Lingua interfaccia",
+      es: {
+        newChat: "+ Nuevo Chat",
+        settings: "⚙️ Ajustes",
+        historyTitle: "Historial de Chat",
+        modeText: "Modo:",
+        tgBot: "Bot de Telegram ↗",
+        heroTitle: "¿Por dónde empezamos hoy?",
+        card1Title: "📘 Crear código Web",
+        card1Desc: "Desarrollo de interfaces y bloques",
+        card2Title: "🧠 Resolver un problema",
+        card2Desc: "Algoritmos, lógica y acertijos",
+        card3Title: "📓 Guión y contenido",
+        card3Desc: "Ideas para videos y proyectos",
+        card4Title: "⚡ Explicar un tema",
+        card4Desc: "Análisis de tecnología y términos",
+        inputPlaceholder: "Escribe un mensaje...",
+        settingsTitle: "⚙️ Ajustes de la aplicación",
+        langLabel: "Idioma de interfaz",
         themeLabel: "Tema",
-        nameLabel: "Nome app / bot",
-        logoLabel: "URL logo",
-        fontLabel: "Dimensione carattere chat",
-        clearLabel: "Memoria browser",
-        clearBtn: "Cancella cronologia chat",
-        cancel: "Annulla",
-        save: "Salva",
-        deleteTitle: "Elimina chat?",
-        deleteDesc: "Questa azione non può essere annullata.",
-        deleteBtn: "Elimina",
-        card1Desc: "Sviluppo interfaccia",
-        card2Desc: "Algoritmi e logica",
-        card3Desc: "Idee per video",
-        card4Desc: "Analisi tecnica",
-        deleteMenu: "Elimina"
+        themeDark: "Oscuro Cosmic (Predeterminado)",
+        themeLight: "Claro Minimal",
+        themeCyber: "Neón Cyberpunk",
+        nameLabel: "Nombre de la aplicación / bot",
+        logoLabel: "URL del logotipo",
+        fontLabel: "Tamaño de fuente del chat",
+        fontSmall: "Pequeño (12px)",
+        fontStandard: "Estándar (13.5px)",
+        fontLarge: "Grande (15px)",
+        clearLabel: "Memoria del navegador",
+        clearBtn: "Borrar todo el historial",
+        cancel: "Cancelar",
+        save: "Guardar",
+        deleteTitle: "¿Eliminar chat?",
+        deleteDesc: "Esta acción no se puede deshacer.",
+        deleteBtn: "Eliminar",
+        deleteMenu: "Eliminar"
+      },
+      de: {
+        newChat: "+ Neuer Chat",
+        settings: "⚙️ Einstellungen",
+        historyTitle: "Chat-Verlauf",
+        modeText: "Modus:",
+        tgBot: "Telegram Bot ↗",
+        heroTitle: "Womit beginnen wir heute?",
+        card1Title: "📘 Webcode erstellen",
+        card1Desc: "Entwicklung von Interfaces & Blöcken",
+        card2Title: "🧠 Problem lösen",
+        card2Desc: "Algorithmen, Logik & Rätsel",
+        card3Title: "📓 Skript & Inhalt",
+        card3Desc: "Ideen für Videos & Projekte",
+        card4Title: "⚡ Thema erklären",
+        card4Desc: "Analyse von Technologien & Begriffen",
+        inputPlaceholder: "Nachricht eingeben...",
+        settingsTitle: "⚙️ App-Einstellungen",
+        langLabel: "Schnittstellensprache",
+        themeLabel: "Design-Thema",
+        themeDark: "Dunkel Cosmic (Standard)",
+        themeLight: "Hell Minimal",
+        themeCyber: "Neon Cyberpunk",
+        nameLabel: "App- / Bot-Name",
+        logoLabel: "Logo-URL",
+        fontLabel: "Schriftgröße im Chat",
+        fontSmall: "Klein (12px)",
+        fontStandard: "Standard (13.5px)",
+        fontLarge: "Groß (15px)",
+        clearLabel: "Browserspeicher leeren",
+        clearBtn: "Gesamten Verlauf löschen",
+        cancel: "Abbrechen",
+        save: "Speichern",
+        deleteTitle: "Chat löschen?",
+        deleteDesc: "Diese Aktion kann nicht rückgängig gemacht werden.",
+        deleteBtn: "Löschen",
+        deleteMenu: "Löschen"
       }
     };
 
     function translateUI() {
       const lang = settings.lang;
-      const dict = translations[lang] || translations['ru'];
+      const dict = translations[lang] || translations['en'];
 
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -404,7 +481,7 @@
         }
       });
 
-      document.getElementById('userInput').placeholder = dict['inputPlaceholder'] || "Введите сообщение...";
+      document.getElementById('userInput').placeholder = dict['inputPlaceholder'] || "Type a message...";
     }
 
     const historyList = document.getElementById('historyList');
@@ -441,21 +518,22 @@
 
       localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
       applySettings();
+      renderHistory();
       settingsModal.classList.remove('show');
     }
 
     function generateResponse(text) {
       const q = text.toLowerCase().trim();
-      if (q.includes('привет') || q.includes('здравствуй') || q.includes('hello') || q.includes('salut') || q.includes('ciao')) return "Привет! Чем я могу помочь тебе прямо сейчас?";
-      if (q.includes('как тебя зовут') || q.includes('ты кто')) return `Я ${settings.title} AI — твой цифровой ассистент!`;
+      if (q.includes('привет') || q.includes('hello') || q.includes('salut') || q.includes('hola') || q.includes('ahoj')) return "Привет! Чем я могу помочь тебе прямо сейчас?";
+      if (q.includes('как тебя зовут') || q.includes('who are you')) return `Я ${settings.title} AI — твой цифровой ассистент!`;
       return `Запрос принят: "${text}". Задавай следующие вопросы!`;
     }
 
     function renderHistory() {
       historyList.innerHTML = '';
       const lang = settings.lang;
-      const dict = translations[lang] || translations['ru'];
-      const deleteText = dict['deleteMenu'] || "Удалить";
+      const dict = translations[lang] || translations['en'];
+      const deleteText = dict['deleteMenu'] || "Delete";
 
       chats.forEach(chat => {
         const item = document.createElement('div');
@@ -599,6 +677,12 @@
 
     document.getElementById('closeSettingsBtn').addEventListener('click', () => settingsModal.classList.remove('show'));
     document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
+
+    // Автоматический предпросмотр языка сразу при переключении выпадающего списка
+    document.getElementById('langSelect').addEventListener('change', (e) => {
+      settings.lang = e.target.value;
+      translateUI();
+    });
 
     document.getElementById('clearAllBtn').addEventListener('click', () => {
       localStorage.removeItem(STORAGE_KEY);
