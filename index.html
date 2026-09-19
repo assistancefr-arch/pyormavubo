@@ -12,6 +12,7 @@
       --accent-color: #00f2fe;
       --danger-color: #ff4d4d;
       --chat-font-size: 13.5px;
+      --content-max-width: 768px;
     }
 
     body.theme-light {
@@ -34,7 +35,7 @@
     body { display: flex; height: 100vh; background-color: var(--bg-primary); color: #ffffff; overflow: hidden; }
 
     /* Сайдбар */
-    .sidebar { width: 260px; background-color: var(--bg-sidebar); padding: 20px 14px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid #1e293b; user-select: none; }
+    .sidebar { width: 260px; background-color: var(--bg-sidebar); padding: 20px 14px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid #1e293b; user-select: none; flex-shrink: 0; }
     .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-left: 6px; }
     .brand-img { width: 28px; height: 28px; border-radius: 6px; object-fit: cover; box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
     .brand h1 { font-size: 18px; font-weight: 700; color: var(--accent-color); text-shadow: 0 0 12px rgba(0,242,254,0.3); }
@@ -62,30 +63,46 @@
     .dropdown-item.delete { color: var(--danger-color); }
     .dropdown-item:hover { background: var(--hover-color); }
 
-    .main { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 30px; position: relative; }
-    .top-bar { display: flex; justify-content: flex-end; align-items: center; width: 100%; }
+    /* Главный Canvas */
+    .main { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 0; position: relative; width: 100%; overflow: hidden; }
+    .top-bar { display: flex; justify-content: flex-end; align-items: center; width: 100%; max-width: var(--content-max-width); margin: 0 auto 10px auto; padding: 0 20px; }
     .btn-telegram { background: rgba(14, 165, 233, 0.15); border: 1px solid rgba(14, 165, 233, 0.4); color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-decoration: none; }
 
-    .hero { text-align: center; margin-top: auto; margin-bottom: auto; }
+    .hero { text-align: center; margin-top: auto; margin-bottom: auto; max-width: var(--content-max-width); width: 100%; margin-left: auto; margin-right: auto; padding: 0 20px; }
     .hero h2 { font-size: 32px; font-weight: 700; margin-bottom: 30px; }
 
-    .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 680px; margin: 0 auto; width: 100%; }
+    .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
     .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 14px; text-align: left; cursor: pointer; transition: 0.2s; }
     .card:hover { border-color: var(--accent-color); background: #141e33; }
     .card-title { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
     .card-desc { font-size: 11px; color: #475569; }
 
-    .chat-box { flex: 1; max-width: 680px; width: 100%; margin: 0 auto; overflow-y: auto; display: none; flex-direction: column; gap: 14px; padding-bottom: 20px; }
-    .msg { padding: 12px 16px; border-radius: 12px; font-size: var(--chat-font-size); max-width: 82%; line-height: 1.5; word-break: break-word; }
-    .msg-user { background: #0f172a; border: 1px solid #1e293b; align-self: flex-end; color: #fff; }
-    .msg-ai { background: rgba(0, 242, 254, 0.06); border: 1px solid rgba(0, 242, 254, 0.2); align-self: flex-start; color: #e2e8f0; }
+    /* Сообщения диалога */
+    .chat-box { flex: 1; max-width: var(--content-max-width); width: 100%; margin: 0 auto; overflow-y: auto; display: none; flex-direction: column; gap: 18px; padding: 0 20px 20px 20px; }
+    .msg-wrapper { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+    
+    .msg { padding: 12px 16px; border-radius: 12px; font-size: var(--chat-font-size); max-width: 85%; line-height: 1.6; word-break: break-word; position: relative; }
+    .msg-user { background: #0f172a; border: 1px solid #1e293b; align-self: flex-end; color: #fff; border-bottom-right-radius: 2px; }
+    .msg-ai { background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.15); align-self: flex-start; color: #e2e8f0; border-bottom-left-radius: 2px; }
 
-    .input-container { max-width: 680px; margin: 0 auto; width: 100%; position: relative; display: flex; align-items: center; }
-    .input-plus { position: absolute; left: 15px; color: #64748b; font-size: 16px; }
-    .chat-input { width: 100%; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 45px 12px 35px; color: #fff; font-size: 13px; outline: none; }
-    .chat-input:focus { border-color: var(--accent-color); }
-    .input-submit { position: absolute; right: 8px; width: 28px; height: 28px; background: var(--accent-color); border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; }
+    /* Курсор стриминга */
+    .cursor-blink { display: inline-block; width: 7px; height: 15px; background-color: var(--accent-color); margin-left: 4px; animation: blink 0.8s infinite; vertical-align: middle; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
+    /* Панель действий под ответом ассистента */
+    .action-bar { display: flex; gap: 12px; font-size: 11px; color: #64748b; margin-top: 2px; padding-left: 4px; }
+    .action-icon { cursor: pointer; transition: 0.2s; user-select: none; display: flex; align-items: center; gap: 4px; }
+    .action-icon:hover { color: var(--accent-color); }
+
+    /* Панель ввода (Input Dock) */
+    .input-container { max-width: var(--content-max-width); margin: 0 auto; width: 100%; position: relative; display: flex; align-items: flex-end; padding: 0 20px; }
+    .input-box { width: 100%; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 45px 12px 35px; color: #fff; font-size: 13px; outline: none; resize: none; max-height: 160px; min-height: 46px; line-height: 1.4; }
+    .input-box:focus { border-color: var(--accent-color); }
+    .input-plus { position: absolute; left: 32px; bottom: 14px; color: #64748b; font-size: 16px; cursor: pointer; }
+    .input-submit { position: absolute; right: 28px; bottom: 9px; width: 28px; height: 28px; background: var(--accent-color); border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .input-submit.stop-btn { background: var(--danger-color); color: #fff; }
+
+    /* Модальные окна */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 100; }
     .modal.show { display: flex; }
     .modal-content { background: #0f172a; border: 1px solid #1e293b; padding: 22px; border-radius: 12px; max-width: 460px; width: 100%; color: #fff; max-height: 85vh; overflow-y: auto; }
@@ -150,7 +167,7 @@
 
     <div class="input-container">
       <span class="input-plus">+</span>
-      <input type="text" class="chat-input" id="userInput" placeholder='Введите сообщение...'>
+      <textarea class="input-box" id="userInput" rows="1" placeholder="Введите сообщение..."></textarea>
       <button class="input-submit" id="sendBtn">→</button>
     </div>
   </div>
@@ -242,11 +259,14 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'py_chats_v7';
-    const SETTINGS_KEY = 'py_settings_v4';
+    const STORAGE_KEY = 'py_chats_v8';
+    const SETTINGS_KEY = 'py_settings_v5';
 
     let activeChatId = null;
     let itemToDeleteId = null;
+    let isGenerating = false;
+    let currentStreamInterval = null;
+    let userScrolledUp = false;
 
     let chats = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     let settings = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {
@@ -257,7 +277,7 @@
       fontSize: '13.5px'
     };
 
-    // Расширенный словарь переводов
+    // Словарь переводов
     const translations = {
       ru: {
         newChat: "+ Новый чат", settings: "⚙️ Настройки", historyTitle: "История запросов", modeText: "Режим:", tgBot: "Telegram-бот ↗",
@@ -269,7 +289,8 @@
         nameLabel: "Название приложения / бота", logoLabel: "Ссылка на логотип (URL)", fontLabel: "Размер шрифта в чате",
         fontSmall: "Мелкий (12px)", fontStandard: "Стандартный (13.5px)", fontLarge: "Крупный (15px)",
         clearLabel: "Очистка памяти браузера", clearBtn: "Удалить всю историю чатов", cancel: "Отмена", save: "Сохранить",
-        deleteTitle: "Удалить чат?", deleteDesc: "Это действие нельзя будет отменить.", deleteBtn: "Удалить", deleteMenu: "Удалить"
+        deleteTitle: "Удалить чат?", deleteDesc: "Это действие нельзя будет отменить.", deleteBtn: "Удалить", deleteMenu: "Удалить",
+        copy: "Скопировать", copied: "Скопировано!", regenerate: "Повторить"
       },
       cs: {
         newChat: "+ Nový chat", settings: "⚙️ Nastavení", historyTitle: "Historie dotazů", modeText: "Režim:", tgBot: "Telegram bot ↗",
@@ -281,7 +302,8 @@
         nameLabel: "Název aplikace / bota", logoLabel: "Odkaz na logo (URL)", fontLabel: "Velikost písma v chatu",
         fontSmall: "Malé (12px)", fontStandard: "Standardní (13.5px)", fontLarge: "Velké (15px)",
         clearLabel: "Vymazat paměť prohlížeče", clearBtn: "Smazat celou historii chatů", cancel: "Zrušit", save: "Uložit",
-        deleteTitle: "Smazat chat?", deleteDesc: "Tuto akci nelze vrátit zpět.", deleteBtn: "Smazat", deleteMenu: "Smazat"
+        deleteTitle: "Smazat chat?", deleteDesc: "Tuto akci nelze vrátit zpět.", deleteBtn: "Smazat", deleteMenu: "Smazat",
+        copy: "Kopírovat", copied: "Zkopírováno!", regenerate: "Opakovat"
       },
       en: {
         newChat: "+ New Chat", settings: "⚙️ Settings", historyTitle: "Chat History", modeText: "Mode:", tgBot: "Telegram Bot ↗",
@@ -293,95 +315,22 @@
         nameLabel: "App / Bot Name", logoLabel: "Logo URL", fontLabel: "Chat Font Size",
         fontSmall: "Small (12px)", fontStandard: "Standard (13.5px)", fontLarge: "Large (15px)",
         clearLabel: "Browser Storage", clearBtn: "Clear All Chat History", cancel: "Cancel", save: "Save",
-        deleteTitle: "Delete Chat?", deleteDesc: "This action cannot be undone.", deleteBtn: "Delete", deleteMenu: "Delete"
-      },
-      fr: {
-        newChat: "+ Nouvelle discussion", settings: "⚙️ Paramètres", historyTitle: "Historique", modeText: "Mode :", tgBot: "Bot Telegram ↗",
-        heroTitle: "Par quoi commençons-nous ?", card1Title: "📘 Créer du code Web", card1Desc: "Développement d'interfaces et de blocs",
-        card2Title: "🧠 Résoudre un problème", card2Desc: "Algorithmes, logique et énigmes", card3Title: "📓 Scénario et contenu", card3Desc: "Idées de vidéos et de projets",
-        card4Title: "⚡ Expliquer un sujet", card4Desc: "Analyse des technologies et termes", inputPlaceholder: "Écrivez un message...",
-        settingsTitle: "⚙️ Paramètres de l'application", langLabel: "Langue de l'interface", themeLabel: "Thème",
-        themeDark: "Sombre Cosmic (Par défaut)", themeLight: "Clair Minimal", themeCyber: "Néon Cyberpunk",
-        nameLabel: "Nom de l'application / bot", logoLabel: "URL du logo", fontLabel: "Taille de police",
-        fontSmall: "Petite (12px)", fontStandard: "Standard (13.5px)", fontLarge: "Grande (15px)",
-        clearLabel: "Stockage du navigateur", clearBtn: "Effacer tout l'historique", cancel: "Annuler", save: "Enregistrer",
-        deleteTitle: "Supprimer la discussion ?", deleteDesc: "Cette action est irréversible.", deleteBtn: "Supprimer", deleteMenu: "Supprimer"
-      },
-      es: {
-        newChat: "+ Nuevo Chat", settings: "⚙️ Ajustes", historyTitle: "Historial de Chat", modeText: "Modo:", tgBot: "Bot de Telegram ↗",
-        heroTitle: "¿Por dónde empezamos hoy?", card1Title: "📘 Crear código Web", card1Desc: "Desarrollo de interfaces y bloques",
-        card2Title: "🧠 Resolver un problema", card2Desc: "Algoritmos, lógica y acertijos", card3Title: "📓 Guión y contenido", card3Desc: "Ideas para videos y proyectos",
-        card4Title: "⚡ Explicar un tema", card4Desc: "Análisis de tecnología y términos", inputPlaceholder: "Escribe un mensaje...",
-        settingsTitle: "⚙️ Ajustes de la aplicación", langLabel: "Idioma de interfaz", themeLabel: "Tema",
-        themeDark: "Oscuro Cosmic (Predeterminado)", themeLight: "Claro Minimal", themeCyber: "Neón Cyberpunk",
-        nameLabel: "Nombre de la aplicación / bot", logoLabel: "URL del logotipo", fontLabel: "Tamaño de fuente del chat",
-        fontSmall: "Pequeño (12px)", fontStandard: "Estándar (13.5px)", fontLarge: "Grande (15px)",
-        clearLabel: "Memoria del navegador", clearBtn: "Borrar todo el historial", cancel: "Cancelar", save: "Guardar",
-        deleteTitle: "¿Eliminar chat?", deleteDesc: "Esta acción no se puede deshacer.", deleteBtn: "Eliminar", deleteMenu: "Eliminar"
-      },
-      de: {
-        newChat: "+ Neuer Chat", settings: "⚙️ Einstellungen", historyTitle: "Chat-Verlauf", modeText: "Modus:", tgBot: "Telegram Bot ↗",
-        heroTitle: "Womit beginnen wir heute?", card1Title: "📘 Webcode erstellen", card1Desc: "Entwicklung von Interfaces & Blöcken",
-        card2Title: "🧠 Problem lösen", card2Desc: "Algorithmen, Logik & Rätsel", card3Title: "📓 Skript & Inhalt", card3Desc: "Ideen für Videos & Projekte",
-        card4Title: "⚡ Thema erklären", card4Desc: "Analyse von Technologien & Begriffen", inputPlaceholder: "Nachricht eingeben...",
-        settingsTitle: "⚙️ App-Einstellungen", langLabel: "Schnittstellensprache", themeLabel: "Design-Thema",
-        themeDark: "Dunkel Cosmic (Standard)", themeLight: "Hell Minimal", themeCyber: "Neon Cyberpunk",
-        nameLabel: "App- / Bot-Name", logoLabel: "Logo-URL", fontLabel: "Schriftgröße im Chat",
-        fontSmall: "Klein (12px)", fontStandard: "Standard (13.5px)", fontLarge: "Groß (15px)",
-        clearLabel: "Browserspeicher leeren", clearBtn: "Gesamten Verlauf löschen", cancel: "Abbrechen", save: "Speichern",
-        deleteTitle: "Chat löschen?", deleteDesc: "Diese Aktion kann nicht rückgängig gemacht werden.", deleteBtn: "Löschen", deleteMenu: "Löschen"
-      },
-      uk: {
-        newChat: "+ Новий чат", settings: "⚙️ Налаштування", historyTitle: "Історія запитів", modeText: "Режим:", tgBot: "Telegram-бот ↗",
-        heroTitle: "З чого почнемо сьогодні?", card1Title: "📘 Створити веб-код", card1Desc: "Розробка інтерфейсів та блоків",
-        card2Title: "🧠 Вирішити завдання", card2Desc: "Алгоритми, логіка та головоломки", card3Title: "📓 Сценарій та контент", card3Desc: "Ідеї для роликів та проектів",
-        card4Title: "⚡ Пояснити тему", card4Desc: "Розбір технологій та термінів", inputPlaceholder: "Введіть повідомлення...",
-        settingsTitle: "⚙️ Налаштування програми", langLabel: "Мова інтерфейсу", themeLabel: "Тема оформлення",
-        themeDark: "Темна Cosmic (За замовчуванням)", themeLight: "Світла Minimal", themeCyber: "Неон Кіберпанк",
-        nameLabel: "Назва програми / бота", logoLabel: "Посилання на логотип (URL)", fontLabel: "Розмір шрифту у чаті",
-        fontSmall: "Дрібний (12px)", fontStandard: "Стандартний (13.5px)", fontLarge: "Великий (15px)",
-        clearLabel: "Очищення пам'яті браузера", clearBtn: "Видалити всю історію чатів", cancel: "Скасувати", save: "Зберегти",
-        deleteTitle: "Видалити чат?", deleteDesc: "Цю дію неможливо скасувати.", deleteBtn: "Видалити", deleteMenu: "Видалити"
-      },
-      pl: {
-        newChat: "+ Nowy czat", settings: "⚙️ Ustawienia", historyTitle: "Historia czatu", modeText: "Tryb:", tgBot: "Bot Telegram ↗",
-        heroTitle: "Od czego dzisiaj zaczniemy?", card1Title: "📘 Utwórz kod WWW", card1Desc: "Tworzenie interfejsów i bloków",
-        card2Title: "🧠 Rozwiąż problem", card2Desc: "Algorytmy, logika i łamigłówki", card3Title: "📓 Scenariusz i treść", card3Desc: "Pomysły na filmy i projekty",
-        card4Title: "⚡ Wyjaśnij temat", card4Desc: "Analiza technologii i pojęć", inputPlaceholder: "Wpisz wiadomość...",
-        settingsTitle: "⚙️ Ustawienia aplikacji", langLabel: "Język interfejsu", themeLabel: "Motyw",
-        themeDark: "Ciemny Cosmic (Domyślny)", themeLight: "Jasny Minimal", themeCyber: "Neon Cyberpunk",
-        nameLabel: "Nazwa aplikacji / bota", logoLabel: "URL logo", fontLabel: "Rozmiar czcionki czatu",
-        fontSmall: "Mała (12px)", fontStandard: "Standardowa (13.5px)", fontLarge: "Duża (15px)",
-        clearLabel: "Pamięć przeglądarki", clearBtn: "Usuń całą historię czatu", cancel: "Anuluj", save: "Zapisz",
-        deleteTitle: "Usunąć czat?", deleteDesc: "Tej операции nie można cofnąć.", deleteBtn: "Usuń", deleteMenu: "Usuń"
-      },
-      zh: {
-        newChat: "+ 新建聊天", settings: "⚙️ 设置", historyTitle: "历史记录", modeText: "模式:", tgBot: "Telegram 机器人 ↗",
-        heroTitle: "今天我们从什么开始？", card1Title: "📘 创建网页代码", card1Desc: "界面与组件开发",
-        card2Title: "🧠 解决难题", card2Desc: "算法、逻辑与谜题", card3Title: "📓 剧本与内容", card3Desc: "视频与项目创意",
-        card4Title: "⚡ 解释主题", card4Desc: "技术与概念解析", inputPlaceholder: "输入消息...",
-        settingsTitle: "⚙️ 应用设置", langLabel: "界面语言", themeLabel: "主题",
-        themeDark: "深色 Cosmic (默认)", themeLight: "浅色 Minimal", themeCyber: "霓虹赛博朋克",
-        nameLabel: "应用 / 机器人名称", logoLabel: "图标 URL", fontLabel: "聊天字体大小",
-        fontSmall: "小 (12px)", fontStandard: "标准 (13.5px)", fontLarge: "大 (15px)",
-        clearLabel: "浏览器存储", clearBtn: "清除所有聊天记录", cancel: "取消", save: "保存",
-        deleteTitle: "删除聊天？", deleteDesc: "此操作无法撤销。", deleteBtn: "删除", deleteMenu: "删除"
+        deleteTitle: "Delete Chat?", deleteDesc: "This action cannot be undone.", deleteBtn: "Delete", deleteMenu: "Delete",
+        copy: "Copy", copied: "Copied!", regenerate: "Regenerate"
       }
     };
 
-    function translateUI() {
-      const lang = settings.lang;
-      // Если для выбранного языка нет полного словаря, берём английский как резервный
-      const dict = translations[lang] || translations['en'];
+    function getI18nText(key) {
+      const dict = translations[settings.lang] || translations['en'];
+      return dict[key] || translations['en'][key] || key;
+    }
 
+    function translateUI() {
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (dict[key]) {
-          el.innerText = dict[key];
-        }
+        el.innerText = getI18nText(key);
       });
-
-      document.getElementById('userInput').placeholder = dict['inputPlaceholder'] || "Type a message...";
+      document.getElementById('userInput').placeholder = getI18nText('inputPlaceholder');
     }
 
     const historyList = document.getElementById('historyList');
@@ -392,6 +341,18 @@
     
     const deleteModal = document.getElementById('deleteModal');
     const settingsModal = document.getElementById('settingsModal');
+
+    // Авто-размер для Textarea
+    userInput.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+    });
+
+    // Отслеживание ручного скролла
+    chatBox.addEventListener('scroll', () => {
+      const distanceToBottom = chatBox.scrollHeight - chatBox.scrollTop - chatBox.clientHeight;
+      userScrolledUp = distanceToBottom > 60;
+    });
 
     function applySettings() {
       document.getElementById('appTitle').innerText = settings.title;
@@ -409,31 +370,23 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
     }
 
-    function saveSettings() {
-      settings.lang = document.getElementById('langSelect').value;
-      settings.theme = document.getElementById('themeSelect').value;
-      settings.title = document.getElementById('titleInput').value;
-      settings.logo = document.getElementById('logoInput').value;
-      settings.fontSize = document.getElementById('fontSizeSelect').value;
-
-      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-      applySettings();
-      renderHistory();
-      settingsModal.classList.remove('show');
-    }
-
-    function generateResponse(text) {
-      const q = text.toLowerCase().trim();
-      if (q.includes('привет') || q.includes('hello') || q.includes('salut') || q.includes('hola') || q.includes('ahoj')) return "Привет! Чем я могу помочь тебе прямо сейчас?";
-      if (q.includes('как тебя зовут') || q.includes('who are you')) return `Я ${settings.title} AI — твой цифровой ассистент!`;
-      return `Запрос принят: "${text}". Задавай следующие вопросы!`;
+    // Автоматическая фоновая сгенерированная карточка названия (Auto-titling)
+    function generateAutoTitle(chatId, firstMessageText) {
+      setTimeout(() => {
+        const chat = chats.find(c => c.id === chatId);
+        if (chat) {
+          // Имитация создания умного заголовка от микро-модели
+          const words = firstMessageText.split(' ').slice(0, 4).join(' ');
+          chat.title = words.charAt(0).toUpperCase() + words.slice(1);
+          saveToStorage();
+          renderHistory();
+        }
+      }, 1500);
     }
 
     function renderHistory() {
       historyList.innerHTML = '';
-      const lang = settings.lang;
-      const dict = translations[lang] || translations['en'];
-      const deleteText = dict['deleteMenu'] || "Delete";
+      const deleteText = getI18nText('deleteMenu');
 
       chats.forEach(chat => {
         const item = document.createElement('div');
@@ -460,18 +413,157 @@
         heroSection.style.display = 'none';
         chatBox.style.display = 'flex';
 
-        currentChat.messages.forEach(m => {
-          const div = document.createElement('div');
-          div.className = 'msg ' + (m.role === 'user' ? 'msg-user' : 'msg-ai');
-          div.innerText = m.text;
-          chatBox.appendChild(div);
+        currentChat.messages.forEach((m, idx) => {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'msg-wrapper';
+
+          const msgDiv = document.createElement('div');
+          msgDiv.className = 'msg ' + (m.role === 'user' ? 'msg-user' : 'msg-ai');
+          msgDiv.innerText = m.text;
+          wrapper.appendChild(msgDiv);
+
+          // Добавляем Action Bar под ответом ассистента
+          if (m.role === 'assistant') {
+            const actionBar = document.createElement('div');
+            actionBar.className = 'action-bar';
+            actionBar.innerHTML = `
+              <span class="action-icon" onclick="copyMessageText(this, \`${m.text.replace(/`/g, '\\`')}\`)">📋 ${getI18nText('copy')}</span>
+              <span class="action-icon" onclick="regenerateLastReply(${idx})">🔄 ${getI18nText('regenerate')}</span>
+              <span class="action-icon" onclick="this.style.color='var(--accent-color)'">👍</span>
+              <span class="action-icon" onclick="this.style.color='var(--danger-color)'">👎</span>
+            `;
+            wrapper.appendChild(actionBar);
+          }
+
+          chatBox.appendChild(wrapper);
         });
 
-        chatBox.scrollTop = chatBox.scrollHeight;
+        if (!userScrolledUp) {
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }
       } else {
         heroSection.style.display = 'block';
         chatBox.style.display = 'none';
       }
+    }
+
+    function copyMessageText(btnEl, text) {
+      navigator.clipboard.writeText(text);
+      const origText = btnEl.innerText;
+      btnEl.innerText = `✓ ${getI18nText('copied')}`;
+      setTimeout(() => btnEl.innerText = origText, 2000);
+    }
+
+    // Стриминг текста (Server-Sent Events Имитация)
+    function streamAIResponse(chat, responseText) {
+      isGenerating = true;
+      sendBtn.innerText = '⏹';
+      sendBtn.classList.add('stop-btn');
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'msg-wrapper';
+
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'msg msg-ai';
+      wrapper.appendChild(msgDiv);
+      chatBox.appendChild(wrapper);
+
+      let currentLength = 0;
+      const speed = 25; // Скорость генерации (мс/символ)
+
+      currentStreamInterval = setInterval(() => {
+        currentLength += 2;
+        msgDiv.innerHTML = responseText.substring(0, currentLength) + '<span class="cursor-blink"></span>';
+
+        if (!userScrolledUp) {
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        if (currentLength >= responseText.length) {
+          stopStreaming(chat, responseText, wrapper, msgDiv);
+        }
+      }, speed);
+    }
+
+    function stopStreaming(chat, fullText, wrapper, msgDiv) {
+      clearInterval(currentStreamInterval);
+      isGenerating = false;
+      sendBtn.innerText = '→';
+      sendBtn.classList.remove('stop-btn');
+
+      msgDiv.innerText = fullText;
+      chat.messages.push({ role: 'assistant', text: fullText });
+      saveToStorage();
+      renderMessages();
+    }
+
+    function handleSend() {
+      if (isGenerating) {
+        clearInterval(currentStreamInterval);
+        isGenerating = false;
+        sendBtn.innerText = '→';
+        sendBtn.classList.remove('stop-btn');
+        return;
+      }
+
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      let currentChat = chats.find(c => c.id === activeChatId);
+      let isFirstMessage = false;
+
+      if (!currentChat) {
+        isFirstMessage = true;
+        // Fallback: заголовок из первых 25 символов
+        const fallbackTitle = text.length > 25 ? text.substring(0, 25) + '...' : text;
+        currentChat = {
+          id: Date.now(),
+          title: fallbackTitle,
+          messages: []
+        };
+        chats.unshift(currentChat);
+        activeChatId = currentChat.id;
+      }
+
+      currentChat.messages.push({ role: 'user', text: text });
+      userInput.value = '';
+      userInput.style.height = 'auto';
+
+      saveToStorage();
+      renderHistory();
+      renderMessages();
+
+      if (isFirstMessage) {
+        generateAutoTitle(currentChat.id, text);
+      }
+
+      // Генерация ответа ИИ
+      setTimeout(() => {
+        const replyText = `Принято! Ваш запрос: "${text}". Я сгенерировал этот ответ с поддержкой потоковой передачи данных (Streaming UI) и автоскроллом!`;
+        streamAIResponse(currentChat, replyText);
+      }, 300);
+    }
+
+    function regenerateLastReply(msgIndex) {
+      const currentChat = chats.find(c => c.id === activeChatId);
+      if (!currentChat) return;
+
+      currentChat.messages = currentChat.messages.slice(0, msgIndex);
+      saveToStorage();
+      renderMessages();
+
+      const lastUserMsg = currentChat.messages[currentChat.messages.length - 1];
+      const textToUse = lastUserMsg ? lastUserMsg.text : 'Обновить контекст';
+
+      setTimeout(() => {
+        const replyText = `[Повторная генерация] Ответ пересоздан для запроса: "${textToUse}".`;
+        streamAIResponse(currentChat, replyText);
+      }, 300);
+    }
+
+    function sendPrompt(text) {
+      userInput.value = text;
+      handleSend();
     }
 
     historyList.addEventListener('click', (e) => {
@@ -506,54 +598,13 @@
       document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
     });
 
-    function handleSend() {
-      const text = userInput.value.trim();
-      if (!text) return;
-
-      let currentChat = chats.find(c => c.id === activeChatId);
-
-      if (!currentChat) {
-        const titleText = text.length > 20 ? text.substring(0, 20) + '...' : text;
-        currentChat = {
-          id: Date.now(),
-          title: titleText,
-          messages: []
-        };
-        chats.unshift(currentChat);
-        activeChatId = currentChat.id;
-      }
-
-      currentChat.messages.push({ role: 'user', text: text });
-      userInput.value = '';
-
-      saveToStorage();
-      renderHistory();
-      renderMessages();
-
-      setTimeout(() => {
-        const reply = generateResponse(text);
-        currentChat.messages.push({ role: 'ai', text: reply });
-        saveToStorage();
-        renderMessages();
-      }, 300);
-    }
-
-    function sendPrompt(text) {
-      userInput.value = text;
-      handleSend();
-    }
-
     document.getElementById('newChatBtn').addEventListener('click', () => {
       activeChatId = null;
       renderHistory();
       renderMessages();
     });
 
-    document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
-      deleteModal.classList.remove('show');
-      itemToDeleteId = null;
-    });
-
+    document.getElementById('cancelDeleteBtn').addEventListener('click', () => deleteModal.classList.remove('show'));
     document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
       if (itemToDeleteId) {
         chats = chats.filter(c => c.id !== itemToDeleteId);
@@ -563,7 +614,6 @@
         renderMessages();
       }
       deleteModal.classList.remove('show');
-      itemToDeleteId = null;
     });
 
     document.getElementById('openSettingsBtn').addEventListener('click', () => {
@@ -576,9 +626,19 @@
     });
 
     document.getElementById('closeSettingsBtn').addEventListener('click', () => settingsModal.classList.remove('show'));
-    document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
+    document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+      settings.lang = document.getElementById('langSelect').value;
+      settings.theme = document.getElementById('themeSelect').value;
+      settings.title = document.getElementById('titleInput').value;
+      settings.logo = document.getElementById('logoInput').value;
+      settings.fontSize = document.getElementById('fontSizeSelect').value;
 
-    // Автоматический пересказ/перевод интерфейса прямо при смене значения в списке
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+      applySettings();
+      renderHistory();
+      settingsModal.classList.remove('show');
+    });
+
     document.getElementById('langSelect').addEventListener('change', (e) => {
       settings.lang = e.target.value;
       translateUI();
@@ -594,7 +654,12 @@
     });
 
     sendBtn.onclick = handleSend;
-    userInput.onkeydown = (e) => { if (e.key === 'Enter') handleSend(); };
+    userInput.onkeydown = (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    };
 
     window.onload = () => {
       applySettings();
