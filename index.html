@@ -11,8 +11,8 @@
       --hover-color: #1e293b;
       --accent-color: #00f2fe;
       --danger-color: #ff4d4d;
-      --chat-font-size: 13.5px;
-      --content-max-width: 768px;
+      --chat-font-size: 14px;
+      --content-max-width: 800px;
     }
 
     body.theme-light {
@@ -35,7 +35,7 @@
     body { display: flex; height: 100vh; background-color: var(--bg-primary); color: #ffffff; overflow: hidden; }
 
     /* Сайдбар */
-    .sidebar { width: 260px; background-color: var(--bg-sidebar); padding: 20px 14px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid #1e293b; user-select: none; flex-shrink: 0; }
+    .sidebar { width: 260px; background-color: var(--bg-sidebar); padding: 20px 14px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid #1e293b; user-select: none; flex-shrink: 0; z-index: 10; }
     .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-left: 6px; }
     .brand-img { width: 28px; height: 28px; border-radius: 6px; object-fit: cover; box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
     .brand h1 { font-size: 18px; font-weight: 700; color: var(--accent-color); text-shadow: 0 0 12px rgba(0,242,254,0.3); }
@@ -64,11 +64,11 @@
     .dropdown-item:hover { background: var(--hover-color); }
 
     /* Главный Canvas */
-    .main { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 0; position: relative; width: 100%; overflow: hidden; }
-    .top-bar { display: flex; justify-content: flex-end; align-items: center; width: 100%; max-width: var(--content-max-width); margin: 0 auto 10px auto; padding: 0 20px; }
+    .main { flex: 1; display: flex; flex-direction: column; position: relative; width: 100%; height: 100vh; overflow: hidden; }
+    .top-bar { display: flex; justify-content: flex-end; align-items: center; width: 100%; max-width: var(--content-max-width); margin: 0 auto; padding: 16px 20px 0 20px; flex-shrink: 0; }
     .btn-telegram { background: rgba(14, 165, 233, 0.15); border: 1px solid rgba(14, 165, 233, 0.4); color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-decoration: none; }
 
-    .hero { text-align: center; margin-top: auto; margin-bottom: auto; max-width: var(--content-max-width); width: 100%; margin-left: auto; margin-right: auto; padding: 0 20px; }
+    .hero { text-align: center; margin: auto; max-width: var(--content-max-width); width: 100%; padding: 0 20px; }
     .hero h2 { font-size: 32px; font-weight: 700; margin-bottom: 30px; }
 
     .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
@@ -78,28 +78,31 @@
     .card-desc { font-size: 11px; color: #475569; }
 
     /* Сообщения диалога */
-    .chat-box { flex: 1; max-width: var(--content-max-width); width: 100%; margin: 0 auto; overflow-y: auto; display: none; flex-direction: column; gap: 18px; padding: 0 20px 20px 20px; }
-    .msg-wrapper { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+    .chat-box { flex: 1; max-width: var(--content-max-width); width: 100%; margin: 0 auto; overflow-y: auto; display: none; flex-direction: column; gap: 20px; padding: 20px 20px 130px 20px; }
+    .msg-wrapper { display: flex; flex-direction: column; gap: 6px; width: 100%; position: relative; }
     
-    .msg { padding: 12px 16px; border-radius: 12px; font-size: var(--chat-font-size); max-width: 85%; line-height: 1.6; word-break: break-word; position: relative; }
+    .msg { padding: 12px 16px; border-radius: 12px; font-size: var(--chat-font-size); max-width: 85%; line-height: 1.6; word-break: break-word; }
     .msg-user { background: #0f172a; border: 1px solid #1e293b; align-self: flex-end; color: #fff; border-bottom-right-radius: 2px; }
     .msg-ai { background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.15); align-self: flex-start; color: #e2e8f0; border-bottom-left-radius: 2px; }
 
-    /* Курсор стриминга */
+    /* Курсор печати */
     .cursor-blink { display: inline-block; width: 7px; height: 15px; background-color: var(--accent-color); margin-left: 4px; animation: blink 0.8s infinite; vertical-align: middle; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
     /* Панель действий под ответом ассистента */
-    .action-bar { display: flex; gap: 12px; font-size: 11px; color: #64748b; margin-top: 2px; padding-left: 4px; }
-    .action-icon { cursor: pointer; transition: 0.2s; user-select: none; display: flex; align-items: center; gap: 4px; }
-    .action-icon:hover { color: var(--accent-color); }
+    .action-bar { display: flex; gap: 10px; font-size: 12px; color: #64748b; margin-top: 2px; padding-left: 4px; opacity: 0; transition: opacity 0.2s ease-in-out; }
+    .msg-wrapper:hover .action-bar { opacity: 1; }
+    .action-icon { cursor: pointer; transition: 0.2s; user-select: none; display: flex; align-items: center; gap: 5px; padding: 3px 6px; border-radius: 4px; }
+    .action-icon:hover { color: var(--accent-color); background: rgba(255, 255, 255, 0.05); }
+    .action-icon svg { width: 14px; height: 14px; fill: currentColor; }
 
     /* Панель ввода (Input Dock) */
-    .input-container { max-width: var(--content-max-width); margin: 0 auto; width: 100%; position: relative; display: flex; align-items: flex-end; padding: 0 20px; }
-    .input-box { width: 100%; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 45px 12px 35px; color: #fff; font-size: 13px; outline: none; resize: none; max-height: 160px; min-height: 46px; line-height: 1.4; }
+    .input-wrapper { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, transparent 0%, var(--bg-primary) 40%); padding: 20px 0 24px 0; display: flex; justify-content: center; }
+    .input-container { max-width: var(--content-max-width); width: 100%; position: relative; display: flex; align-items: flex-end; padding: 0 20px; }
+    .input-box { width: 100%; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 45px 12px 35px; color: #fff; font-size: 13.5px; outline: none; resize: none; max-height: 200px; min-height: 48px; line-height: 1.4; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
     .input-box:focus { border-color: var(--accent-color); }
-    .input-plus { position: absolute; left: 32px; bottom: 14px; color: #64748b; font-size: 16px; cursor: pointer; }
-    .input-submit { position: absolute; right: 28px; bottom: 9px; width: 28px; height: 28px; background: var(--accent-color); border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .input-plus { position: absolute; left: 32px; bottom: 14px; color: #64748b; font-size: 18px; cursor: pointer; line-height: 1; }
+    .input-submit { position: absolute; right: 28px; bottom: 10px; width: 28px; height: 28px; background: var(--accent-color); border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .input-submit.stop-btn { background: var(--danger-color); color: #fff; }
 
     /* Модальные окна */
@@ -165,10 +168,12 @@
 
     <div class="chat-box" id="chatBox"></div>
 
-    <div class="input-container">
-      <span class="input-plus">+</span>
-      <textarea class="input-box" id="userInput" rows="1" placeholder="Введите сообщение..."></textarea>
-      <button class="input-submit" id="sendBtn">→</button>
+    <div class="input-wrapper">
+      <div class="input-container">
+        <span class="input-plus">+</span>
+        <textarea class="input-box" id="userInput" rows="1" placeholder="Введите сообщение..."></textarea>
+        <button class="input-submit" id="sendBtn">→</button>
+      </div>
     </div>
   </div>
 
@@ -241,8 +246,8 @@
         <label class="setting-label" data-i18n="fontLabel">Размер шрифта в чате</label>
         <select class="setting-select" id="fontSizeSelect">
           <option value="12px" data-i18n="fontSmall">Мелкий (12px)</option>
-          <option value="13.5px" data-i18n="fontStandard" selected>Стандартный (13.5px)</option>
-          <option value="15px" data-i18n="fontLarge">Крупный (15px)</option>
+          <option value="14px" data-i18n="fontStandard" selected>Стандартный (14px)</option>
+          <option value="16px" data-i18n="fontLarge">Крупный (16px)</option>
         </select>
       </div>
 
@@ -259,8 +264,8 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'py_chats_v8';
-    const SETTINGS_KEY = 'py_settings_v5';
+    const STORAGE_KEY = 'py_chats_v9';
+    const SETTINGS_KEY = 'py_settings_v6';
 
     let activeChatId = null;
     let itemToDeleteId = null;
@@ -274,10 +279,17 @@
       theme: 'dark',
       title: 'pyormavubo',
       logo: 'logo.jpg',
-      fontSize: '13.5px'
+      fontSize: '14px'
     };
 
-    // Словарь переводов
+    // SVG Иконки для Action Bar
+    const icons = {
+      copy: `<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>`,
+      regenerate: `<svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>`,
+      like: `<svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.58 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>`,
+      dislike: `<svg viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>`
+    };
+
     const translations = {
       ru: {
         newChat: "+ Новый чат", settings: "⚙️ Настройки", historyTitle: "История запросов", modeText: "Режим:", tgBot: "Telegram-бот ↗",
@@ -287,23 +299,10 @@
         settingsTitle: "⚙️ Настройки приложения", langLabel: "Язык интерфейса / Language", themeLabel: "Тема оформления",
         themeDark: "Темная Cosmic (По умолчанию)", themeLight: "Светлая Minimal", themeCyber: "Неон Киберпанк",
         nameLabel: "Название приложения / бота", logoLabel: "Ссылка на логотип (URL)", fontLabel: "Размер шрифта в чате",
-        fontSmall: "Мелкий (12px)", fontStandard: "Стандартный (13.5px)", fontLarge: "Крупный (15px)",
+        fontSmall: "Мелкий (12px)", fontStandard: "Стандартный (14px)", fontLarge: "Крупный (16px)",
         clearLabel: "Очистка памяти браузера", clearBtn: "Удалить всю историю чатов", cancel: "Отмена", save: "Сохранить",
         deleteTitle: "Удалить чат?", deleteDesc: "Это действие нельзя будет отменить.", deleteBtn: "Удалить", deleteMenu: "Удалить",
         copy: "Скопировать", copied: "Скопировано!", regenerate: "Повторить"
-      },
-      cs: {
-        newChat: "+ Nový chat", settings: "⚙️ Nastavení", historyTitle: "Historie dotazů", modeText: "Režim:", tgBot: "Telegram bot ↗",
-        heroTitle: "Čím dnes začneme?", card1Title: "📘 Vytvořit kód", card1Desc: "Vývoj rozhraní a bloků",
-        card2Title: "🧠 Vyřešit úkol", card2Desc: "Algoritmy, logika a hádanky", card3Title: "📓 Scénář a obsah", card3Desc: "Nápady pro videa a projekty",
-        card4Title: "⚡ Vysvětlit téma", card4Desc: "Rozbor technologií a termínů", inputPlaceholder: "Napište zprávu...",
-        settingsTitle: "⚙️ Nastavení aplikace", langLabel: "Jazyk rozhraní / Language", themeLabel: "Téma vzhledu",
-        themeDark: "Tmavá Cosmic (Výchozí)", themeLight: "Světlá Minimal", themeCyber: "Neon Kyberpunk",
-        nameLabel: "Název aplikace / bota", logoLabel: "Odkaz na logo (URL)", fontLabel: "Velikost písma v chatu",
-        fontSmall: "Malé (12px)", fontStandard: "Standardní (13.5px)", fontLarge: "Velké (15px)",
-        clearLabel: "Vymazat paměť prohlížeče", clearBtn: "Smazat celou historii chatů", cancel: "Zrušit", save: "Uložit",
-        deleteTitle: "Smazat chat?", deleteDesc: "Tuto akci nelze vrátit zpět.", deleteBtn: "Smazat", deleteMenu: "Smazat",
-        copy: "Kopírovat", copied: "Zkopírováno!", regenerate: "Opakovat"
       },
       en: {
         newChat: "+ New Chat", settings: "⚙️ Settings", historyTitle: "Chat History", modeText: "Mode:", tgBot: "Telegram Bot ↗",
@@ -313,7 +312,7 @@
         settingsTitle: "⚙️ App Settings", langLabel: "Interface Language", themeLabel: "Theme",
         themeDark: "Dark Cosmic (Default)", themeLight: "Light Minimal", themeCyber: "Neon Cyberpunk",
         nameLabel: "App / Bot Name", logoLabel: "Logo URL", fontLabel: "Chat Font Size",
-        fontSmall: "Small (12px)", fontStandard: "Standard (13.5px)", fontLarge: "Large (15px)",
+        fontSmall: "Small (12px)", fontStandard: "Standard (14px)", fontLarge: "Large (16px)",
         clearLabel: "Browser Storage", clearBtn: "Clear All Chat History", cancel: "Cancel", save: "Save",
         deleteTitle: "Delete Chat?", deleteDesc: "This action cannot be undone.", deleteBtn: "Delete", deleteMenu: "Delete",
         copy: "Copy", copied: "Copied!", regenerate: "Regenerate"
@@ -342,13 +341,12 @@
     const deleteModal = document.getElementById('deleteModal');
     const settingsModal = document.getElementById('settingsModal');
 
-    // Авто-размер для Textarea
+    // Авто-размер для Textarea с ограничением до 200px
     userInput.addEventListener('input', function() {
       this.style.height = 'auto';
-      this.style.height = (this.scrollHeight) + 'px';
+      this.style.height = Math.min(this.scrollHeight, 200) + 'px';
     });
 
-    // Отслеживание ручного скролла
     chatBox.addEventListener('scroll', () => {
       const distanceToBottom = chatBox.scrollHeight - chatBox.scrollTop - chatBox.clientHeight;
       userScrolledUp = distanceToBottom > 60;
@@ -370,18 +368,16 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
     }
 
-    // Автоматическая фоновая сгенерированная карточка названия (Auto-titling)
     function generateAutoTitle(chatId, firstMessageText) {
       setTimeout(() => {
         const chat = chats.find(c => c.id === chatId);
         if (chat) {
-          // Имитация создания умного заголовка от микро-модели
           const words = firstMessageText.split(' ').slice(0, 4).join(' ');
           chat.title = words.charAt(0).toUpperCase() + words.slice(1);
           saveToStorage();
           renderHistory();
         }
-      }, 1500);
+      }, 1200);
     }
 
     function renderHistory() {
@@ -422,15 +418,17 @@
           msgDiv.innerText = m.text;
           wrapper.appendChild(msgDiv);
 
-          // Добавляем Action Bar под ответом ассистента
           if (m.role === 'assistant') {
             const actionBar = document.createElement('div');
             actionBar.className = 'action-bar';
+            
+            const rawText = m.text.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/"/g, '&quot;');
+            
             actionBar.innerHTML = `
-              <span class="action-icon" onclick="copyMessageText(this, \`${m.text.replace(/`/g, '\\`')}\`)">📋 ${getI18nText('copy')}</span>
-              <span class="action-icon" onclick="regenerateLastReply(${idx})">🔄 ${getI18nText('regenerate')}</span>
-              <span class="action-icon" onclick="this.style.color='var(--accent-color)'">👍</span>
-              <span class="action-icon" onclick="this.style.color='var(--danger-color)'">👎</span>
+              <span class="action-icon" onclick="copyMessage(this, \`${rawText}\`)">${icons.copy} <span>${getI18nText('copy')}</span></span>
+              <span class="action-icon" onclick="regenerateLastReply(${idx})">${icons.regenerate} <span>${getI18nText('regenerate')}</span></span>
+              <span class="action-icon" onclick="this.style.color='var(--accent-color)'">${icons.like}</span>
+              <span class="action-icon" onclick="this.style.color='var(--danger-color)'">${icons.dislike}</span>
             `;
             wrapper.appendChild(actionBar);
           }
@@ -447,14 +445,17 @@
       }
     }
 
-    function copyMessageText(btnEl, text) {
-      navigator.clipboard.writeText(text);
-      const origText = btnEl.innerText;
-      btnEl.innerText = `✓ ${getI18nText('copied')}`;
-      setTimeout(() => btnEl.innerText = origText, 2000);
+    function copyMessage(btnEl, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const textSpan = btnEl.querySelector('span');
+        const originalText = textSpan.innerText;
+        textSpan.innerText = getI18nText('copied');
+        setTimeout(() => {
+          textSpan.innerText = originalText;
+        }, 2000);
+      });
     }
 
-    // Стриминг текста (Server-Sent Events Имитация)
     function streamAIResponse(chat, responseText) {
       isGenerating = true;
       sendBtn.innerText = '⏹';
@@ -469,7 +470,7 @@
       chatBox.appendChild(wrapper);
 
       let currentLength = 0;
-      const speed = 25; // Скорость генерации (мс/символ)
+      const speed = 20;
 
       currentStreamInterval = setInterval(() => {
         currentLength += 2;
@@ -514,7 +515,6 @@
 
       if (!currentChat) {
         isFirstMessage = true;
-        // Fallback: заголовок из первых 25 символов
         const fallbackTitle = text.length > 25 ? text.substring(0, 25) + '...' : text;
         currentChat = {
           id: Date.now(),
@@ -537,7 +537,6 @@
         generateAutoTitle(currentChat.id, text);
       }
 
-      // Генерация ответа ИИ
       setTimeout(() => {
         const replyText = `Принято! Ваш запрос: "${text}". Я сгенерировал этот ответ с поддержкой потоковой передачи данных (Streaming UI) и автоскроллом!`;
         streamAIResponse(currentChat, replyText);
@@ -553,7 +552,7 @@
       renderMessages();
 
       const lastUserMsg = currentChat.messages[currentChat.messages.length - 1];
-      const textToUse = lastUserMsg ? lastUserMsg.text : 'Обновить контекст';
+      const textToUse = lastUserMsg ? lastUserMsg.text : 'Запрос';
 
       setTimeout(() => {
         const replyText = `[Повторная генерация] Ответ пересоздан для запроса: "${textToUse}".`;
