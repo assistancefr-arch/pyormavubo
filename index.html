@@ -3,562 +3,442 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>pyormavubo-cosmicblaze</title>
+  <title>pyormavubo UI</title>
   <style>
-    :root {
-      --bg-primary: #0b0f19;
-      --bg-sidebar: #070a10;
-      --hover-color: #1e293b;
-      --accent-color: #00f2fe;
-      --danger-color: #ff4d4d;
-      --chat-font-size: 14px;
-      --content-max-width: 800px;
+    /* Основные стили и сброс */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     }
 
-    body.theme-light {
-      --bg-primary: #f8fafc;
-      --bg-sidebar: #f1f5f9;
-      --hover-color: #e2e8f0;
-      --accent-color: #0284c7;
-      color: #0f172a;
+    body {
+      background-color: #0b0f19;
+      color: #e2e8f0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    body.theme-cyberpunk {
-      --bg-primary: #0d0221;
-      --bg-sidebar: #050014;
-      --hover-color: #261447;
-      --accent-color: #ff007f;
-      color: #00f6ff;
+    /* Боковая панель */
+    .sidebar {
+      width: 260px;
+      background-color: #111827;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      justify-content: space-between;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { display: flex; height: 100vh; background-color: var(--bg-primary); color: #ffffff; overflow: hidden; }
+    .brand {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
 
-    /* Сайдбар */
-    .sidebar { width: 260px; background-color: var(--bg-sidebar); padding: 20px 14px; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid #1e293b; user-select: none; flex-shrink: 0; z-index: 10; }
-    .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-left: 6px; }
-    .brand-img { width: 28px; height: 28px; border-radius: 6px; object-fit: cover; box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
-    .brand h1 { font-size: 18px; font-weight: 700; color: var(--accent-color); text-shadow: 0 0 12px rgba(0,242,254,0.3); }
+    .btn-new-chat {
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 500;
+      text-align: left;
+      transition: background 0.2s;
+    }
 
-    .btn-new-chat { width: 100%; padding: 10px; background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color); border-radius: 8px; cursor: pointer; margin-bottom: 8px; font-weight: 600; text-align: left; transition: 0.2s; }
-    .btn-new-chat:hover { background: rgba(0, 242, 254, 0.1); }
-    .btn-settings { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #1e293b; color: #cbd5e1; border-radius: 8px; cursor: pointer; margin-bottom: 15px; text-align: left; transition: 0.2s; }
-    .btn-settings:hover { background: var(--hover-color); color: #fff; }
+    .btn-new-chat:hover {
+      background: #334155;
+    }
 
-    .history-title { font-size: 11px; color: #475569; margin-bottom: 10px; text-transform: uppercase; font-weight: 700; padding-left: 6px; }
-    .history-list { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+    /* Главный контейнер чата */
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+    }
 
-    /* Строка элемента истории чатов */
-    .chat-item { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; background: transparent; border-radius: 8px; font-size: 13px; color: #94a3b8; cursor: pointer; transition: 0.2s; }
-    .chat-item:hover, .chat-item.active { background: var(--hover-color); color: #fff; }
-    .chat-item.active { border-left: 3px solid var(--accent-color); }
-    .chat-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; padding-right: 8px; }
+    /* 1. Верхняя панель (Header) */
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      background: rgba(17, 24, 39, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
 
-    .menu-btn { background: none; border: none; color: #64748b; padding: 4px; cursor: pointer; opacity: 0; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
-    .chat-item:hover .menu-btn { opacity: 1; }
-    .menu-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+    .model-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
 
-    .dropdown-menu { position: absolute; right: 10px; top: 38px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; z-index: 50; min-width: 140px; box-shadow: 0 4px 14px rgba(0,0,0,0.5); overflow: hidden; display: flex; flex-direction: column; }
-    .dropdown-menu.hidden { display: none; }
-    .dropdown-item { padding: 9px 12px; font-size: 12px; cursor: pointer; color: #cbd5e1; background: none; border: none; text-align: left; transition: background 0.15s; }
-    .dropdown-item:hover { background: var(--hover-color); color: #fff; }
-    .dropdown-item.danger { color: var(--danger-color); }
-    .dropdown-item.danger:hover { background: rgba(255, 77, 77, 0.15); }
+    /* Мощный эмодзи-символ */
+    .power-emoji {
+      font-size: 1.3rem;
+      animation: pulse 2s infinite alternate;
+      display: inline-block;
+    }
 
-    /* Главная область */
-    .main { flex: 1; display: flex; flex-direction: column; position: relative; width: 100%; height: 100vh; overflow: hidden; }
-    .top-bar { display: flex; justify-content: flex-end; align-items: center; width: 100%; max-width: var(--content-max-width); margin: 0 auto; padding: 16px 20px 0 20px; flex-shrink: 0; }
-    .btn-telegram { background: rgba(14, 165, 233, 0.15); border: 1px solid rgba(14, 165, 233, 0.4); color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-decoration: none; }
+    @keyframes pulse {
+      0% { transform: scale(1); filter: drop-shadow(0 0 2px #38bdf8); }
+      100% { transform: scale(1.15); filter: drop-shadow(0 0 10px #818cf8); }
+    }
 
-    .hero { text-align: center; margin: auto; max-width: var(--content-max-width); width: 100%; padding: 0 20px; }
-    .hero h2 { font-size: 32px; font-weight: 700; margin-bottom: 30px; }
+    /* Переключатель голоса */
+    .voice-toggle-btn {
+      background: #1e293b;
+      color: #94a3b8;
+      border: 1px solid #334155;
+      border-radius: 20px;
+      padding: 6px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
 
-    .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
-    .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 14px; text-align: left; cursor: pointer; transition: 0.2s; }
-    .card:hover { border-color: var(--accent-color); background: #141e33; }
-    .card-title { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
-    .card-desc { font-size: 11px; color: #475569; }
+    .voice-toggle-btn.active {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border-color: #10b981;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+    }
 
-    /* Рабочая область диалога */
-    .chat-box { flex: 1; max-width: var(--content-max-width); width: 100%; margin: 0 auto; overflow-y: auto; display: none; flex-direction: column; gap: 20px; padding: 20px 20px 140px 20px; }
-    .msg-wrapper { display: flex; flex-direction: column; gap: 6px; width: 100%; position: relative; }
-    
-    .msg { padding: 12px 16px; border-radius: 12px; font-size: var(--chat-font-size); max-width: 85%; line-height: 1.6; word-break: break-word; }
-    .msg-user { background: #0f172a; border: 1px solid #1e293b; align-self: flex-end; color: #fff; border-bottom-right-radius: 2px; }
-    .msg-ai { background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.15); align-self: flex-start; color: #e2e8f0; border-bottom-left-radius: 2px; }
+    /* Область сообщений */
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-    .cursor-blink { display: inline-block; width: 7px; height: 15px; background-color: var(--accent-color); margin-left: 4px; animation: blink 0.8s infinite; vertical-align: middle; }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    .message {
+      max-width: 75%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      line-height: 1.5;
+      font-size: 0.95rem;
+      position: relative;
+      animation: fadeIn 0.2s ease;
+    }
 
-    /* Панель действий под сообщением */
-    .action-bar { display: flex; gap: 10px; font-size: 12px; color: #64748b; margin-top: 2px; padding-left: 4px; opacity: 0; transition: opacity 0.2s ease-in-out; }
-    .msg-wrapper:hover .action-bar { opacity: 1; }
-    .action-icon { cursor: pointer; transition: 0.2s; user-select: none; display: flex; align-items: center; gap: 5px; padding: 3px 6px; border-radius: 4px; }
-    .action-icon:hover { color: var(--accent-color); background: rgba(255, 255, 255, 0.05); }
-    .action-icon svg { width: 14px; height: 14px; fill: currentColor; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.user {
+      align-self: flex-end;
+      background: #2563eb;
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message.bot {
+      align-self: flex-start;
+      background: #1e293b;
+      color: #f1f5f9;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom-left-radius: 4px;
+    }
 
     /* Поле ввода */
-    .input-wrapper { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(180deg, transparent 0%, var(--bg-primary) 40%); padding: 20px 0 24px 0; display: flex; justify-content: center; }
-    .input-container { max-width: var(--content-max-width); width: 100%; position: relative; display: flex; align-items: flex-end; padding: 0 20px; }
-    .input-box { width: 100%; background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 45px 12px 35px; color: #fff; font-size: 13.5px; outline: none; resize: none; max-height: 200px; min-height: 48px; line-height: 1.4; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-    .input-box:focus { border-color: var(--accent-color); }
-    .input-plus { position: absolute; left: 32px; bottom: 14px; color: #64748b; font-size: 18px; cursor: pointer; line-height: 1; }
-    .input-submit { position: absolute; right: 28px; bottom: 10px; width: 28px; height: 28px; background: var(--accent-color); border: none; border-radius: 6px; color: #000; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .input-submit.stop-btn { background: var(--danger-color); color: #fff; }
+    .chat-input-area {
+      padding: 16px 24px;
+      background: #0b0f19;
+      display: flex;
+      gap: 12px;
+    }
 
-    /* Модальные окна */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 100; }
-    .modal.show { display: flex; }
-    .modal-content { background: #0f172a; border: 1px solid #1e293b; padding: 22px; border-radius: 12px; max-width: 460px; width: 100%; color: #fff; max-height: 85vh; overflow-y: auto; }
-    .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; color: var(--accent-color); }
-    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+    .chat-input-area input {
+      flex: 1;
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: #fff;
+      outline: none;
+    }
 
-    .setting-group { margin-bottom: 14px; text-align: left; }
-    .setting-label { font-size: 12px; color: #94a3b8; margin-bottom: 6px; display: block; }
-    .setting-input, .setting-select { width: 100%; padding: 8px 10px; background: #070a10; border: 1px solid #334155; border-radius: 6px; color: #fff; font-size: 12px; outline: none; }
-    .setting-input:focus, .setting-select:focus { border-color: var(--accent-color); }
+    .chat-input-area input:focus {
+      border-color: #38bdf8;
+    }
 
-    .btn { padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; font-size: 12px; }
-    .btn-secondary { background: #334155; color: white; }
-    .btn-primary { background: var(--accent-color); color: #000; }
-    .btn-danger { background: var(--danger-color); color: white; }
+    .btn-send {
+      background: #38bdf8;
+      color: #0f172a;
+      border: none;
+      padding: 0 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* 2. Контекстное меню профиля / действий в стиле ChatGPT */
+    .profile-section {
+      position: relative;
+    }
+
+    .profile-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      color: #f8fafc;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      background: #6366f1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    /* Выпадающее меню */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      bottom: 50px;
+      left: 0;
+      width: 240px;
+      background: #182232;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      z-index: 100;
+    }
+
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      color: #cbd5e1;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      position: relative;
+    }
+
+    .menu-item:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .menu-item .arrow {
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+
+    /* Выезжающее Вложенное подменю (Submenu) */
+    .submenu {
+      display: none;
+      position: absolute;
+      left: 100%;
+      bottom: 0;
+      margin-left: 8px;
+      width: 220px;
+      background: #182232;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .has-submenu:hover .submenu {
+      display: block;
+    }
+
+    .menu-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      margin: 6px 0;
+    }
   </style>
 </head>
 <body>
 
-  <div class="sidebar">
+  <!-- Боковая панель -->
+  <aside class="sidebar">
     <div>
       <div class="brand">
-        <img src="logo.jpg" id="appLogo" alt="Logo" class="brand-img">
-        <h1 id="appTitle">pyormavubo</h1>
+        <span>pyormavubo</span>
       </div>
-      <button class="btn-new-chat" id="newChatBtn">+ Новый чат</button>
-      <button class="btn-settings" id="openSettingsBtn">⚙️ Настройки</button>
-      <div class="history-title">История запросов</div>
-      <div class="history-list" id="chatHistoryList"></div>
-    </div>
-    <div style="font-size: 12px; color: #64748b;" id="modeText">Режим: Cosmic Pro AI ⚡</div>
-  </div>
-
-  <div class="main">
-    <div class="top-bar">
-      <a href="https://t.me" target="_blank" class="btn-telegram">Telegram-бот ↗</a>
+      <button class="btn-new-chat">+ Новый чат</button>
     </div>
 
-    <div class="hero" id="heroSection">
-      <h2>С чего начнем сегодня?</h2>
-      <div class="cards-grid">
-        <div class="card" onclick="sendPrompt('📘 Создать веб-код')">
-          <div class="card-title" style="color: #38bdf8;">📘 Создать веб-код</div>
-          <div class="card-desc">Разработка интерфейсов и блоков</div>
+    <!-- Контекстное меню снизу -->
+    <div class="profile-section">
+      <!-- Главное выпадающее меню -->
+      <div class="dropdown-menu" id="profileDropdown">
+        <div class="menu-item has-submenu">
+          <span>👤 Аккаунт</span>
+          <span class="arrow">▶</span>
+          
+          <!-- Подменю выбора профиля (как на скриншоте) -->
+          <div class="submenu">
+            <div class="menu-item">
+              <div>
+                <strong>or assistent</strong><br>
+                <small style="color: #64748b;">assistancefr@gmail.com</small>
+              </div>
+              <span>✓</span>
+            </div>
+            <div class="menu-divider"></div>
+            <div class="menu-item">+ Добавить аккаунт</div>
+          </div>
         </div>
-        <div class="card" onclick="sendPrompt('🧠 Решить задачу')">
-          <div class="card-title" style="color: #ec4899;">🧠 Решить задачу</div>
-          <div class="card-desc">Алгоритмы, логика и головоломки</div>
+
+        <div class="menu-item">⚙️ Настройки</div>
+        <div class="menu-item">🎨 Персонализация</div>
+        <div class="menu-divider"></div>
+        
+        <div class="menu-item has-submenu">
+          <span>🚪 Выйти</span>
+          <span class="arrow">▶</span>
+          
+          <!-- Подменю выхода -->
+          <div class="submenu">
+            <div class="menu-item">Выйти из этого аккаунта</div>
+            <div class="menu-item" style="color: #ef4444;">Выйти из всех аккаунтов</div>
+          </div>
         </div>
-        <div class="card" onclick="sendPrompt('📓 Сценарий и контент')">
-          <div class="card-title" style="color: #a855f7;">📓 Сценарий и контент</div>
-          <div class="card-desc">Идеи для роликов и проектов</div>
+      </div>
+
+      <!-- Кнопка вызова меню -->
+      <div class="profile-btn" onclick="toggleDropdown()">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="avatar">OA</div>
+          <span>or assistent</span>
         </div>
-        <div class="card" onclick="sendPrompt('⚡ Объяснить тему')">
-          <div class="card-title" style="color: #eab308;">⚡ Объяснить тему</div>
-          <div class="card-desc">Разбор технологий и терминов</div>
-        </div>
+        <span>⋮</span>
       </div>
     </div>
+  </aside>
 
-    <div class="chat-box" id="chatBox"></div>
-
-    <div class="input-wrapper">
-      <div class="input-container">
-        <span class="input-plus">+</span>
-        <textarea class="input-box" id="userInput" rows="1" placeholder="Введите сообщение..."></textarea>
-        <button class="input-submit" id="sendBtn">→</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Модальное окно настроек -->
-  <div class="modal" id="settingsModal">
-    <div class="modal-content">
-      <div class="modal-title">⚙️ Настройки приложения</div>
-
-      <div class="setting-group">
-        <label class="setting-label">Тема оформления</label>
-        <select class="setting-select" id="themeSelect">
-          <option value="dark">Темная Cosmic (По умолчанию)</option>
-          <option value="light">Светлая Minimal</option>
-          <option value="cyberpunk">Неон Киберпанк</option>
-        </select>
+  <!-- Главный интерфейс чата -->
+  <main class="chat-container">
+    <!-- Верхняя шапка -->
+    <header class="chat-header">
+      <div class="model-info">
+        <span class="power-emoji">⚡</span>
+        <span>Cosmic Pro AI</span>
       </div>
 
-      <div class="setting-group">
-        <label class="setting-label">Название приложения / бота</label>
-        <input type="text" class="setting-input" id="titleInput" value="pyormavubo">
-      </div>
+      <!-- Переключатель режима голоса -->
+      <button id="voiceToggleBtn" class="voice-toggle-btn active" onclick="toggleVoiceMode()">
+        <span id="voiceIcon">🎙️</span>
+        <span id="voiceStatus">Голос: ВКЛ</span>
+      </button>
+    </header>
 
-      <div class="setting-group">
-        <label class="setting-label">Ссылка на логотип (URL)</label>
-        <input type="text" class="setting-input" id="logoInput" value="logo.jpg">
+    <!-- Сообщения чата -->
+    <section class="chat-messages" id="chatMessages">
+      <div class="message bot">
+        Привет! Я готов решить твой запрос. Чем могу помочь сегодня? 😎
       </div>
+    </section>
 
-      <div class="setting-group" style="margin-top: 20px; border-top: 1px solid #1e293b; padding-top: 15px;">
-        <label class="setting-label" style="color: var(--danger-color);">Очистка памяти браузера</label>
-        <button class="btn btn-danger" id="clearAllBtn" style="width: 100%;">Удалить всю историю чатов</button>
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn btn-secondary" id="closeSettingsBtn">Отмена</button>
-        <button class="btn btn-primary" id="saveSettingsBtn">Сохранить</button>
-      </div>
-    </div>
-  </div>
+    <!-- Поле ввода -->
+    <footer class="chat-input-area">
+      <input type="text" id="userInput" placeholder="Введите сообщение..." onkeydown="if(event.key==='Enter') sendMessage()">
+      <button class="btn-send" onclick="sendMessage()">Отправить</button>
+    </footer>
+  </main>
 
   <script>
-    const STORAGE_KEY = 'ai_chats_v10';
-    const SETTINGS_KEY = 'ai_settings_v10';
+    // Логика переключения режима голоса
+    let isVoiceEnabled = true;
 
-    let chats = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    let settings = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {
-      theme: 'dark',
-      title: 'pyormavubo',
-      logo: 'logo.jpg'
-    };
-
-    let activeChatId = null;
-    let isGenerating = false;
-    let currentStreamInterval = null;
-
-    const chatListContainer = document.getElementById('chatHistoryList');
-    const chatBox = document.getElementById('chatBox');
-    const heroSection = document.getElementById('heroSection');
-    const userInput = document.getElementById('userInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const settingsModal = document.getElementById('settingsModal');
-
-    const icons = {
-      copy: `<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>`,
-      regenerate: `<svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>`,
-      like: `<svg viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.58 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>`,
-      dislike: `<svg viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>`
-    };
-
-    // --- 1. Умная генерация заголовков ---
-    function generateChatTitle(text) {
-      const cleanText = text.trim();
-      const greetings = ['привет', 'здравствуйте', 'hi', 'hello', 'добрый день', 'добрый вечер'];
-      const isOnlyGreeting = greetings.includes(cleanText.toLowerCase());
-
-      if (isOnlyGreeting) return 'Новый диалог';
-
-      let promptText = cleanText;
-      greetings.forEach(g => {
-        const reg = new RegExp(`^${g}[,\\s!.]*`, 'i');
-        promptText = promptText.replace(reg, '');
-      });
-
-      if (!promptText) return 'Новый диалог';
-
-      const words = promptText.split(/\s+/).slice(0, 4).join(' ');
-      return words.charAt(0).toUpperCase() + words.slice(1);
-    }
-
-    // --- 2. Естественные ответы бота ---
-    function generateAIResponse(userText) {
-      const lower = userText.toLowerCase().trim();
-      if (['привет', 'здравствуйте', 'hi', 'hello'].includes(lower)) {
-        return "Привет! Чем могу помочь сегодня? Можем написать код, разобрать идею или составить план.";
-      }
-      if (lower.includes('код') || lower.includes('css') || lower.includes('html') || lower.includes('js')) {
-        return "Отличная задача. Давайте разберем реализацию и построим чистую архитектуру компонента.";
-      }
-      return `Готов решить ваш запрос. Давайте разберем ключевые шаги и оптимизируем результат.`;
-    }
-
-    // --- 3. Отрисовка списка чатов и Dropdown ---
-    function renderChatList() {
-      chatListContainer.innerHTML = '';
-
-      chats.forEach(chat => {
-        const item = document.createElement('div');
-        item.className = `chat-item ${chat.id === activeChatId ? 'active' : ''}`;
-        item.dataset.id = chat.id;
-
-        item.innerHTML = `
-          <span class="chat-title">${chat.title}</span>
-          <button class="menu-btn" title="Опции">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/>
-            </svg>
-          </button>
-          <div class="dropdown-menu hidden">
-            <button class="dropdown-item btn-rename">✏️ Переименовать</button>
-            <button class="dropdown-item danger btn-delete">🗑️ Удалить</button>
-          </div>
-        `;
-
-        item.addEventListener('click', (e) => {
-          if (!e.target.closest('.menu-btn') && !e.target.closest('.dropdown-menu')) {
-            activeChatId = chat.id;
-            closeAllDropdowns();
-            renderChatList();
-            renderMessages();
-          }
-        });
-
-        const menuBtn = item.querySelector('.menu-btn');
-        const dropdown = item.querySelector('.dropdown-menu');
-
-        menuBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const isHidden = dropdown.classList.contains('hidden');
-          closeAllDropdowns();
-          if (isHidden) dropdown.classList.remove('hidden');
-        });
-
-        item.querySelector('.btn-rename').addEventListener('click', (e) => {
-          e.stopPropagation();
-          closeAllDropdowns();
-          const newTitle = prompt('Введите новое название чата:', chat.title);
-          if (newTitle && newTitle.trim()) {
-            chat.title = newTitle.trim();
-            saveChats();
-            renderChatList();
-          }
-        });
-
-        item.querySelector('.btn-delete').addEventListener('click', (e) => {
-          e.stopPropagation();
-          closeAllDropdowns();
-          if (confirm('Вы уверены, что хотите удалить этот чат?')) {
-            chats = chats.filter(c => c.id !== chat.id);
-            if (activeChatId === chat.id) activeChatId = chats.length > 0 ? chats[0].id : null;
-            saveChats();
-            renderChatList();
-            renderMessages();
-          }
-        });
-
-        chatListContainer.appendChild(item);
-      });
-    }
-
-    function closeAllDropdowns() {
-      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.add('hidden'));
-    }
-    document.addEventListener('click', closeAllDropdowns);
-
-    // --- 4. Отрисовка диалога ---
-    function renderMessages() {
-      chatBox.innerHTML = '';
-      const currentChat = chats.find(c => c.id === activeChatId);
-
-      if (currentChat && currentChat.messages.length > 0) {
-        heroSection.style.display = 'none';
-        chatBox.style.display = 'flex';
-
-        currentChat.messages.forEach((m, idx) => {
-          const wrapper = document.createElement('div');
-          wrapper.className = 'msg-wrapper';
-
-          const msgDiv = document.createElement('div');
-          msgDiv.className = 'msg ' + (m.role === 'user' ? 'msg-user' : 'msg-ai');
-          msgDiv.innerText = m.text;
-          wrapper.appendChild(msgDiv);
-
-          if (m.role === 'assistant') {
-            const actionBar = document.createElement('div');
-            actionBar.className = 'action-bar';
-            
-            actionBar.innerHTML = `
-              <span class="action-icon" onclick="copyText(this, \`${m.text.replace(/`/g, '\\`')}\`)">${icons.copy} <span>Скопировать</span></span>
-              <span class="action-icon" onclick="regenerateReply(${idx})">${icons.regenerate} <span>Повторить</span></span>
-              <span class="action-icon" onclick="this.style.color='var(--accent-color)'">${icons.like}</span>
-              <span class="action-icon" onclick="this.style.color='var(--danger-color)'">${icons.dislike}</span>
-            `;
-            wrapper.appendChild(actionBar);
-          }
-
-          chatBox.appendChild(wrapper);
-        });
-
-        chatBox.scrollTop = chatBox.scrollHeight;
+    function toggleVoiceMode() {
+      isVoiceEnabled = !isVoiceEnabled;
+      const btn = document.getElementById('voiceToggleBtn');
+      const statusText = document.getElementById('voiceStatus');
+      
+      if (isVoiceEnabled) {
+        btn.classList.add('active');
+        statusText.innerText = 'Голос: ВКЛ';
       } else {
-        heroSection.style.display = 'block';
-        chatBox.style.display = 'none';
+        btn.classList.remove('active');
+        statusText.innerText = 'Голос: ВЫКЛ';
       }
     }
 
-    function copyText(btnEl, text) {
-      navigator.clipboard.writeText(text).then(() => {
-        const textSpan = btnEl.querySelector('span');
-        const orig = textSpan.innerText;
-        textSpan.innerText = 'Скопировано!';
-        setTimeout(() => textSpan.innerText = orig, 2000);
-      });
+    // Логика выпадающего меню
+    function toggleDropdown() {
+      const dropdown = document.getElementById('profileDropdown');
+      dropdown.classList.toggle('show');
     }
 
-    function streamAIResponse(chat, responseText) {
-      isGenerating = true;
-      sendBtn.innerText = '⏹';
-      sendBtn.classList.add('stop-btn');
-
-      const wrapper = document.createElement('div');
-      wrapper.className = 'msg-wrapper';
-
-      const msgDiv = document.createElement('div');
-      msgDiv.className = 'msg msg-ai';
-      wrapper.appendChild(msgDiv);
-      chatBox.appendChild(wrapper);
-
-      let currentLength = 0;
-      currentStreamInterval = setInterval(() => {
-        currentLength += 2;
-        msgDiv.innerHTML = responseText.substring(0, currentLength) + '<span class="cursor-blink"></span>';
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        if (currentLength >= responseText.length) {
-          clearInterval(currentStreamInterval);
-          isGenerating = false;
-          sendBtn.innerText = '→';
-          sendBtn.classList.remove('stop-btn');
-
-          msgDiv.innerText = responseText;
-          chat.messages.push({ role: 'assistant', text: responseText });
-          saveChats();
-          renderMessages();
+    // Закрывать меню при клике вне его
+    window.onclick = function(event) {
+      if (!event.target.closest('.profile-section')) {
+        const dropdown = document.getElementById('profileDropdown');
+        if (dropdown.classList.contains('show')) {
+          dropdown.classList.remove('show');
         }
-      }, 20);
+      }
     }
 
-    function handleSend() {
-      if (isGenerating) {
-        clearInterval(currentStreamInterval);
-        isGenerating = false;
-        sendBtn.innerText = '→';
-        sendBtn.classList.remove('stop-btn');
-        return;
-      }
-
-      const text = userInput.value.trim();
+    // Отправка сообщений в чат
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const text = input.value.trim();
       if (!text) return;
 
-      let currentChat = chats.find(c => c.id === activeChatId);
+      const chat = document.getElementById('chatMessages');
 
-      if (!currentChat) {
-        currentChat = {
-          id: Date.now(),
-          title: generateChatTitle(text),
-          messages: []
-        };
-        chats.unshift(currentChat);
-        activeChatId = currentChat.id;
-      } else if (currentChat.title === 'Новый диалог') {
-        currentChat.title = generateChatTitle(text);
-      }
+      // Сообщение пользователя
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message user';
+      userMsg.innerText = text;
+      chat.appendChild(userMsg);
 
-      currentChat.messages.push({ role: 'user', text: text });
-      userInput.value = '';
-      userInput.style.height = 'auto';
+      input.value = '';
+      chat.scrollTop = chat.scrollHeight;
 
-      saveChats();
-      renderChatList();
-      renderMessages();
-
+      // Ответ бота с задержкой
       setTimeout(() => {
-        const replyText = generateAIResponse(text);
-        streamAIResponse(currentChat, replyText);
-      }, 300);
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot';
+        botMsg.innerText = 'Принято! Разбираю твой запрос 🔥';
+        chat.appendChild(botMsg);
+        chat.scrollTop = chat.scrollHeight;
+      }, 600);
     }
-
-    function regenerateReply(idx) {
-      const currentChat = chats.find(c => c.id === activeChatId);
-      if (!currentChat) return;
-
-      currentChat.messages = currentChat.messages.slice(0, idx);
-      saveChats();
-      renderMessages();
-
-      const lastMsg = currentChat.messages[currentChat.messages.length - 1];
-      const textToUse = lastMsg ? lastMsg.text : 'Запрос';
-
-      setTimeout(() => {
-        streamAIResponse(currentChat, generateAIResponse(textToUse));
-      }, 300);
-    }
-
-    function sendPrompt(text) {
-      userInput.value = text;
-      handleSend();
-    }
-
-    function saveChats() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
-    }
-
-    // --- 5. Авто-размер поля ввода ---
-    userInput.addEventListener('input', function() {
-      this.style.height = 'auto';
-      this.style.height = Math.min(this.scrollHeight, 200) + 'px';
-    });
-
-    userInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        handleSend();
-      }
-    });
-
-    sendBtn.onclick = handleSend;
-
-    document.getElementById('newChatBtn').onclick = () => {
-      activeChatId = null;
-      renderChatList();
-      renderMessages();
-    };
-
-    // Настройки
-    document.getElementById('openSettingsBtn').onclick = () => {
-      document.getElementById('themeSelect').value = settings.theme;
-      document.getElementById('titleInput').value = settings.title;
-      document.getElementById('logoInput').value = settings.logo;
-      settingsModal.classList.add('show');
-    };
-
-    document.getElementById('closeSettingsBtn').onclick = () => settingsModal.classList.remove('show');
-
-    document.getElementById('saveSettingsBtn').onclick = () => {
-      settings.theme = document.getElementById('themeSelect').value;
-      settings.title = document.getElementById('titleInput').value;
-      settings.logo = document.getElementById('logoInput').value;
-
-      localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-      applySettings();
-      settingsModal.classList.remove('show');
-    };
-
-    document.getElementById('clearAllBtn').onclick = () => {
-      localStorage.removeItem(STORAGE_KEY);
-      chats = [];
-      activeChatId = null;
-      renderChatList();
-      renderMessages();
-      settingsModal.classList.remove('show');
-    };
-
-    function applySettings() {
-      document.getElementById('appTitle').innerText = settings.title;
-      document.getElementById('appLogo').src = settings.logo;
-      document.body.className = '';
-      if (settings.theme === 'light') document.body.classList.add('theme-light');
-      if (settings.theme === 'cyberpunk') document.body.classList.add('theme-cyberpunk');
-    }
-
-    window.onload = () => {
-      applySettings();
-      renderChatList();
-      renderMessages();
-    };
   </script>
 </body>
 </html>
